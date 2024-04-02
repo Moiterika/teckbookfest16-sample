@@ -13,9 +13,8 @@ type Entリソース変更履歴 struct {
 	Getアップロード時 *Valリソース変更履歴アップロード時 `json:"アップロード時,omitempty"`
 }
 
-func NewEntリソース変更履歴(ID No, 登録日時 time.Time, リソース名 string, 変更区分 string, 変更内容 []byte, アップロード時 *Valリソース変更履歴アップロード時) (*Entリソース変更履歴, error) {
+func NewEntリソース変更履歴(登録日時 time.Time, リソース名 string, 変更区分 string, 変更内容 []byte, アップロード時 *Valリソース変更履歴アップロード時) (*Entリソース変更履歴, error) {
 	e := &Entリソース変更履歴{
-		GetID:      ID,
 		Getアップロード時: アップロード時,
 		Getリソース名:   リソース名,
 		Get変更内容:    変更内容,

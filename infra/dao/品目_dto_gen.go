@@ -4,16 +4,15 @@ package dao
 
 import (
 	"encoding/json"
-	objects "techbookfest16-sample/domain/objects"
 	types "techbookfest16-sample/domain/types"
 )
 
 type Dto品目 struct {
-	FldID        Id             `json:"ID"`
-	Fldコード       objects.Code品目 `json:"コード"`
-	Fld名称        string         `json:"名称"`
-	Fld基準単位ID    types.Unit     `json:"基準単位ID"`
-	Fld生産用品目区分ID Id             `json:"生産用品目区分ID"`
+	FldID        Id           `json:"ID"`
+	Fldコード       types.Code品目 `json:"コード"`
+	Fld名称        string       `json:"名称"`
+	Fld基準単位ID    Id           `json:"基準単位ID"`
+	Fld生産用品目区分ID Id           `json:"生産用品目区分ID"`
 
 	rowState DataRowState
 	Ub       *ub品目 `json:"-"`
@@ -27,7 +26,7 @@ func (d Dto品目) RowState() DataRowState {
 }
 
 // Import はDto品目型に主キー以外を上書きする。
-func (d *Dto品目) Import(コード objects.Code品目, 名称 string, 基準単位ID types.Unit, 生産用品目区分ID Id) {
+func (d *Dto品目) Import(コード types.Code品目, 名称 string, 基準単位ID Id, 生産用品目区分ID Id) {
 	// 項目がすべて一致していたら、何もしない
 	if d.Fldコード == コード && d.Fld名称 == 名称 && d.Fld基準単位ID == 基準単位ID && d.Fld生産用品目区分ID == 生産用品目区分ID {
 		return

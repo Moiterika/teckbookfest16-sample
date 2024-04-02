@@ -9,7 +9,6 @@ import (
 	xerrors "golang.org/x/xerrors"
 	"strconv"
 	"strings"
-	objects "techbookfest16-sample/domain/objects"
 	types "techbookfest16-sample/domain/types"
 )
 
@@ -24,10 +23,10 @@ func (d *daoTrn単位) init() (err error) {
 	if err != nil {
 		return xerrors.Errorf(": %w", err)
 	}
-	d.dm.mapIDvsDr単位 = a.ToMap(d.dm.dt単位, func(e *Dto単位) types.Unit {
+	d.dm.mapIDvsDr単位 = a.ToMap(d.dm.dt単位, func(e *Dto単位) Id {
 		return e.FldID
 	})
-	d.dm.mapコードvsDr単位 = a.ToMap(d.dm.dt単位, func(e *Dto単位) objects.Code単位 {
+	d.dm.mapコードvsDr単位 = a.ToMap(d.dm.dt単位, func(e *Dto単位) types.Code単位 {
 		return e.Fldコード
 	})
 	return
@@ -44,7 +43,7 @@ func (d *daoTrn単位) Reset() {
 		}
 	}
 	d.dm.dt単位 = list
-	d.dm.mapコードvsDr単位 = a.ToMap(d.dm.dt単位, func(e *Dto単位) objects.Code単位 {
+	d.dm.mapコードvsDr単位 = a.ToMap(d.dm.dt単位, func(e *Dto単位) types.Code単位 {
 		return e.Fldコード
 	})
 }
@@ -58,7 +57,7 @@ func (d daoTrn単位) Dt() ([]*Dto単位, error) {
 	}
 	return d.dm.dt単位, nil
 }
-func (d daoTrn単位) GetBy(id types.Unit) (dr *Dto単位, err error) {
+func (d daoTrn単位) GetBy(id Id) (dr *Dto単位, err error) {
 	if len(d.dm.mapIDvsDr単位) == 0 {
 		err = d.init()
 		if err != nil {
@@ -74,7 +73,7 @@ func (d daoTrn単位) GetBy(id types.Unit) (dr *Dto単位, err error) {
 	}
 	return
 }
-func (d daoTrn単位) GetByCode(コード objects.Code単位) (dr *Dto単位, err error) {
+func (d daoTrn単位) GetByCode(コード types.Code単位) (dr *Dto単位, err error) {
 	if len(d.dm.mapコードvsDr単位) == 0 {
 		err = d.init()
 		if err != nil {
@@ -208,7 +207,7 @@ func (d daoTrn単位) MaxW(fld fld単位, wb Wb単位) (max int64, err error) {
 	max = x.Int64
 	return
 }
-func (d daoTrn単位) Insert(dr *Dto単位) (id types.Unit, err error) {
+func (d daoTrn単位) Insert(dr *Dto単位) (id Id, err error) {
 	err = d.trn.QueryRow(sqlInsert単位, dr.Fldコード, dr.Fld名称).Scan(&id)
 	if err != nil {
 		err = xerrors.Errorf(": %w", err)

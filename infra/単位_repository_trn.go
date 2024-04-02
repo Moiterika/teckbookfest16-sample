@@ -22,11 +22,11 @@ func (r *repTrn単位) init() (err error) {
 		xerrors.Errorf(" :%w", err)
 		return
 	}
-	r.rm.mapIDvs単位 = a.ToMap(r.rm.list単位, func(e *objects.Ent単位) types.Unit {
+	r.rm.mapIDvs単位 = a.ToMap(r.rm.list単位, func(e *objects.Ent単位) dao.Id {
 		dr, _ := r.rm.dm.NewDaoTrn単位().GetByCode(e.Getコード)
 		return dr.FldID
 	})
-	r.rm.mapコードvs単位 = a.ToMap(r.rm.list単位, func(e *objects.Ent単位) objects.Code単位 {
+	r.rm.mapコードvs単位 = a.ToMap(r.rm.list単位, func(e *objects.Ent単位) types.Code単位 {
 		return e.Getコード
 	})
 	return
@@ -60,7 +60,7 @@ func (r *repTrn単位) List() ([]*objects.Ent単位, error) {
 	return r.rm.list単位, nil
 }
 
-func (r *repTrn単位) Get(id types.Unit) (e *objects.Ent単位, err error) {
+func (r *repTrn単位) getBy(id dao.Id) (e *objects.Ent単位, err error) {
 	if len(r.rm.mapIDvs単位) == 0 {
 		err = r.init()
 		if err != nil {
@@ -71,13 +71,13 @@ func (r *repTrn単位) Get(id types.Unit) (e *objects.Ent単位, err error) {
 	var ok bool
 	e, ok = r.rm.mapIDvs単位[id]
 	if !ok {
-		err = xerrors.Errorf("単位が見つかりません。単位ID=%d: %w", id, objects.ErrNotFound)
+		err = xerrors.Errorf("単位が見つかりません。単位ID=%s: %w", id, objects.ErrNotFound)
 		return
 	}
 	return
 }
 
-func (r *repTrn単位) GetBy(コード objects.Code単位) (e *objects.Ent単位, err error) {
+func (r *repTrn単位) GetBy(コード types.Code単位) (e *objects.Ent単位, err error) {
 	if len(r.rm.mapIDvs単位) == 0 {
 		err = r.init()
 		if err != nil {
@@ -132,9 +132,6 @@ func (r *repTrn単位) Save(アップロード履歴ID objects.No) (err error) {
 				return
 			}
 			logger.Write(dr, アップロード履歴ID)
-
-			// 単位だけIDがエンティティに露出しているのでDB採番後にセットすること
-			e.GetID = dr.FldID
 		}
 	}
 

@@ -37,7 +37,7 @@ func SumQuantity(x ...Quantity) (ret Quantity, err error) {
 	// 初期値
 	ret.val = decimal.Zero
 	ret.unit = x[0].unit
-	unitMap := make(map[Unit]struct{})
+	unitMap := make(map[Code単位]struct{})
 	for i := range x {
 		if _, ok := unitMap[x[i].unit]; !ok {
 			err = xerrors.Errorf("単位違うの居る……")
@@ -57,7 +57,7 @@ func SumInventory(x ...Inventory) (ret Inventory, err error) {
 	// 初期値
 	ret.val = decimal.Zero
 	ret.unit = x[0].unit
-	unitMap := make(map[Unit]struct{})
+	unitMap := make(map[Code単位]struct{})
 	for i := range x {
 		if _, ok := unitMap[x[i].unit]; !ok {
 			err = xerrors.Errorf("単位違うの居る……")
@@ -88,7 +88,7 @@ func Calc金額(q Quantity, p Price) (a Amount, err error) {
 	return
 }
 
-type ProrationBasis[T Unit | CurrencyUnit] interface {
+type ProrationBasis[T Code単位 | CurrencyUnit] interface {
 	Val() decimal.Decimal
 	Unit() T
 }
@@ -97,7 +97,7 @@ type ProrationBasis[T Unit | CurrencyUnit] interface {
 //
 //	 as: 按分後金額のリスト
 //	err: エラー
-func Prorate[T Unit | CurrencyUnit](a Amount, bs []ProrationBasis[T]) (as []Amount, err error) {
+func Prorate[T Code単位 | CurrencyUnit](a Amount, bs []ProrationBasis[T]) (as []Amount, err error) {
 	if len(bs) == 0 {
 		err = xerrors.Errorf("計算不能")
 		return
@@ -144,7 +144,7 @@ func Prorate[T Unit | CurrencyUnit](a Amount, bs []ProrationBasis[T]) (as []Amou
 }
 
 // Calc按分 は按分元金額を按分基準一覧で按分する。
-func Calc按分[T Unit | CurrencyUnit](按分元金額 Amount, 按分基準一覧 []ProrationBasis[T]) (按分結果 []Amount, err error) {
+func Calc按分[T Code単位 | CurrencyUnit](按分元金額 Amount, 按分基準一覧 []ProrationBasis[T]) (按分結果 []Amount, err error) {
 	if len(按分基準一覧) == 0 {
 		err = xerrors.Errorf("計算不能")
 		return

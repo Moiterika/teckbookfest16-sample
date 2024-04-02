@@ -13,8 +13,6 @@ Page=Main
 PageInfo="Main",2,"A3Landscape",$FFFFFF
 Domain=ID=bigserial
 DomainInfo="ID","bigserial","",""
-Domain=UnitID=smallserial
-DomainInfo="UnitID","smallserial","単位専用。エンティティ内でも項目が省略されない",""
 Domain=code=text
 DomainInfo="code","text","",""
 Domain=No=integer
@@ -122,8 +120,8 @@ Field="","内容","text","NOT NULL",,"","",$FFFFFFFF,""
 EffectMode=None
 Tag=EVENT
 Color=$000000
-BkColor=$FFFFFF
-ModifiedDateTime=20231116090439
+BkColor=$DEB2C7
+ModifiedDateTime=20240402172203
 Position="MAIN",300,500,206,132
 ZOrder=4
 
@@ -143,8 +141,8 @@ Field="","変更内容","jsonb","NOT NULL",,"","",$FFFFFFFF,""
 EffectMode=None
 Tag=EVENT
 Color=$000000
-BkColor=$FFFFFF
-ModifiedDateTime=20230927120311
+BkColor=$DEB2C7
+ModifiedDateTime=20240402172224
 Position="MAIN",100,750
 ZOrder=6
 
@@ -199,8 +197,8 @@ Field="","アップロード履歴ID","*外部ID","NOT NULL",,"","",$FFFFFFFF,""
 EffectMode=None
 Tag=EVENT
 Color=$000000
-BkColor=$FFFFFF
-ModifiedDateTime=20231121092735
+BkColor=$DEB2C7
+ModifiedDateTime=20240402172209
 Position="MAIN",600,550
 ZOrder=14
 
@@ -217,8 +215,8 @@ Field="","操作ユーザーID","*外部ID","NOT NULL",,"","",$FFFFFFFF,""
 EffectMode=None
 Tag=EVENT
 Color=$000000
-BkColor=$FFFFFF
-ModifiedDateTime=20231121092741
+BkColor=$DEB2C7
+ModifiedDateTime=20240402172217
 Position="MAIN",600,650
 ZOrder=15
 
@@ -229,15 +227,15 @@ Comment=
 TableOption=
 Page=MAIN
 Left=300
-Top=800
+Top=850
 Field="","ID","*外部ID","NOT NULL",0,"","",$FFFFFFFF,""
 Field="","アップロード履歴ID","*外部ID","NOT NULL",,"","",$FFFFFFFF,""
 EffectMode=None
 Tag=EVENT
 Color=$000000
-BkColor=$FFFFFF
-ModifiedDateTime=20231121092751
-Position="MAIN",300,800
+BkColor=$DEB2C7
+ModifiedDateTime=20240402172231
+Position="MAIN",300,850
 ZOrder=16
 
 [Relation]
@@ -363,7 +361,7 @@ TableOption=
 Page=MAIN
 Left=850
 Top=50
-Field="","ID","*UnitID","NOT NULL",0,"","",$FFFFFFFF,""
+Field="","ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
 Field="","コード","*code","NOT NULL",,"","",$FFFFFFFF,""
 Field="","名称","text","NOT NULL",,"","",$FFFFFFFF,""
 Index==1,コード
@@ -371,7 +369,7 @@ EffectMode=None
 Tag=RESOURCE
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20240313184825
+ModifiedDateTime=20240402175105
 Position="MAIN",850,50,132,90
 ZOrder=125
 
@@ -411,8 +409,8 @@ Field="","名称","text","NOT NULL",,"","",$FFFFFFFF,""
 EffectMode=None
 Tag=MASTER
 Color=$000000
-BkColor=$FFFFFF
-ModifiedDateTime=20231121091129
+BkColor=$DEB2C7
+ModifiedDateTime=20240402172154
 Position="MAIN",50,500
 ZOrder=33
 
@@ -783,7 +781,7 @@ Field="","applied_at","timestamp(6) with time zone",,,"","",$FFFFFFFF,""
 EffectMode=None
 Tag=MASTER
 Color=$000000
-BkColor=$FFFFFF
-ModifiedDateTime=20240130162306
+BkColor=$DEB2C7
+ModifiedDateTime=20240402172239
 Position="MAIN",50,50
 ZOrder=124

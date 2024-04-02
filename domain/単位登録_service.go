@@ -28,7 +28,6 @@ func (s *Srv単位登録) Exec登録(アップロード履歴 objects.No, e *obj
 
 	rep := s.rm.NewRep単位()
 	if 既存単位, err既存単位 := rep.GetBy(e.Getコード); err既存単位 == nil {
-		既存単位.GetID = e.GetID
 		既存単位.Getコード = e.Getコード
 		既存単位.Get名称 = e.Get名称
 	} else if errors.Is(err既存単位, objects.ErrNotFound) {

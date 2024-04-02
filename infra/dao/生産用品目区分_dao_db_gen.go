@@ -9,7 +9,7 @@ import (
 	xerrors "golang.org/x/xerrors"
 	"strconv"
 	"strings"
-	objects "techbookfest16-sample/domain/objects"
+	types "techbookfest16-sample/domain/types"
 )
 
 type daoDb生産用品目区分 struct {
@@ -26,7 +26,7 @@ func (d *daoDb生産用品目区分) init() (err error) {
 	d.dm.mapIDvsDr生産用品目区分 = a.ToMap(d.dm.dt生産用品目区分, func(e *Dto生産用品目区分) Id {
 		return e.FldID
 	})
-	d.dm.mapコードvsDr生産用品目区分 = a.ToMap(d.dm.dt生産用品目区分, func(e *Dto生産用品目区分) objects.Code生産用品目区分 {
+	d.dm.mapコードvsDr生産用品目区分 = a.ToMap(d.dm.dt生産用品目区分, func(e *Dto生産用品目区分) types.Code生産用品目区分 {
 		return e.Fldコード
 	})
 	return
@@ -43,7 +43,7 @@ func (d *daoDb生産用品目区分) Reset() {
 		}
 	}
 	d.dm.dt生産用品目区分 = list
-	d.dm.mapコードvsDr生産用品目区分 = a.ToMap(d.dm.dt生産用品目区分, func(e *Dto生産用品目区分) objects.Code生産用品目区分 {
+	d.dm.mapコードvsDr生産用品目区分 = a.ToMap(d.dm.dt生産用品目区分, func(e *Dto生産用品目区分) types.Code生産用品目区分 {
 		return e.Fldコード
 	})
 }
@@ -73,7 +73,7 @@ func (d daoDb生産用品目区分) GetBy(id Id) (dr *Dto生産用品目区分, 
 	}
 	return
 }
-func (d daoDb生産用品目区分) GetByCode(コード objects.Code生産用品目区分) (dr *Dto生産用品目区分, err error) {
+func (d daoDb生産用品目区分) GetByCode(コード types.Code生産用品目区分) (dr *Dto生産用品目区分, err error) {
 	if len(d.dm.mapコードvsDr生産用品目区分) == 0 {
 		err = d.init()
 		if err != nil {

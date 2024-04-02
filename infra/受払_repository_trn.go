@@ -37,6 +37,7 @@ func (r *repTrn受払) list() (list []*objects.Ent受払, err error) {
 
 	rep品目 := r.rm.rep品目()
 	dao仕入 := r.rm.dm.NewDaoTrn受払仕入()
+	dao単位 := r.rm.dm.NewDaoTrn単位()
 
 	list = make([]*objects.Ent受払, len(dt受払))
 	for i, dr := range dt受払 {
@@ -50,19 +51,21 @@ func (r *repTrn受払) list() (list []*objects.Ent受払, err error) {
 			err = xerrors.Errorf(" :%w", err仕入)
 			return
 		}
-		仕入数量, err仕入数量 := types.NewQuantity(dr仕入.Fld仕入数量, dr仕入.Fld仕入単位ID)
+		dr仕入単位, _ := dao単位.GetBy(dr仕入.Fld仕入単位ID)
+		仕入数量, err仕入数量 := types.NewQuantity(dr仕入.Fld仕入数量, dr仕入単位.Fldコード)
 		if err仕入数量 != nil {
 			err = xerrors.Errorf(" :%w", err仕入数量)
 			return
 		}
 		受払仕入, err受払仕入 := objects.NewVal受払仕入(仕入数量,
 			types.NewAmount(dr仕入.Fld仕入金額, dr仕入.Fld仕入通貨ID),
-			types.NewPrice(dr仕入.Fld仕入単価, dr仕入.Fld仕入通貨ID, dr仕入.Fld仕入単位ID),
+			types.NewPrice(dr仕入.Fld仕入単価, dr仕入.Fld仕入通貨ID, dr仕入単位.Fldコード),
 		)
 		if err受払仕入 != nil {
 			err = xerrors.Errorf(" :%w", err受払仕入)
 			return
 		}
+		dr単位, _ := dao単位.GetBy(dr.Fld基準単位ID)
 		e := &objects.Ent受払{
 			GetNo:    objects.No(dr.FldNo),
 			Get登録日時:  dr.Fld登録日時,
@@ -70,7 +73,7 @@ func (r *repTrn受払) list() (list []*objects.Ent受払, err error) {
 			Get受払区分:  dr.Fld受払区分,
 			Get赤伝フラグ: dr.Fld赤伝フラグ,
 			Get品目:    品目,
-			Get基準数量:  types.NewInventory(dr.Fld基準数量, dr.Fld基準単位ID),
+			Get基準数量:  types.NewInventory(dr.Fld基準数量, dr単位.Fldコード),
 			Get仕入:    受払仕入,
 			// 今回は全部nil
 			// Get出荷:    &objects.Val受払出荷{},
@@ -124,6 +127,7 @@ func (r *repTrn受払) Save(アップロード履歴ID objects.No) (err error) {
 	defer dao仕入.Reset()
 
 	dao品目 := r.rm.dm.NewDaoTrn品目()
+	dao単位 := r.rm.dm.NewDaoTrn単位()
 
 	for _, e := range r.rm.list受払 {
 		dr品目, err品目 := dao品目.GetByCode(e.Get品目.Getコード)
@@ -131,9 +135,11 @@ func (r *repTrn受払) Save(アップロード履歴ID objects.No) (err error) {
 			err = xerrors.Errorf(" :%w", err品目)
 			return
 		}
+		dr単位, _ := dao単位.GetByCode(e.Get基準数量.Unit())
+
 		// イベントを更新してよいかは要検討
 		if dr, errCode := dao受払.GetBy(dao.Id(e.GetNo)); !errors.Is(errCode, dao.NotFoundError) {
-			dr.Import(e.Get登録日時, e.Get計上月, e.Get受払区分, e.Get赤伝フラグ, dr品目.FldID, e.Get基準数量.Val(), e.Get基準数量.Unit())
+			dr.Import(e.Get登録日時, e.Get計上月, e.Get受払区分, e.Get赤伝フラグ, dr品目.FldID, e.Get基準数量.Val(), dr単位.FldID)
 			_, err = dao受払.UpdateBy(dr)
 			if err != nil {
 				err = xerrors.Errorf(": %w", err)
@@ -148,7 +154,7 @@ func (r *repTrn受払) Save(アップロード履歴ID objects.No) (err error) {
 				Fld赤伝フラグ:  e.Get赤伝フラグ,
 				Fld品目ID:   dr品目.FldID,
 				Fld基準数量:   e.Get基準数量.Val(),
-				Fld基準単位ID: e.Get基準数量.Unit(),
+				Fld基準単位ID: dr単位.FldID,
 				Ub:        dao.NewUb受払(),
 			}
 			dr.FldNo, err = dao受払.Insert(dr)
@@ -159,10 +165,11 @@ func (r *repTrn受払) Save(アップロード履歴ID objects.No) (err error) {
 			e.GetNo = objects.No(dr.FldNo)
 
 			if e.Get仕入 != nil {
+				dr仕入単位, _ := dao単位.GetByCode(e.Get仕入.Get仕入数量.Unit())
 				dr仕入 := &dao.Dto受払仕入{
 					FldNo:     dr.FldNo,
 					Fld仕入数量:   e.Get仕入.Get仕入数量.Val(),
-					Fld仕入単位ID: e.Get仕入.Get仕入数量.Unit(),
+					Fld仕入単位ID: dr仕入単位.FldID,
 					Fld仕入金額:   e.Get仕入.Get仕入金額.Val(),
 					Fld仕入通貨ID: e.Get仕入.Get仕入金額.Unit(),
 					Fld仕入単価:   e.Get仕入.Get仕入単価.Amt(),

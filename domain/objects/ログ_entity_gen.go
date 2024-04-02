@@ -13,9 +13,8 @@ type Entログ struct {
 	Get画面操作時   *Valログ画面操作時   `json:"画面操作時,omitempty"`
 }
 
-func NewEntログ(ID No, 登録日時 time.Time, 区分 Enumログ区分, 内容 string, アップロード時 *Valログアップロード時, 画面操作時 *Valログ画面操作時) (*Entログ, error) {
+func NewEntログ(登録日時 time.Time, 区分 Enumログ区分, 内容 string, アップロード時 *Valログアップロード時, 画面操作時 *Valログ画面操作時) (*Entログ, error) {
 	e := &Entログ{
-		GetID:      ID,
 		Getアップロード時: アップロード時,
 		Get内容:      内容,
 		Get区分:      区分,

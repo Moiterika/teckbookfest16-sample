@@ -4,7 +4,6 @@ package dao
 
 import (
 	"database/sql"
-	objects "techbookfest16-sample/domain/objects"
 	types "techbookfest16-sample/domain/types"
 )
 
@@ -27,8 +26,8 @@ type DaoDbManager struct {
 	dtログ画面操作時                []*Dtoログ画面操作時
 	mapIDvsDrログ画面操作時         map[Id]*Dtoログ画面操作時
 	dt単位                     []*Dto単位
-	mapIDvsDr単位              map[types.Unit]*Dto単位
-	mapコードvsDr単位             map[objects.Code単位]*Dto単位
+	mapIDvsDr単位              map[Id]*Dto単位
+	mapコードvsDr単位             map[types.Code単位]*Dto単位
 	dt受払                     []*Dto受払
 	mapIDvsDr受払              map[Id]*Dto受払
 	dt受払仕入                   []*Dto受払仕入
@@ -41,14 +40,14 @@ type DaoDbManager struct {
 	mapIDvsDr受払製造実績          map[Id]*Dto受払製造実績
 	dt品目                     []*Dto品目
 	mapIDvsDr品目              map[Id]*Dto品目
-	mapコードvsDr品目             map[objects.Code品目]*Dto品目
+	mapコードvsDr品目             map[types.Code品目]*Dto品目
 	dt品目仕入品                  []*Dto品目仕入品
 	mapIDvsDr品目仕入品           map[Id]*Dto品目仕入品
 	dt品目製造品                  []*Dto品目製造品
 	mapIDvsDr品目製造品           map[Id]*Dto品目製造品
 	dt生産用品目区分                []*Dto生産用品目区分
 	mapIDvsDr生産用品目区分         map[Id]*Dto生産用品目区分
-	mapコードvsDr生産用品目区分        map[objects.Code生産用品目区分]*Dto生産用品目区分
+	mapコードvsDr生産用品目区分        map[types.Code生産用品目区分]*Dto生産用品目区分
 }
 
 func NewDaoDbManager(db *sql.DB) *DaoDbManager {
@@ -59,7 +58,7 @@ func NewDaoDbManager(db *sql.DB) *DaoDbManager {
 		mapIDvsDrログ:        make(map[Id]*Dtoログ),
 		mapIDvsDrログアップロード時: make(map[Id]*Dtoログアップロード時),
 		mapIDvsDrログ画面操作時:   make(map[Id]*Dtoログ画面操作時),
-		mapIDvsDr単位:        make(map[types.Unit]*Dto単位),
+		mapIDvsDr単位:        make(map[Id]*Dto単位),
 		mapIDvsDr受払:        make(map[Id]*Dto受払),
 		mapIDvsDr受払仕入:      make(map[Id]*Dto受払仕入),
 		mapIDvsDr受払出荷:      make(map[Id]*Dto受払出荷),
@@ -69,9 +68,9 @@ func NewDaoDbManager(db *sql.DB) *DaoDbManager {
 		mapIDvsDr品目仕入品:     make(map[Id]*Dto品目仕入品),
 		mapIDvsDr品目製造品:     make(map[Id]*Dto品目製造品),
 		mapIDvsDr生産用品目区分:   make(map[Id]*Dto生産用品目区分),
-		mapコードvsDr単位:       make(map[objects.Code単位]*Dto単位),
-		mapコードvsDr品目:       make(map[objects.Code品目]*Dto品目),
-		mapコードvsDr生産用品目区分:  make(map[objects.Code生産用品目区分]*Dto生産用品目区分),
+		mapコードvsDr単位:       make(map[types.Code単位]*Dto単位),
+		mapコードvsDr品目:       make(map[types.Code品目]*Dto品目),
+		mapコードvsDr生産用品目区分:  make(map[types.Code生産用品目区分]*Dto生産用品目区分),
 	}
 }
 func (dm *DaoDbManager) NewDaoDbEnumログ区分() daoDbEnumログ区分 {

@@ -5,16 +5,11 @@ package objects
 import types "techbookfest16-sample/domain/types"
 
 type Ent単位 struct {
-	GetID  types.Unit `json:"ID"`
-	Getコード Code単位     `json:"コード"`
-	Get名称  string     `json:"名称"`
+	Getコード types.Code単位 `json:"コード"`
+	Get名称  string       `json:"名称"`
 }
-type Code単位 string
 
-func (c Code単位) String() string {
-	return string(c)
-}
-func NewEnt単位(コード Code単位, 名称 string) (*Ent単位, error) {
+func NewEnt単位(コード types.Code単位, 名称 string) (*Ent単位, error) {
 	e := &Ent単位{
 		Getコード: コード,
 		Get名称:  名称,

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"strconv"
 	"techbookfest16-sample/domain/objects"
-	"techbookfest16-sample/domain/types"
 
 	"net/http"
 	"os"
@@ -50,14 +49,6 @@ func (mhs myHttpServer) GetNo(r *http.Request) (objects.No, error) {
 		return 0, err
 	}
 	return objects.No(id), nil
-}
-
-func (mhs myHttpServer) GetUnit(r *http.Request) (types.Unit, error) {
-	id, err := strconv.ParseInt(r.URL.Path, 10, 16)
-	if err != nil {
-		return 0, err
-	}
-	return types.Unit(id), nil
 }
 
 func (mhs myHttpServer) GetCode(r *http.Request) string {

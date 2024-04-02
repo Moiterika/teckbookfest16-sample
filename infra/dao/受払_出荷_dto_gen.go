@@ -2,15 +2,12 @@
 
 package dao
 
-import (
-	decimal "github.com/shopspring/decimal"
-	types "techbookfest16-sample/domain/types"
-)
+import decimal "github.com/shopspring/decimal"
 
 type Dto受払出荷 struct {
 	FldNo     Id
 	Fld出荷数量   decimal.Decimal
-	Fld出荷単位ID types.Unit
+	Fld出荷単位ID Id
 
 	rowState DataRowState
 	Ub       *ub受払出荷 `json:"-"`
@@ -24,7 +21,7 @@ func (d Dto受払出荷) RowState() DataRowState {
 }
 
 // Import はDto受払出荷型に主キー以外を上書きする。
-func (d *Dto受払出荷) Import(出荷数量 decimal.Decimal, 出荷単位ID types.Unit) {
+func (d *Dto受払出荷) Import(出荷数量 decimal.Decimal, 出荷単位ID Id) {
 	// 項目がすべて一致していたら、何もしない
 	if d.Fld出荷数量 == 出荷数量 && d.Fld出荷単位ID == 出荷単位ID {
 		return

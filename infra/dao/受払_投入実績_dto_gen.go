@@ -2,15 +2,12 @@
 
 package dao
 
-import (
-	decimal "github.com/shopspring/decimal"
-	types "techbookfest16-sample/domain/types"
-)
+import decimal "github.com/shopspring/decimal"
 
 type Dto受払投入実績 struct {
 	FldNo     Id
 	Fld投入数量   decimal.Decimal
-	Fld投入単位ID types.Unit
+	Fld投入単位ID Id
 	Fld製造指図ID Id
 
 	rowState DataRowState
@@ -25,7 +22,7 @@ func (d Dto受払投入実績) RowState() DataRowState {
 }
 
 // Import はDto受払投入実績型に主キー以外を上書きする。
-func (d *Dto受払投入実績) Import(投入数量 decimal.Decimal, 投入単位ID types.Unit, 製造指図ID Id) {
+func (d *Dto受払投入実績) Import(投入数量 decimal.Decimal, 投入単位ID Id, 製造指図ID Id) {
 	// 項目がすべて一致していたら、何もしない
 	if d.Fld投入数量 == 投入数量 && d.Fld投入単位ID == 投入単位ID && d.Fld製造指図ID == 製造指図ID {
 		return

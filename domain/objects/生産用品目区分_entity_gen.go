@@ -2,18 +2,16 @@
 
 package objects
 
-type Ent生産用品目区分 struct {
-	Getコード     Code生産用品目区分 `json:"コード"`
-	Get名称      string      `json:"名称"`
-	Get何かのフラグ1 bool        `json:"何かのフラグ1"`
-	Get何かのフラグ2 bool        `json:"何かのフラグ2"`
-}
-type Code生産用品目区分 string
+import types "techbookfest16-sample/domain/types"
 
-func (c Code生産用品目区分) String() string {
-	return string(c)
+type Ent生産用品目区分 struct {
+	Getコード     types.Code生産用品目区分 `json:"コード"`
+	Get名称      string            `json:"名称"`
+	Get何かのフラグ1 bool              `json:"何かのフラグ1"`
+	Get何かのフラグ2 bool              `json:"何かのフラグ2"`
 }
-func NewEnt生産用品目区分(コード Code生産用品目区分, 名称 string, 何かのフラグ1 bool, 何かのフラグ2 bool) (*Ent生産用品目区分, error) {
+
+func NewEnt生産用品目区分(コード types.Code生産用品目区分, 名称 string, 何かのフラグ1 bool, 何かのフラグ2 bool) (*Ent生産用品目区分, error) {
 	e := &Ent生産用品目区分{
 		Getコード:     コード,
 		Get何かのフラグ1: 何かのフラグ1,

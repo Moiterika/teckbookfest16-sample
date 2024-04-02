@@ -11,16 +11,16 @@ type repManagerDb struct {
 	dm *dao.DaoDbManager
 
 	list単位     []*objects.Ent単位
-	mapIDvs単位  map[types.Unit]*objects.Ent単位
-	mapコードvs単位 map[objects.Code単位]*objects.Ent単位
+	mapIDvs単位  map[dao.Id]*objects.Ent単位
+	mapコードvs単位 map[types.Code単位]*objects.Ent単位
 
 	list生産用品目区分     []*objects.Ent生産用品目区分
 	mapIDvs生産用品目区分  map[dao.Id]*objects.Ent生産用品目区分
-	mapコードvs生産用品目区分 map[objects.Code生産用品目区分]*objects.Ent生産用品目区分
+	mapコードvs生産用品目区分 map[types.Code生産用品目区分]*objects.Ent生産用品目区分
 
 	list品目     []*objects.Ent品目
 	mapIDvs品目  map[dao.Id]*objects.Ent品目
-	mapコードvs品目 map[objects.Code品目]*objects.Ent品目
+	mapコードvs品目 map[types.Code品目]*objects.Ent品目
 
 	list受払    []*objects.Ent受払
 	mapIDvs受払 map[objects.No]*objects.Ent受払
@@ -30,14 +30,14 @@ func NewRepManagerWithDb(db *sql.DB) *repManagerDb {
 	return &repManagerDb{
 		dm:              dao.NewDaoDbManager(db),
 		list単位:          make([]*objects.Ent単位, 0),
-		mapIDvs単位:       make(map[types.Unit]*objects.Ent単位),
-		mapコードvs単位:      make(map[objects.Code単位]*objects.Ent単位),
+		mapIDvs単位:       make(map[dao.Id]*objects.Ent単位),
+		mapコードvs単位:      make(map[types.Code単位]*objects.Ent単位),
 		list生産用品目区分:     make([]*objects.Ent生産用品目区分, 0),
 		mapIDvs生産用品目区分:  make(map[dao.Id]*objects.Ent生産用品目区分),
-		mapコードvs生産用品目区分: make(map[objects.Code生産用品目区分]*objects.Ent生産用品目区分),
+		mapコードvs生産用品目区分: make(map[types.Code生産用品目区分]*objects.Ent生産用品目区分),
 		list品目:          make([]*objects.Ent品目, 0),
 		mapIDvs品目:       make(map[dao.Id]*objects.Ent品目),
-		mapコードvs品目:      make(map[objects.Code品目]*objects.Ent品目),
+		mapコードvs品目:      make(map[types.Code品目]*objects.Ent品目),
 		list受払:          make([]*objects.Ent受払, 0),
 		mapIDvs受払:       make(map[objects.No]*objects.Ent受払),
 	}

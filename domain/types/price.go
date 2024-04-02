@@ -8,10 +8,10 @@ import (
 type Price struct {
 	amt     decimal.Decimal
 	cur     CurrencyUnit
-	perUnit Unit
+	perUnit Code単位
 }
 
-func NewPrice(amt decimal.Decimal, cur CurrencyUnit, perUnit Unit) (p Price) {
+func NewPrice(amt decimal.Decimal, cur CurrencyUnit, perUnit Code単位) (p Price) {
 	p.amt = amt.Round(6)
 	p.cur = cur
 	p.perUnit = perUnit
@@ -24,6 +24,6 @@ func (p Price) Amt() decimal.Decimal {
 func (p Price) Cur() CurrencyUnit {
 	return p.cur
 }
-func (p Price) PerUnit() Unit {
+func (p Price) PerUnit() Code単位 {
 	return p.perUnit
 }

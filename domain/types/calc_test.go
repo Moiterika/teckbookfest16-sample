@@ -9,7 +9,7 @@ import (
 func TestProrate(t *testing.T) {
 	type args struct {
 		a  Amount
-		bs []ProrationBasis[Unit]
+		bs []ProrationBasis[Code単位]
 	}
 	tests := []struct {
 		name    string
@@ -25,11 +25,11 @@ func TestProrate(t *testing.T) {
 					val:  decimal.NewFromInt32(200),
 					unit: Jpy,
 				},
-				bs: []ProrationBasis[Unit]{
-					Quantity{val: decimal.NewFromInt32(40), unit: 1},
-					Quantity{val: decimal.NewFromInt32(30), unit: 1},
-					Quantity{val: decimal.NewFromInt32(20), unit: 1},
-					Quantity{val: decimal.NewFromInt32(10), unit: 1},
+				bs: []ProrationBasis[Code単位]{
+					Quantity{val: decimal.NewFromInt32(40), unit: "kg"},
+					Quantity{val: decimal.NewFromInt32(30), unit: "kg"},
+					Quantity{val: decimal.NewFromInt32(20), unit: "kg"},
+					Quantity{val: decimal.NewFromInt32(10), unit: "kg"},
 				},
 			},
 			wantAs: []Amount{
@@ -47,10 +47,10 @@ func TestProrate(t *testing.T) {
 					val:  decimal.NewFromInt32(1000),
 					unit: Jpy,
 				},
-				bs: []ProrationBasis[Unit]{
-					Quantity{val: decimal.NewFromInt32(100), unit: 1},
-					Quantity{val: decimal.NewFromInt32(100), unit: 1},
-					Quantity{val: decimal.NewFromInt32(100), unit: 1},
+				bs: []ProrationBasis[Code単位]{
+					Quantity{val: decimal.NewFromInt32(100), unit: "kg"},
+					Quantity{val: decimal.NewFromInt32(100), unit: "kg"},
+					Quantity{val: decimal.NewFromInt32(100), unit: "kg"},
 				},
 			},
 			wantAs: []Amount{
@@ -67,8 +67,8 @@ func TestProrate(t *testing.T) {
 					val:  decimal.NewFromInt32(1000),
 					unit: Jpy,
 				},
-				bs: []ProrationBasis[Unit]{
-					Quantity{val: decimal.NewFromInt32(25), unit: 1},
+				bs: []ProrationBasis[Code単位]{
+					Quantity{val: decimal.NewFromInt32(25), unit: "kg"},
 				},
 			},
 			wantAs: []Amount{
@@ -83,7 +83,7 @@ func TestProrate(t *testing.T) {
 					val:  decimal.NewFromInt32(1000),
 					unit: Jpy,
 				},
-				bs: make([]ProrationBasis[Unit], 0),
+				bs: make([]ProrationBasis[Code単位], 0),
 			},
 			wantErr: true,
 		},
@@ -105,10 +105,10 @@ func TestProrate(t *testing.T) {
 					val:  decimal.NewFromInt32(1000),
 					unit: Jpy,
 				},
-				bs: []ProrationBasis[Unit]{
-					Quantity{val: decimal.NewFromInt32(100), unit: 1},
-					Quantity{val: decimal.NewFromInt32(100), unit: 2},
-					Quantity{val: decimal.NewFromInt32(100), unit: 3},
+				bs: []ProrationBasis[Code単位]{
+					Quantity{val: decimal.NewFromInt32(100), unit: "kg"},
+					Quantity{val: decimal.NewFromInt32(100), unit: "CS"},
+					Quantity{val: decimal.NewFromInt32(100), unit: "L"},
 				},
 			},
 			wantErr: true,
@@ -120,10 +120,10 @@ func TestProrate(t *testing.T) {
 					val:  decimal.NewFromInt32(1000),
 					unit: Jpy,
 				},
-				bs: []ProrationBasis[Unit]{
-					Quantity{val: decimal.NewFromInt32(0), unit: 1},
-					Quantity{val: decimal.NewFromInt32(100), unit: 1},
-					Quantity{val: decimal.NewFromInt32(-100), unit: 1},
+				bs: []ProrationBasis[Code単位]{
+					Quantity{val: decimal.NewFromInt32(0), unit: "kg"},
+					Quantity{val: decimal.NewFromInt32(100), unit: "kg"},
+					Quantity{val: decimal.NewFromInt32(-100), unit: "kg"},
 				},
 			},
 			wantErr: true,

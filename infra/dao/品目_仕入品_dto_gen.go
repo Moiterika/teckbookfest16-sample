@@ -12,7 +12,7 @@ type Dto品目仕入品 struct {
 	FldID       Id                 `json:"ID"`
 	Fld標準単価     decimal.Decimal    `json:"標準単価"`
 	Fld標準単価通貨ID types.CurrencyUnit `json:"標準単価通貨ID"`
-	Fld標準単価単位ID types.Unit         `json:"標準単価単位ID"`
+	Fld標準単価単位ID Id                 `json:"標準単価単位ID"`
 
 	rowState DataRowState
 	Ub       *ub品目仕入品 `json:"-"`
@@ -26,7 +26,7 @@ func (d Dto品目仕入品) RowState() DataRowState {
 }
 
 // Import はDto品目仕入品型に主キー以外を上書きする。
-func (d *Dto品目仕入品) Import(標準単価 decimal.Decimal, 標準単価通貨ID types.CurrencyUnit, 標準単価単位ID types.Unit) {
+func (d *Dto品目仕入品) Import(標準単価 decimal.Decimal, 標準単価通貨ID types.CurrencyUnit, 標準単価単位ID Id) {
 	// 項目がすべて一致していたら、何もしない
 	if d.Fld標準単価 == 標準単価 && d.Fld標準単価通貨ID == 標準単価通貨ID && d.Fld標準単価単位ID == 標準単価単位ID {
 		return

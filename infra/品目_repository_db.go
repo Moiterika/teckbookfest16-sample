@@ -25,7 +25,7 @@ func (r *repDb品目) init() (err error) {
 		dr, _ := r.rm.dm.NewDaoDb品目().GetByCode(e.Getコード)
 		return dr.FldID
 	})
-	r.rm.mapコードvs品目 = a.ToMap(r.rm.list品目, func(e *objects.Ent品目) objects.Code品目 {
+	r.rm.mapコードvs品目 = a.ToMap(r.rm.list品目, func(e *objects.Ent品目) types.Code品目 {
 		return e.Getコード
 	})
 	return
@@ -46,7 +46,7 @@ func (r *repDb品目) list() (list []*objects.Ent品目, err error) {
 
 	list = make([]*objects.Ent品目, len(dt品目))
 	for i, dr := range dt品目 {
-		基準単位, err基準単位 := rep単位.Get(dr.Fld基準単位ID)
+		基準単位, err基準単位 := rep単位.getBy(dr.Fld基準単位ID)
 		if err基準単位 != nil {
 			err = xerrors.Errorf(" :%w", err基準単位)
 			return
@@ -63,13 +63,13 @@ func (r *repDb品目) list() (list []*objects.Ent品目, err error) {
 		}
 		var 仕入品 *objects.Val品目仕入品
 		if dr仕入品 != nil {
-			仕入品標準単価単位, err仕入品標準単価単位 := rep単位.Get(dr仕入品.Fld標準単価単位ID)
+			仕入品標準単価単位, err仕入品標準単価単位 := rep単位.getBy(dr仕入品.Fld標準単価単位ID)
 			if err仕入品標準単価単位 != nil {
 				err = xerrors.Errorf(" :%w", err仕入品標準単価単位)
 				return
 			}
 			仕入品 = &objects.Val品目仕入品{
-				Get標準単価: types.NewPrice(dr仕入品.Fld標準単価, dr仕入品.Fld標準単価通貨ID, 仕入品標準単価単位.GetID),
+				Get標準単価: types.NewPrice(dr仕入品.Fld標準単価, dr仕入品.Fld標準単価通貨ID, 仕入品標準単価単位.Getコード),
 			}
 		}
 		dr製造品, err製造品 := dao製造品.GetBy(dr.FldID)
@@ -85,7 +85,7 @@ func (r *repDb品目) list() (list []*objects.Ent品目, err error) {
 		}
 
 		e := &objects.Ent品目{
-			Getコード:     objects.Code品目(dr.Fldコード),
+			Getコード:     types.Code品目(dr.Fldコード),
 			Get名称:      dr.Fld名称,
 			Get基準単位:    基準単位,
 			Get生産用品目区分: 生産用品目区分,
@@ -125,7 +125,7 @@ func (r *repDb品目) getBy(id dao.Id) (e *objects.Ent品目, err error) {
 	return
 }
 
-func (r *repDb品目) GetBy(コード objects.Code品目) (e *objects.Ent品目, err error) {
+func (r *repDb品目) GetBy(コード types.Code品目) (e *objects.Ent品目, err error) {
 	if len(r.rm.mapIDvs品目) == 0 {
 		err = r.init()
 		if err != nil {
@@ -187,7 +187,8 @@ func (r *repDb品目) Save(アップロード履歴ID objects.No) (err error) {
 			if dr仕入品, errCode := dao仕入品.GetBy(dr品目.FldID); !errors.Is(errCode, dao.NotFoundError) {
 				// すでにあるdr仕入品を更新 or 削除
 				if e.Get仕入品 != nil {
-					dr仕入品.Import(e.Get仕入品.Get標準単価.Amt(), e.Get仕入品.Get標準単価.Cur(), e.Get仕入品.Get標準単価.PerUnit())
+					dr仕入品単位, _ := dao単位.GetByCode(e.Get仕入品.Get標準単価.PerUnit())
+					dr仕入品.Import(e.Get仕入品.Get標準単価.Amt(), e.Get仕入品.Get標準単価.Cur(), dr仕入品単位.FldID)
 					_, err = dao仕入品.UpdateBy(dr仕入品)
 					if err != nil {
 						err = xerrors.Errorf(": %w", err)
@@ -205,11 +206,12 @@ func (r *repDb品目) Save(アップロード履歴ID objects.No) (err error) {
 			} else {
 				// dr仕入品を追加
 				if e.Get仕入品 != nil {
+					dr仕入品単位, _ := dao単位.GetByCode(e.Get仕入品.Get標準単価.PerUnit())
 					dr仕入品 := &dao.Dto品目仕入品{
 						FldID:       dr品目.FldID,
 						Fld標準単価:     e.Get仕入品.Get標準単価.Amt(),
 						Fld標準単価通貨ID: e.Get仕入品.Get標準単価.Cur(),
-						Fld標準単価単位ID: e.Get仕入品.Get標準単価.PerUnit(),
+						Fld標準単価単位ID: dr仕入品単位.FldID,
 						Ub:          dao.NewUb品目仕入品(),
 					}
 					err = dao仕入品.Insert(dr仕入品)
@@ -275,11 +277,12 @@ func (r *repDb品目) Save(アップロード履歴ID objects.No) (err error) {
 
 			// 仕入品を追加
 			if e.Get仕入品 != nil {
+				dr仕入品単位, _ := dao単位.GetByCode(e.Get仕入品.Get標準単価.PerUnit())
 				dr仕入品 := &dao.Dto品目仕入品{
 					FldID:       dr品目.FldID,
 					Fld標準単価:     e.Get仕入品.Get標準単価.Amt(),
 					Fld標準単価通貨ID: e.Get仕入品.Get標準単価.Cur(),
-					Fld標準単価単位ID: e.Get仕入品.Get標準単価.PerUnit(),
+					Fld標準単価単位ID: dr仕入品単位.FldID,
 					Ub:          dao.NewUb品目仕入品(),
 				}
 				err = dao仕入品.Insert(dr仕入品)

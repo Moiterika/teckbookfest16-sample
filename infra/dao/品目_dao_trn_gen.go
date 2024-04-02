@@ -9,7 +9,7 @@ import (
 	xerrors "golang.org/x/xerrors"
 	"strconv"
 	"strings"
-	objects "techbookfest16-sample/domain/objects"
+	types "techbookfest16-sample/domain/types"
 )
 
 type daoTrn品目 struct {
@@ -26,7 +26,7 @@ func (d *daoTrn品目) init() (err error) {
 	d.dm.mapIDvsDr品目 = a.ToMap(d.dm.dt品目, func(e *Dto品目) Id {
 		return e.FldID
 	})
-	d.dm.mapコードvsDr品目 = a.ToMap(d.dm.dt品目, func(e *Dto品目) objects.Code品目 {
+	d.dm.mapコードvsDr品目 = a.ToMap(d.dm.dt品目, func(e *Dto品目) types.Code品目 {
 		return e.Fldコード
 	})
 	return
@@ -43,7 +43,7 @@ func (d *daoTrn品目) Reset() {
 		}
 	}
 	d.dm.dt品目 = list
-	d.dm.mapコードvsDr品目 = a.ToMap(d.dm.dt品目, func(e *Dto品目) objects.Code品目 {
+	d.dm.mapコードvsDr品目 = a.ToMap(d.dm.dt品目, func(e *Dto品目) types.Code品目 {
 		return e.Fldコード
 	})
 }
@@ -73,7 +73,7 @@ func (d daoTrn品目) GetBy(id Id) (dr *Dto品目, err error) {
 	}
 	return
 }
-func (d daoTrn品目) GetByCode(コード objects.Code品目) (dr *Dto品目, err error) {
+func (d daoTrn品目) GetByCode(コード types.Code品目) (dr *Dto品目, err error) {
 	if len(d.dm.mapコードvsDr品目) == 0 {
 		err = d.init()
 		if err != nil {

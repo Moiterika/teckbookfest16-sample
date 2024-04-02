@@ -3,6 +3,7 @@ package infra
 import (
 	"errors"
 	"techbookfest16-sample/domain/objects"
+	"techbookfest16-sample/domain/types"
 	"techbookfest16-sample/infra/dao"
 
 	"github.com/Moiterika/a"
@@ -24,7 +25,7 @@ func (r *repTrn生産用品目区分) init() (err error) {
 		dr, _ := r.rm.dm.NewDaoTrn生産用品目区分().GetByCode(e.Getコード)
 		return dr.FldID
 	})
-	r.rm.mapコードvs生産用品目区分 = a.ToMap(r.rm.list生産用品目区分, func(e *objects.Ent生産用品目区分) objects.Code生産用品目区分 {
+	r.rm.mapコードvs生産用品目区分 = a.ToMap(r.rm.list生産用品目区分, func(e *objects.Ent生産用品目区分) types.Code生産用品目区分 {
 		return e.Getコード
 	})
 	return
@@ -39,7 +40,7 @@ func (r *repTrn生産用品目区分) list() (list []*objects.Ent生産用品目
 	list = make([]*objects.Ent生産用品目区分, len(dt生産用品目区分))
 	for i, dr := range dt生産用品目区分 {
 		e := &objects.Ent生産用品目区分{
-			Getコード:     objects.Code生産用品目区分(dr.Fldコード),
+			Getコード:     types.Code生産用品目区分(dr.Fldコード),
 			Get名称:      dr.Fld名称,
 			Get何かのフラグ1: dr.Fld何かのフラグ1,
 			Get何かのフラグ2: dr.Fld何かのフラグ2,
@@ -77,7 +78,7 @@ func (r *repTrn生産用品目区分) getBy(id dao.Id) (e *objects.Ent生産用�
 	return
 }
 
-func (r *repTrn生産用品目区分) GetBy(コード objects.Code生産用品目区分) (e *objects.Ent生産用品目区分, err error) {
+func (r *repTrn生産用品目区分) GetBy(コード types.Code生産用品目区分) (e *objects.Ent生産用品目区分, err error) {
 	if len(r.rm.mapIDvs生産用品目区分) == 0 {
 		err = r.init()
 		if err != nil {

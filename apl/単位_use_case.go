@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"strconv"
 	"techbookfest16-sample/domain"
 	"techbookfest16-sample/domain/objects"
+	"techbookfest16-sample/domain/types"
 	"techbookfest16-sample/infra"
 )
 
@@ -32,64 +32,26 @@ func (mhs *myHttpServer) UseCase単位(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// クエリパラメータis_idをtrue/false判定
-		var isID bool
-		qIsID := r.URL.Query().Get("is_id")
-		if qIsID != "" {
-			v, err := strconv.ParseBool(qIsID)
-			if err != nil {
-				http.Error(w, "is_idはboolean型にしてください。", http.StatusBadRequest)
+		// 単位コードで1件取得して返却
+		単位コード := mhs.GetCode(r)
+		e, err := rm.NewRep単位().GetBy(types.Code単位(単位コード))
+		if err != nil {
+			if errors.Is(err, objects.ErrNotFound) {
+				http.Error(w, err.Error(), http.StatusNotFound)
 				return
-			}
-			isID = v
-		}
-
-		if isID {
-			// 単位IDで1件取得して返却
-			単位id, err := mhs.GetUnit(r)
-			if err != nil {
+			} else {
 				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}
-			e, err := rm.NewRep単位().Get(単位id)
-			if err != nil {
-				if errors.Is(err, objects.ErrNotFound) {
-					http.Error(w, err.Error(), http.StatusNotFound)
-					return
-				} else {
-					http.Error(w, err.Error(), http.StatusBadRequest)
-					return
-				}
-			}
-			jsonb, err := json.Marshal(e)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-			w.Write(jsonb)
-			return
-		} else {
-			// 単位コードで1件取得して返却
-			単位コード := mhs.GetCode(r)
-			e, err := rm.NewRep単位().GetBy(objects.Code単位(単位コード))
-			if err != nil {
-				if errors.Is(err, objects.ErrNotFound) {
-					http.Error(w, err.Error(), http.StatusNotFound)
-					return
-				} else {
-					http.Error(w, err.Error(), http.StatusBadRequest)
-					return
-				}
-			}
-			jsonb, err := json.Marshal(e)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-			w.Write(jsonb)
+		}
+		jsonb, err := json.Marshal(e)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-	} else if r.Method == http.MethodPost {
+		w.Write(jsonb)
+		return
+	} else if r.Method == http.MethodPatch {
 		trn, err := mhs.defaultDb.Begin()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

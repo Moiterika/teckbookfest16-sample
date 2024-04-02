@@ -5,7 +5,6 @@ package dao
 import (
 	"fmt"
 	pq "github.com/lib/pq"
-	types "techbookfest16-sample/domain/types"
 )
 
 type Wb単位 interface {
@@ -20,7 +19,7 @@ type wb単位 struct {
 func NewWb単位() Wb単位 {
 	return &wb単位{config: make([]whereBuilderExp, 0)}
 }
-func newWb単位WithPrimaryKeys(ID types.Unit) Wb単位 {
+func newWb単位WithPrimaryKeys(ID Id) Wb単位 {
 	wb := &wb単位{config: make([]whereBuilderExp, 0)}
 	wb.And(Tbl単位().FldID(), OpEqu, ID)
 

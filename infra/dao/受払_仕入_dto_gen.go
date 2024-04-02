@@ -10,7 +10,7 @@ import (
 type Dto受払仕入 struct {
 	FldNo     Id
 	Fld仕入数量   decimal.Decimal
-	Fld仕入単位ID types.Unit
+	Fld仕入単位ID Id
 	Fld仕入金額   decimal.Decimal
 	Fld仕入通貨ID types.CurrencyUnit
 	Fld仕入単価   decimal.Decimal
@@ -27,7 +27,7 @@ func (d Dto受払仕入) RowState() DataRowState {
 }
 
 // Import はDto受払仕入型に主キー以外を上書きする。
-func (d *Dto受払仕入) Import(仕入数量 decimal.Decimal, 仕入単位ID types.Unit, 仕入金額 decimal.Decimal, 仕入通貨ID types.CurrencyUnit, 仕入単価 decimal.Decimal) {
+func (d *Dto受払仕入) Import(仕入数量 decimal.Decimal, 仕入単位ID Id, 仕入金額 decimal.Decimal, 仕入通貨ID types.CurrencyUnit, 仕入単価 decimal.Decimal) {
 	// 項目がすべて一致していたら、何もしない
 	if d.Fld仕入数量 == 仕入数量 && d.Fld仕入単位ID == 仕入単位ID && d.Fld仕入金額 == 仕入金額 && d.Fld仕入通貨ID == 仕入通貨ID && d.Fld仕入単価 == 仕入単価 {
 		return

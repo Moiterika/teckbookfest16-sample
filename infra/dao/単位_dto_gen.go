@@ -4,14 +4,13 @@ package dao
 
 import (
 	"encoding/json"
-	objects "techbookfest16-sample/domain/objects"
 	types "techbookfest16-sample/domain/types"
 )
 
 type Dto単位 struct {
-	FldID  types.Unit     `json:"ID"`
-	Fldコード objects.Code単位 `json:"コード"`
-	Fld名称  string         `json:"名称"`
+	FldID  Id           `json:"ID"`
+	Fldコード types.Code単位 `json:"コード"`
+	Fld名称  string       `json:"名称"`
 
 	rowState DataRowState
 	Ub       *ub単位 `json:"-"`
@@ -25,7 +24,7 @@ func (d Dto単位) RowState() DataRowState {
 }
 
 // Import はDto単位型に主キー以外を上書きする。
-func (d *Dto単位) Import(コード objects.Code単位, 名称 string) {
+func (d *Dto単位) Import(コード types.Code単位, 名称 string) {
 	// 項目がすべて一致していたら、何もしない
 	if d.Fldコード == コード && d.Fld名称 == 名称 {
 		return
@@ -43,7 +42,7 @@ func (d *Dto単位) Import(コード objects.Code単位, 名称 string) {
 
 // jsonKey単位 はロギング用jsonのキー。主キー項目
 type jsonKey単位 struct {
-	FldID types.Unit `json:"ID"`
+	FldID Id `json:"ID"`
 }
 
 // jsonKey はロギング用jsonのキーを生成するメソッド。
