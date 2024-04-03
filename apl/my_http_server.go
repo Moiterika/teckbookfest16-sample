@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strconv"
-	"techbookfest16-sample/domain/objects"
+	"techbookfest16-sample/domain/types"
 
 	"net/http"
 	"os"
@@ -43,12 +43,12 @@ func (mhs *myHttpServer) EntryUsecase(pattern string, handler func(http.Response
 	mhs.mux.HandleFunc(pattern, handler)
 }
 
-func (mhs myHttpServer) GetNo(r *http.Request) (objects.No, error) {
+func (mhs myHttpServer) GetNo(r *http.Request) (types.No, error) {
 	id, err := strconv.ParseInt(r.URL.Path, 10, 64)
 	if err != nil {
 		return 0, err
 	}
-	return objects.No(id), nil
+	return types.No(id), nil
 }
 
 func (mhs myHttpServer) GetCode(r *http.Request) string {

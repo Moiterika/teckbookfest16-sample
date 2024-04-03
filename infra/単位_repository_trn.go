@@ -106,7 +106,7 @@ func (r *repTrn単位) AddNew(e *objects.Ent単位) error {
 }
 
 // TODO リソースの一括アップロードやイベント系で1行ずつロギングしない場合はMultiInsertを使う
-func (r *repTrn単位) Save(アップロード履歴ID objects.No) (err error) {
+func (r *repTrn単位) Save(アップロード履歴ID types.No) (err error) {
 	dao単位 := r.rm.dm.NewDaoTrn単位()
 	defer dao単位.Reset()
 	logger := newCmdTrnリソース変更履歴(r.rm.dm)

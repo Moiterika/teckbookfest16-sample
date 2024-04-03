@@ -2,10 +2,13 @@
 
 package objects
 
-import "time"
+import (
+	types "techbookfest16-sample/domain/types"
+	"time"
+)
 
 type Entリソース変更履歴 struct {
-	GetID      No                  `json:"ID"`
+	GetID      types.No            `json:"ID"`
 	Get登録日時    time.Time           `json:"登録日時"`
 	Getリソース名   string              `json:"リソース名"`
 	Get変更区分    string              `json:"変更区分"`

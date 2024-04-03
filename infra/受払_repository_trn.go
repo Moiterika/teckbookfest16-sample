@@ -21,7 +21,7 @@ func (r *repTrn受払) init() (err error) {
 		xerrors.Errorf(" :%w", err)
 		return
 	}
-	r.rm.mapIDvs受払 = a.ToMap(r.rm.list受払, func(e *objects.Ent受払) objects.No {
+	r.rm.mapIDvs受払 = a.ToMap(r.rm.list受払, func(e *objects.Ent受払) types.No {
 		return e.GetNo
 	})
 
@@ -67,7 +67,7 @@ func (r *repTrn受払) list() (list []*objects.Ent受払, err error) {
 		}
 		dr単位, _ := dao単位.GetBy(dr.Fld基準単位ID)
 		e := &objects.Ent受払{
-			GetNo:    objects.No(dr.FldNo),
+			GetNo:    types.No(dr.FldNo),
 			Get登録日時:  dr.Fld登録日時,
 			Get計上月:   dr.Fld計上月,
 			Get受払区分:  dr.Fld受払区分,
@@ -96,7 +96,7 @@ func (r *repTrn受払) List() ([]*objects.Ent受払, error) {
 	return r.rm.list受払, nil
 }
 
-func (r *repTrn受払) GetBy(no objects.No) (e *objects.Ent受払, err error) {
+func (r *repTrn受払) GetBy(no types.No) (e *objects.Ent受払, err error) {
 	if len(r.rm.mapIDvs受払) == 0 {
 		err = r.init()
 		if err != nil {
@@ -120,7 +120,7 @@ func (r *repTrn受払) AddNew(e *objects.Ent受払) error {
 }
 
 // TODO リソースの一括アップロードやイベント系で1行ずつロギングしない場合はMultiInsertを使う
-func (r *repTrn受払) Save(アップロード履歴ID objects.No) (err error) {
+func (r *repTrn受払) Save(アップロード履歴ID types.No) (err error) {
 	dao受払 := r.rm.dm.NewDaoTrn受払()
 	dao仕入 := r.rm.dm.NewDaoTrn受払仕入()
 	defer dao受払.Reset()
@@ -162,7 +162,7 @@ func (r *repTrn受払) Save(アップロード履歴ID objects.No) (err error) {
 				err = xerrors.Errorf(": %w", err)
 				return
 			}
-			e.GetNo = objects.No(dr.FldNo)
+			e.GetNo = types.No(dr.FldNo)
 
 			if e.Get仕入 != nil {
 				dr仕入単位, _ := dao単位.GetByCode(e.Get仕入.Get仕入数量.Unit())

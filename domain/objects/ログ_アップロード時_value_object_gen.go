@@ -2,11 +2,13 @@
 
 package objects
 
+import types "techbookfest16-sample/domain/types"
+
 type Valログアップロード時 struct {
-	Getアップロード履歴ID No `json:"アップロード履歴ID"`
+	Getアップロード履歴ID types.No `json:"アップロード履歴ID"`
 }
 
-func NewValログアップロード時(アップロード履歴ID No) (*Valログアップロード時, error) {
+func NewValログアップロード時(アップロード履歴ID types.No) (*Valログアップロード時, error) {
 	v := &Valログアップロード時{Getアップロード履歴ID: アップロード履歴ID}
 	err := v.Validate()
 	return v, err

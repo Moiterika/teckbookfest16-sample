@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"techbookfest16-sample/domain/objects"
+	"techbookfest16-sample/domain/types"
 
 	"golang.org/x/xerrors"
 )
@@ -19,7 +20,7 @@ func NewSrv単位登録(rm objects.RepManager) *Srv単位登録 {
 }
 
 // Exec登録 は単位を新規登録または上書きします。
-func (s *Srv単位登録) Exec登録(アップロード履歴 objects.No, e *objects.Ent単位) (err error) {
+func (s *Srv単位登録) Exec登録(アップロード履歴 types.No, e *objects.Ent単位) (err error) {
 	err = e.Validate()
 	if err != nil {
 		err = fmt.Errorf("validate error: %w, %w", err, objects.ErrArg)

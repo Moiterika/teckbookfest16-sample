@@ -2,11 +2,13 @@
 
 package objects
 
+import types "techbookfest16-sample/domain/types"
+
 type Valログ画面操作時 struct {
-	Get操作ユーザーID No `json:"操作ユーザーID"`
+	Get操作ユーザーID types.No `json:"操作ユーザーID"`
 }
 
-func NewValログ画面操作時(操作ユーザーID No) (*Valログ画面操作時, error) {
+func NewValログ画面操作時(操作ユーザーID types.No) (*Valログ画面操作時, error) {
 	v := &Valログ画面操作時{Get操作ユーザーID: 操作ユーザーID}
 	err := v.Validate()
 	return v, err

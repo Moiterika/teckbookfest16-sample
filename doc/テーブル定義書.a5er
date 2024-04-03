@@ -15,8 +15,8 @@ Domain=ID=bigserial
 DomainInfo="ID","bigserial","",""
 Domain=code=text
 DomainInfo="code","text","",""
-Domain=No=integer
-DomainInfo="No","integer","",""
+Domain=連番=integer
+DomainInfo="連番","integer","",""
 Domain=version=bigint
 DomainInfo="version","bigint","",""
 Domain=外部ID=bigint
@@ -457,7 +457,7 @@ EffectMode=None
 Tag=EVENT
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20240322162035
+ModifiedDateTime=20240403092724
 Position="MAIN",1500,350
 ZOrder=37
 

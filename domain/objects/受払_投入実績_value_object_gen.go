@@ -6,10 +6,10 @@ import types "techbookfest16-sample/domain/types"
 
 type Val受払投入実績 struct {
 	Get投入数量   types.Quantity `json:"投入数量"`
-	Get製造指図ID No             `json:"製造指図ID"`
+	Get製造指図ID types.No       `json:"製造指図ID"`
 }
 
-func NewVal受払投入実績(投入数量 types.Quantity, 製造指図ID No) (*Val受払投入実績, error) {
+func NewVal受払投入実績(投入数量 types.Quantity, 製造指図ID types.No) (*Val受払投入実績, error) {
 	v := &Val受払投入実績{
 		Get投入数量:   投入数量,
 		Get製造指図ID: 製造指図ID,

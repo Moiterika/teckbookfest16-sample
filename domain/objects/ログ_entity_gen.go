@@ -2,10 +2,13 @@
 
 package objects
 
-import "time"
+import (
+	types "techbookfest16-sample/domain/types"
+	"time"
+)
 
 type Entログ struct {
-	GetID      No            `json:"ID"`
+	GetID      types.No      `json:"ID"`
 	Get登録日時    time.Time     `json:"登録日時"`
 	Get区分      Enumログ区分      `json:"区分"`
 	Get内容      string        `json:"内容"`

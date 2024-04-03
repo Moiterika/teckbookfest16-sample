@@ -8,7 +8,7 @@ import (
 )
 
 type Ent受払 struct {
-	GetNo    No              `json:"No"`
+	GetNo    types.No        `json:"No"`
 	Get登録日時  time.Time       `json:"登録日時"`
 	Get計上月   time.Time       `json:"計上月"`
 	Get受払区分  Enum受払区分        `json:"受払区分"`
@@ -21,7 +21,7 @@ type Ent受払 struct {
 	Get製造実績  *Val受払製造実績      `json:"製造実績,omitempty"`
 }
 
-func NewEnt受払(No No, 登録日時 time.Time, 計上月 time.Time, 受払区分 Enum受払区分, 赤伝フラグ bool, 品目 *Ent品目, 基準数量 types.Inventory, 仕入 *Val受払仕入, 出荷 *Val受払出荷, 投入実績 *Val受払投入実績, 製造実績 *Val受払製造実績) (*Ent受払, error) {
+func NewEnt受払(No types.No, 登録日時 time.Time, 計上月 time.Time, 受払区分 Enum受払区分, 赤伝フラグ bool, 品目 *Ent品目, 基準数量 types.Inventory, 仕入 *Val受払仕入, 出荷 *Val受払出荷, 投入実績 *Val受払投入実績, 製造実績 *Val受払製造実績) (*Ent受払, error) {
 	e := &Ent受払{
 		GetNo:    No,
 		Get仕入:    仕入,

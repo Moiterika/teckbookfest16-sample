@@ -2,7 +2,7 @@ package infra
 
 import (
 	"log"
-	"techbookfest16-sample/domain/objects"
+	"techbookfest16-sample/domain/types"
 	"techbookfest16-sample/infra/dao"
 	"time"
 )
@@ -17,7 +17,7 @@ func newCmdDbリソース変更履歴(dm *dao.DaoDbManager) *cmdDbリソース�
 	}
 }
 
-func (c *cmdDbリソース変更履歴) Write(dr ResourceDataRow, アップロード履歴ID objects.No) {
+func (c *cmdDbリソース変更履歴) Write(dr ResourceDataRow, アップロード履歴ID types.No) {
 	// TODO DBのバージョン情報も記録しておくか
 	// daoMig := c.dm.NewDaoTrngorpmigrations()
 	// daoMig.WbForInit.And(dao.Tblgorpmigrations().Fldapplied_at(), dao.OpIsNotNull, nil)

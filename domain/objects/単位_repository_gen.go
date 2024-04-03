@@ -8,5 +8,5 @@ type Rep単位 interface {
 	List() ([]*Ent単位, error)
 	GetBy(types.Code単位) (*Ent単位, error)
 	AddNew(*Ent単位) error
-	Save(No) error
+	Save(types.No) error
 }

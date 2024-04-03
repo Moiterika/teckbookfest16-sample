@@ -8,5 +8,5 @@ type Rep品目 interface {
 	List() ([]*Ent品目, error)
 	GetBy(types.Code品目) (*Ent品目, error)
 	AddNew(*Ent品目) error
-	Save(No) error
+	Save(types.No) error
 }

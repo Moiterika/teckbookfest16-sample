@@ -154,7 +154,7 @@ func (r *repDb品目) AddNew(e *objects.Ent品目) error {
 }
 
 // TODO リソースの一括アップロードやイベント系で1行ずつロギングしない場合はMultiInsertを使う
-func (r *repDb品目) Save(アップロード履歴ID objects.No) (err error) {
+func (r *repDb品目) Save(アップロード履歴ID types.No) (err error) {
 	dao品目 := r.rm.dm.NewDaoDb品目()
 	dao仕入品 := r.rm.dm.NewDaoDb品目仕入品()
 	dao製造品 := r.rm.dm.NewDaoDb品目製造品()

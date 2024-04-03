@@ -107,7 +107,7 @@ func (r *repTrn生産用品目区分) AddNew(e *objects.Ent生産用品目区分
 }
 
 // TODO リソースの一括アップロードやイベント系で1行ずつロギングしない場合はMultiInsertを使う
-func (r *repTrn生産用品目区分) Save(アップロード履歴ID objects.No) (err error) {
+func (r *repTrn生産用品目区分) Save(アップロード履歴ID types.No) (err error) {
 	dao生産用品目区分 := r.rm.dm.NewDaoTrn生産用品目区分()
 	defer dao生産用品目区分.Reset()
 	logger := newCmdTrnリソース変更履歴(r.rm.dm)
