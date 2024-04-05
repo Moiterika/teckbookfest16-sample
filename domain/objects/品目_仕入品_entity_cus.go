@@ -1,6 +1,6 @@
 package objects
 
-func (v *Valログ画面操作時) Validate() error {
+func (e *Ent品目仕入品) Validate() error {
 	// please, write validation logic here
 	return nil
 }

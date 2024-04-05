@@ -19,9 +19,9 @@ type wbリソース変更履歴 struct {
 func NewWbリソース変更履歴() Wbリソース変更履歴 {
 	return &wbリソース変更履歴{config: make([]whereBuilderExp, 0)}
 }
-func newWbリソース変更履歴WithPrimaryKeys(ID Id) Wbリソース変更履歴 {
+func newWbリソース変更履歴WithPrimaryKeys(No Id) Wbリソース変更履歴 {
 	wb := &wbリソース変更履歴{config: make([]whereBuilderExp, 0)}
-	wb.And(Tblリソース変更履歴().FldID(), OpEqu, ID)
+	wb.And(Tblリソース変更履歴().FldNo(), OpEqu, No)
 
 	return wb
 }

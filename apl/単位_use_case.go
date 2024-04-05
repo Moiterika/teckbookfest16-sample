@@ -14,7 +14,14 @@ import (
 func (mhs *myHttpServer) UseCase単位(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.Method, r.URL.Path, r.URL.RawPath)
 	if r.Method == http.MethodGet {
-		rm := infra.NewRepManagerWithDb(mhs.defaultDb)
+		// TODO Transactionではなく、Dbを渡して参照だけすること（毎回、トランザクション貼りたくない。1つ前のコミットではできてたので、それを参照）
+		trn, err := mhs.defaultDb.Begin()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer trn.Commit()
+		rm := infra.NewRepManagerWithTrn(trn)
 
 		// 全件返却
 		if r.URL.Path == "" {

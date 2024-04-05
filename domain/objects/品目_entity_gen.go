@@ -9,19 +9,27 @@ type Ent品目 struct {
 	Get名称      string       `json:"名称"`
 	Get基準単位    *Ent単位       `json:"基準単位,omitempty"`
 	Get生産用品目区分 *Ent生産用品目区分  `json:"生産用品目区分,omitempty"`
-	Get仕入品     *Val品目仕入品    `json:"仕入品,omitempty"`
-	Get製造品     *Val品目製造品    `json:"製造品,omitempty"`
 }
 
-func NewEnt品目(コード types.Code品目, 名称 string, 基準単位 *Ent単位, 生産用品目区分 *Ent生産用品目区分, 仕入品 *Val品目仕入品, 製造品 *Val品目製造品) (*Ent品目, error) {
+func NewEnt品目(コード types.Code品目, 名称 string, 基準単位 *Ent単位, 生産用品目区分 *Ent生産用品目区分) (*Ent品目, error) {
 	e := &Ent品目{
 		Getコード:     コード,
-		Get仕入品:     仕入品,
 		Get名称:      名称,
 		Get基準単位:    基準単位,
 		Get生産用品目区分: 生産用品目区分,
-		Get製造品:     製造品,
 	}
 	err := e.Validate()
 	return e, err
+}
+func (e *Ent品目) Id() types.Code品目 {
+	return e.Getコード
+}
+func (e *Ent品目) Equals(other types.Identifier[types.Code品目]) bool {
+	if other == nil {
+		return false
+	}
+	if other.Equals(e) {
+		return true
+	}
+	return false
 }

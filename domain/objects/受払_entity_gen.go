@@ -15,26 +15,30 @@ type Ent受払 struct {
 	Get赤伝フラグ bool            `json:"赤伝フラグ"`
 	Get品目    *Ent品目          `json:"品目,omitempty"`
 	Get基準数量  types.Inventory `json:"基準数量"`
-	Get仕入    *Val受払仕入        `json:"仕入,omitempty"`
-	Get出荷    *Val受払出荷        `json:"出荷,omitempty"`
-	Get投入実績  *Val受払投入実績      `json:"投入実績,omitempty"`
-	Get製造実績  *Val受払製造実績      `json:"製造実績,omitempty"`
 }
 
-func NewEnt受払(No types.No, 登録日時 time.Time, 計上月 time.Time, 受払区分 Enum受払区分, 赤伝フラグ bool, 品目 *Ent品目, 基準数量 types.Inventory, 仕入 *Val受払仕入, 出荷 *Val受払出荷, 投入実績 *Val受払投入実績, 製造実績 *Val受払製造実績) (*Ent受払, error) {
+func NewEnt受払(No types.No, 登録日時 time.Time, 計上月 time.Time, 受払区分 Enum受払区分, 赤伝フラグ bool, 品目 *Ent品目, 基準数量 types.Inventory) (*Ent受払, error) {
 	e := &Ent受払{
 		GetNo:    No,
-		Get仕入:    仕入,
-		Get出荷:    出荷,
 		Get受払区分:  受払区分,
 		Get品目:    品目,
 		Get基準数量:  基準数量,
-		Get投入実績:  投入実績,
 		Get登録日時:  登録日時,
-		Get製造実績:  製造実績,
 		Get計上月:   計上月,
 		Get赤伝フラグ: 赤伝フラグ,
 	}
 	err := e.Validate()
 	return e, err
+}
+func (e *Ent受払) Id() types.No {
+	return e.GetNo
+}
+func (e *Ent受払) Equals(other types.Identifier[types.No]) bool {
+	if other == nil {
+		return false
+	}
+	if other.Equals(e) {
+		return true
+	}
+	return false
 }

@@ -8,7 +8,7 @@ import (
 )
 
 type Dtoログ struct {
-	FldID   Id
+	FldNo   Id
 	Fld登録日時 time.Time
 	Fld区分   objects.Enumログ区分
 	Fld内容   string

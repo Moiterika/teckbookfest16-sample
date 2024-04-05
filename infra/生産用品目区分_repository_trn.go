@@ -98,7 +98,7 @@ func (r *repTrn生産用品目区分) GetBy(コード types.Code生産用品目�
 func (r *repTrn生産用品目区分) AddNew(e *objects.Ent生産用品目区分) error {
 	// エンティティの責務ではなく、コレクション重複チェックはリポジトリーの責務とする
 	if _, err := r.GetBy(e.Getコード); !errors.Is(err, objects.ErrNotFound) {
-		return xerrors.Errorf("生産用品目区分コードがすでに存在します。生産用品目区分コード=%s: %w", e.Getコード, objects.ErrAlreadyExists)
+		return xerrors.Errorf("生産用品目区分がすでに存在します。生産用品目区分コード=%s: %w", e.Getコード, objects.ErrAlreadyExists)
 	}
 
 	r.rm.list生産用品目区分 = append(r.rm.list生産用品目区分, e)
@@ -129,7 +129,7 @@ func (r *repTrn生産用品目区分) Save(アップロード履歴ID types.No) 
 				Fld何かのフラグ2: e.Get何かのフラグ2,
 				Ub:         dao.NewUb生産用品目区分(),
 			}
-			dr.FldID, err = dao生産用品目区分.Insert(dr)
+			err = dao生産用品目区分.Insert(dr)
 			if err != nil {
 				err = xerrors.Errorf(": %w", err)
 				return

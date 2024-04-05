@@ -4,18 +4,20 @@ package objects
 
 import types "techbookfest16-sample/domain/types"
 
-type Val受払仕入 struct {
+type Ent受払仕入 struct {
+	*Ent受払  `json:"受払,omitempty"`
 	Get仕入数量 types.Quantity `json:"仕入数量"`
 	Get仕入金額 types.Amount   `json:"仕入金額"`
 	Get仕入単価 types.Price    `json:"仕入単価"`
 }
 
-func NewVal受払仕入(仕入数量 types.Quantity, 仕入金額 types.Amount, 仕入単価 types.Price) (*Val受払仕入, error) {
-	v := &Val受払仕入{
+func NewEnt受払仕入(受払 *Ent受払, 仕入数量 types.Quantity, 仕入金額 types.Amount, 仕入単価 types.Price) (*Ent受払仕入, error) {
+	e := &Ent受払仕入{
+		Ent受払:   受払,
 		Get仕入単価: 仕入単価,
 		Get仕入数量: 仕入数量,
 		Get仕入金額: 仕入金額,
 	}
-	err := v.Validate()
-	return v, err
+	err := e.Validate()
+	return e, err
 }

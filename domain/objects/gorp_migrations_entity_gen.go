@@ -4,16 +4,16 @@ package objects
 
 import "time"
 
-type Valgorpmigrations struct {
+type Entgorpmigrations struct {
 	Getid         string    `json:"id"`
 	Getapplied_at time.Time `json:"applied_at"`
 }
 
-func NewValgorpmigrations(id string, applied_at time.Time) (*Valgorpmigrations, error) {
-	v := &Valgorpmigrations{
+func NewEntgorpmigrations(id string, applied_at time.Time) (*Entgorpmigrations, error) {
+	e := &Entgorpmigrations{
 		Getapplied_at: applied_at,
 		Getid:         id,
 	}
-	err := v.Validate()
-	return v, err
+	err := e.Validate()
+	return e, err
 }

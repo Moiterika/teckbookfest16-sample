@@ -184,13 +184,15 @@ func (d daoDb受払) MaxW(fld fld受払, wb Wb受払) (max int64, err error) {
 	max = x.Int64
 	return
 }
-func (d daoDb受払) Insert(dr *Dto受払) (id Id, err error) {
-	err = d.db.QueryRow(sqlInsert受払, dr.Fld登録日時, dr.Fld計上月, dr.Fld受払区分, dr.Fld赤伝フラグ, dr.Fld品目ID, dr.Fld基準数量, dr.Fld基準単位ID).Scan(&id)
+func (d daoDb受払) Insert(dr *Dto受払) (err error) {
+	err = d.db.QueryRow(sqlInsert受払, dr.Fld登録日時, dr.Fld計上月, dr.Fld受払区分, dr.Fld赤伝フラグ, dr.Fld品目ID, dr.Fld基準数量, dr.Fld基準単位ID).Scan(&dr.FldNo)
 	if err != nil {
 		err = xerrors.Errorf(": %w", err)
 		return
 	}
 	dr.rowState = Added
+	d.dm.dt受払 = append(d.dm.dt受払, dr)
+	d.dm.mapIDvsDr受払[dr.FldNo] = dr
 	return
 }
 func (d daoDb受払) MultiInsert(dt []*Dto受払) (err error) {

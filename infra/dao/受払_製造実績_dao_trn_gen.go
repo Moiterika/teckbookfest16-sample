@@ -191,6 +191,8 @@ func (d daoTrn受払製造実績) Insert(dr *Dto受払製造実績) (err error) 
 		return
 	}
 	dr.rowState = Added
+	d.dm.dt受払製造実績 = append(d.dm.dt受払製造実績, dr)
+	d.dm.mapIDvsDr受払製造実績[dr.FldNo] = dr
 	return
 }
 func (d daoTrn受払製造実績) MultiInsert(dt []*Dto受払製造実績) (err error) {

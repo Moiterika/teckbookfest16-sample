@@ -22,8 +22,12 @@ type repManagerTrn struct {
 	mapIDvs品目  map[dao.Id]*objects.Ent品目
 	mapコードvs品目 map[types.Code品目]*objects.Ent品目
 
+	list仕入品     []*objects.Ent品目仕入品
+	mapIDvs仕入品  map[dao.Id]*objects.Ent品目仕入品
+	mapコードvs仕入品 map[types.Code品目]*objects.Ent品目仕入品
+
 	list受払    []*objects.Ent受払
-	mapIDvs受払 map[types.No]*objects.Ent受払
+	mapNovs受払 map[types.No]*objects.Ent受払
 }
 
 func NewRepManagerWithTrn(trn *sql.Tx) *repManagerTrn {
@@ -38,8 +42,11 @@ func NewRepManagerWithTrn(trn *sql.Tx) *repManagerTrn {
 		list品目:          make([]*objects.Ent品目, 0),
 		mapIDvs品目:       make(map[dao.Id]*objects.Ent品目),
 		mapコードvs品目:      make(map[types.Code品目]*objects.Ent品目),
+		list仕入品:         make([]*objects.Ent品目仕入品, 0),
+		mapIDvs仕入品:      make(map[dao.Id]*objects.Ent品目仕入品),
+		mapコードvs仕入品:     make(map[types.Code品目]*objects.Ent品目仕入品),
 		list受払:          make([]*objects.Ent受払, 0),
-		mapIDvs受払:       make(map[types.No]*objects.Ent受払),
+		mapNovs受払:       make(map[types.No]*objects.Ent受払),
 	}
 }
 

@@ -23,7 +23,7 @@ func (d *daoDbログ画面操作時) init() (err error) {
 		return xerrors.Errorf(": %w", err)
 	}
 	d.dm.mapIDvsDrログ画面操作時 = a.ToMap(d.dm.dtログ画面操作時, func(e *Dtoログ画面操作時) Id {
-		return e.FldID
+		return e.FldNo
 	})
 	return
 }
@@ -61,7 +61,7 @@ func (d daoDbログ画面操作時) GetBy(id Id) (dr *Dtoログ画面操作時, 
 	var ok bool
 	dr, ok = d.dm.mapIDvsDrログ画面操作時[id]
 	if !ok {
-		err = xerrors.Errorf("ログ_画面操作時が見つかりません。ID=%d: %w", id, NotFoundError)
+		err = xerrors.Errorf("ログ_画面操作時が見つかりません。No=%d: %w", id, NotFoundError)
 		return
 	}
 	return
@@ -76,7 +76,7 @@ func (d daoDbログ画面操作時) SelectAll() ([]*Dtoログ画面操作時, er
 	var dt []*Dtoログ画面操作時
 	for rows.Next() {
 		var dr Dtoログ画面操作時
-		err = rows.Scan(&dr.FldID, &dr.Fld操作ユーザーID)
+		err = rows.Scan(&dr.FldNo, &dr.Fld操作ユーザーID)
 		if err != nil {
 			return nil, xerrors.Errorf(": %w", err)
 		}
@@ -99,7 +99,7 @@ func (d daoDbログ画面操作時) SelectW(wb Wbログ画面操作時) ([]*Dto�
 		var dt []*Dtoログ画面操作時
 		for rows.Next() {
 			var dr Dtoログ画面操作時
-			err = rows.Scan(&dr.FldID, &dr.Fld操作ユーザーID)
+			err = rows.Scan(&dr.FldNo, &dr.Fld操作ユーザーID)
 			if err != nil {
 				return nil, xerrors.Errorf(": %w", err)
 			}
@@ -119,14 +119,14 @@ func (d daoDbログ画面操作時) CountW(wb Wbログ画面操作時) (cnt int6
 	where := wb.build()
 	prms, exists := where.Params()
 	if exists {
-		err = d.db.QueryRow(fmt.Sprintf(sqlSelectログ画面操作時ForAggregation, "count(\"ID\")", where.String()), prms...).Scan(&cnt)
+		err = d.db.QueryRow(fmt.Sprintf(sqlSelectログ画面操作時ForAggregation, "count(\"No\")", where.String()), prms...).Scan(&cnt)
 		if err != nil {
 			err = xerrors.Errorf(": %w", err)
 			return
 		}
 		return
 	} else {
-		err = d.db.QueryRow(fmt.Sprintf(sqlSelectログ画面操作時ForAggregation, "count(\"ID\")", "")).Scan(&cnt)
+		err = d.db.QueryRow(fmt.Sprintf(sqlSelectログ画面操作時ForAggregation, "count(\"No\")", "")).Scan(&cnt)
 		if err != nil {
 			err = xerrors.Errorf(": %w", err)
 			return
@@ -185,12 +185,14 @@ func (d daoDbログ画面操作時) MaxW(fld fldログ画面操作時, wb Wbロ�
 	return
 }
 func (d daoDbログ画面操作時) Insert(dr *Dtoログ画面操作時) (err error) {
-	_, err = d.db.Exec(sqlInsertログ画面操作時, dr.FldID, dr.Fld操作ユーザーID)
+	_, err = d.db.Exec(sqlInsertログ画面操作時, dr.FldNo, dr.Fld操作ユーザーID)
 	if err != nil {
 		err = xerrors.Errorf(": %w", err)
 		return
 	}
 	dr.rowState = Added
+	d.dm.dtログ画面操作時 = append(d.dm.dtログ画面操作時, dr)
+	d.dm.mapIDvsDrログ画面操作時[dr.FldNo] = dr
 	return
 }
 func (d daoDbログ画面操作時) MultiInsert(dt []*Dtoログ画面操作時) (err error) {
@@ -200,7 +202,7 @@ func (d daoDbログ画面操作時) MultiInsert(dt []*Dtoログ画面操作時) 
 		args := make([]interface{}, len(c)*2)
 		for i, dr := range c {
 			vals[i] = fmt.Sprintf(sqlValue2, 2*i+1, 2*i+2)
-			args[2*i] = dr.FldID
+			args[2*i] = dr.FldNo
 			args[2*i+1] = dr.Fld操作ユーザーID
 			dr.rowState = Added
 		}
@@ -217,7 +219,7 @@ func (d daoDbログ画面操作時) UpdateBy(dr *Dtoログ画面操作時) (cnt 
 		dr.rowState = UnChanged
 		return
 	}
-	s, w, execArgs := dr.Ub.build(newWbログ画面操作時WithPrimaryKeys(dr.FldID))
+	s, w, execArgs := dr.Ub.build(newWbログ画面操作時WithPrimaryKeys(dr.FldNo))
 	sql := fmt.Sprintf(sqlUpdateログ画面操作時, s, w)
 	result, err := d.db.Exec(sql, execArgs...)
 	if err != nil {
@@ -248,7 +250,7 @@ func (d daoDbログ画面操作時) UpdateW(ub *ubログ画面操作時, wb Wb�
 	return
 }
 func (d daoDbログ画面操作時) DeleteBy(dr *Dtoログ画面操作時) (cnt int64, err error) {
-	where := newWbログ画面操作時WithPrimaryKeys(dr.FldID).build()
+	where := newWbログ画面操作時WithPrimaryKeys(dr.FldNo).build()
 	prms, exists := where.Params()
 	if !exists {
 		err = xerrors.Errorf("主キーがありません。: %#v", *dr)

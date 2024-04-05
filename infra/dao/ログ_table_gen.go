@@ -10,8 +10,8 @@ func Tblログ() tblログ {
 
 type fldログ string
 
-func (t tblログ) FldID() fldログ {
-	return fldログ("ID")
+func (t tblログ) FldNo() fldログ {
+	return fldログ("No")
 }
 func (t tblログ) Fld登録日時() fldログ {
 	return fldログ("登録日時")

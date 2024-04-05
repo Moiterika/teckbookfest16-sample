@@ -19,9 +19,9 @@ type wbログアップロード時 struct {
 func NewWbログアップロード時() Wbログアップロード時 {
 	return &wbログアップロード時{config: make([]whereBuilderExp, 0)}
 }
-func newWbログアップロード時WithPrimaryKeys(ID Id) Wbログアップロード時 {
+func newWbログアップロード時WithPrimaryKeys(No Id) Wbログアップロード時 {
 	wb := &wbログアップロード時{config: make([]whereBuilderExp, 0)}
-	wb.And(Tblログアップロード時().FldID(), OpEqu, ID)
+	wb.And(Tblログアップロード時().FldNo(), OpEqu, No)
 
 	return wb
 }

@@ -207,13 +207,17 @@ func (d daoDb品目) MaxW(fld fld品目, wb Wb品目) (max int64, err error) {
 	max = x.Int64
 	return
 }
-func (d daoDb品目) Insert(dr *Dto品目) (id Id, err error) {
-	err = d.db.QueryRow(sqlInsert品目, dr.Fldコード, dr.Fld名称, dr.Fld基準単位ID, dr.Fld生産用品目区分ID).Scan(&id)
+func (d daoDb品目) Insert(dr *Dto品目) (err error) {
+	err = d.db.QueryRow(sqlInsert品目, dr.Fldコード, dr.Fld名称, dr.Fld基準単位ID, dr.Fld生産用品目区分ID).Scan(&dr.FldID)
 	if err != nil {
 		err = xerrors.Errorf(": %w", err)
 		return
 	}
 	dr.rowState = Added
+	d.dm.dt品目 = append(d.dm.dt品目, dr)
+	d.dm.mapIDvsDr品目[dr.FldID] = dr
+	d.dm.mapコードvsDr品目[dr.Fldコード] = dr
+
 	return
 }
 func (d daoDb品目) MultiInsert(dt []*Dto品目) (err error) {

@@ -5,8 +5,10 @@ package objects
 import types "techbookfest16-sample/domain/types"
 
 type Rep品目 interface {
-	List() ([]*Ent品目, error)
-	GetBy(types.Code品目) (*Ent品目, error)
-	AddNew(*Ent品目) error
+	Get品目一覧() ([]*Ent品目, error)
+	Get仕入品一覧() ([]*Ent品目仕入品, error)
+	Get品目By(types.Code品目) (*Ent品目, error)
+	Get仕入品By(types.Code品目) (*Ent品目仕入品, error)
+	AddNew仕入品(*Ent品目仕入品) error
 	Save(types.No) error
 }

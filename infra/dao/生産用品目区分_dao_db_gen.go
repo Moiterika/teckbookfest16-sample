@@ -207,13 +207,17 @@ func (d daoDb生産用品目区分) MaxW(fld fld生産用品目区分, wb Wb生�
 	max = x.Int64
 	return
 }
-func (d daoDb生産用品目区分) Insert(dr *Dto生産用品目区分) (id Id, err error) {
-	err = d.db.QueryRow(sqlInsert生産用品目区分, dr.Fldコード, dr.Fld名称, dr.Fld何かのフラグ1, dr.Fld何かのフラグ2).Scan(&id)
+func (d daoDb生産用品目区分) Insert(dr *Dto生産用品目区分) (err error) {
+	err = d.db.QueryRow(sqlInsert生産用品目区分, dr.Fldコード, dr.Fld名称, dr.Fld何かのフラグ1, dr.Fld何かのフラグ2).Scan(&dr.FldID)
 	if err != nil {
 		err = xerrors.Errorf(": %w", err)
 		return
 	}
 	dr.rowState = Added
+	d.dm.dt生産用品目区分 = append(d.dm.dt生産用品目区分, dr)
+	d.dm.mapIDvsDr生産用品目区分[dr.FldID] = dr
+	d.dm.mapコードvsDr生産用品目区分[dr.Fldコード] = dr
+
 	return
 }
 func (d daoDb生産用品目区分) MultiInsert(dt []*Dto生産用品目区分) (err error) {

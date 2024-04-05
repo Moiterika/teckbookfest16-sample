@@ -191,6 +191,8 @@ func (d daoDb品目仕入品) Insert(dr *Dto品目仕入品) (err error) {
 		return
 	}
 	dr.rowState = Added
+	d.dm.dt品目仕入品 = append(d.dm.dt品目仕入品, dr)
+	d.dm.mapIDvsDr品目仕入品[dr.FldID] = dr
 	return
 }
 func (d daoDb品目仕入品) MultiInsert(dt []*Dto品目仕入品) (err error) {

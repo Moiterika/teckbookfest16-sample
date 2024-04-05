@@ -3,7 +3,7 @@
 package dao
 
 type Dtoログアップロード時 struct {
-	FldID         Id
+	FldNo         Id
 	Fldアップロード履歴ID Id
 
 	rowState DataRowState

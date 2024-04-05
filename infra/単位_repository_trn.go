@@ -12,8 +12,9 @@ import (
 )
 
 type repTrn単位 struct {
-	rm *repManagerTrn
-	objects.Rep単位
+	rm       *repManagerTrn
+	isLoaded bool
+	//objects.Rep単位
 }
 
 func (r *repTrn単位) init() (err error) {
@@ -29,6 +30,7 @@ func (r *repTrn単位) init() (err error) {
 	r.rm.mapコードvs単位 = a.ToMap(r.rm.list単位, func(e *objects.Ent単位) types.Code単位 {
 		return e.Getコード
 	})
+	r.isLoaded = true
 	return
 }
 
@@ -50,7 +52,7 @@ func (r *repTrn単位) list() (list []*objects.Ent単位, err error) {
 }
 
 func (r *repTrn単位) List() ([]*objects.Ent単位, error) {
-	if len(r.rm.list単位) == 0 {
+	if !r.isLoaded {
 		err := r.init()
 		if err != nil {
 			xerrors.Errorf(" :%w", err)
@@ -61,7 +63,7 @@ func (r *repTrn単位) List() ([]*objects.Ent単位, error) {
 }
 
 func (r *repTrn単位) getBy(id dao.Id) (e *objects.Ent単位, err error) {
-	if len(r.rm.mapIDvs単位) == 0 {
+	if !r.isLoaded {
 		err = r.init()
 		if err != nil {
 			xerrors.Errorf(" :%w", err)
@@ -78,7 +80,7 @@ func (r *repTrn単位) getBy(id dao.Id) (e *objects.Ent単位, err error) {
 }
 
 func (r *repTrn単位) GetBy(コード types.Code単位) (e *objects.Ent単位, err error) {
-	if len(r.rm.mapIDvs単位) == 0 {
+	if !r.isLoaded {
 		err = r.init()
 		if err != nil {
 			xerrors.Errorf(" :%w", err)
@@ -97,7 +99,7 @@ func (r *repTrn単位) GetBy(コード types.Code単位) (e *objects.Ent単位, 
 func (r *repTrn単位) AddNew(e *objects.Ent単位) error {
 	// エンティティの責務ではなく、コレクション重複チェックはリポジトリーの責務とする
 	if _, err := r.GetBy(e.Getコード); !errors.Is(err, objects.ErrNotFound) {
-		return xerrors.Errorf("単位コードがすでに存在します。単位コード=%s: %w", e.Getコード, objects.ErrAlreadyExists)
+		return xerrors.Errorf("単位がすでに存在します。単位コード=%s: %w", e.Getコード, objects.ErrAlreadyExists)
 	}
 
 	r.rm.list単位 = append(r.rm.list単位, e)
@@ -126,7 +128,7 @@ func (r *repTrn単位) Save(アップロード履歴ID types.No) (err error) {
 				Fld名称:  e.Get名称,
 				Ub:     dao.NewUb単位(),
 			}
-			dr.FldID, err = dao単位.Insert(dr)
+			err = dao単位.Insert(dr)
 			if err != nil {
 				err = xerrors.Errorf(": %w", err)
 				return

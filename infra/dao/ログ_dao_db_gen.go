@@ -23,7 +23,7 @@ func (d *daoDbログ) init() (err error) {
 		return xerrors.Errorf(": %w", err)
 	}
 	d.dm.mapIDvsDrログ = a.ToMap(d.dm.dtログ, func(e *Dtoログ) Id {
-		return e.FldID
+		return e.FldNo
 	})
 	return
 }
@@ -61,7 +61,7 @@ func (d daoDbログ) GetBy(id Id) (dr *Dtoログ, err error) {
 	var ok bool
 	dr, ok = d.dm.mapIDvsDrログ[id]
 	if !ok {
-		err = xerrors.Errorf("ログが見つかりません。ID=%d: %w", id, NotFoundError)
+		err = xerrors.Errorf("ログが見つかりません。No=%d: %w", id, NotFoundError)
 		return
 	}
 	return
@@ -76,7 +76,7 @@ func (d daoDbログ) SelectAll() ([]*Dtoログ, error) {
 	var dt []*Dtoログ
 	for rows.Next() {
 		var dr Dtoログ
-		err = rows.Scan(&dr.FldID, &dr.Fld登録日時, &dr.Fld区分, &dr.Fld内容)
+		err = rows.Scan(&dr.FldNo, &dr.Fld登録日時, &dr.Fld区分, &dr.Fld内容)
 		if err != nil {
 			return nil, xerrors.Errorf(": %w", err)
 		}
@@ -99,7 +99,7 @@ func (d daoDbログ) SelectW(wb Wbログ) ([]*Dtoログ, error) {
 		var dt []*Dtoログ
 		for rows.Next() {
 			var dr Dtoログ
-			err = rows.Scan(&dr.FldID, &dr.Fld登録日時, &dr.Fld区分, &dr.Fld内容)
+			err = rows.Scan(&dr.FldNo, &dr.Fld登録日時, &dr.Fld区分, &dr.Fld内容)
 			if err != nil {
 				return nil, xerrors.Errorf(": %w", err)
 			}
@@ -119,14 +119,14 @@ func (d daoDbログ) CountW(wb Wbログ) (cnt int64, err error) {
 	where := wb.build()
 	prms, exists := where.Params()
 	if exists {
-		err = d.db.QueryRow(fmt.Sprintf(sqlSelectログForAggregation, "count(\"ID\")", where.String()), prms...).Scan(&cnt)
+		err = d.db.QueryRow(fmt.Sprintf(sqlSelectログForAggregation, "count(\"No\")", where.String()), prms...).Scan(&cnt)
 		if err != nil {
 			err = xerrors.Errorf(": %w", err)
 			return
 		}
 		return
 	} else {
-		err = d.db.QueryRow(fmt.Sprintf(sqlSelectログForAggregation, "count(\"ID\")", "")).Scan(&cnt)
+		err = d.db.QueryRow(fmt.Sprintf(sqlSelectログForAggregation, "count(\"No\")", "")).Scan(&cnt)
 		if err != nil {
 			err = xerrors.Errorf(": %w", err)
 			return
@@ -184,13 +184,15 @@ func (d daoDbログ) MaxW(fld fldログ, wb Wbログ) (max int64, err error) {
 	max = x.Int64
 	return
 }
-func (d daoDbログ) Insert(dr *Dtoログ) (id Id, err error) {
-	err = d.db.QueryRow(sqlInsertログ, dr.Fld登録日時, dr.Fld区分, dr.Fld内容).Scan(&id)
+func (d daoDbログ) Insert(dr *Dtoログ) (err error) {
+	err = d.db.QueryRow(sqlInsertログ, dr.Fld登録日時, dr.Fld区分, dr.Fld内容).Scan(&dr.FldNo)
 	if err != nil {
 		err = xerrors.Errorf(": %w", err)
 		return
 	}
 	dr.rowState = Added
+	d.dm.dtログ = append(d.dm.dtログ, dr)
+	d.dm.mapIDvsDrログ[dr.FldNo] = dr
 	return
 }
 func (d daoDbログ) MultiInsert(dt []*Dtoログ) (err error) {
@@ -218,7 +220,7 @@ func (d daoDbログ) UpdateBy(dr *Dtoログ) (cnt int64, err error) {
 		dr.rowState = UnChanged
 		return
 	}
-	s, w, execArgs := dr.Ub.build(newWbログWithPrimaryKeys(dr.FldID))
+	s, w, execArgs := dr.Ub.build(newWbログWithPrimaryKeys(dr.FldNo))
 	sql := fmt.Sprintf(sqlUpdateログ, s, w)
 	result, err := d.db.Exec(sql, execArgs...)
 	if err != nil {
@@ -249,7 +251,7 @@ func (d daoDbログ) UpdateW(ub *ubログ, wb Wbログ) (cnt int64, err error) {
 	return
 }
 func (d daoDbログ) DeleteBy(dr *Dtoログ) (cnt int64, err error) {
-	where := newWbログWithPrimaryKeys(dr.FldID).build()
+	where := newWbログWithPrimaryKeys(dr.FldNo).build()
 	prms, exists := where.Params()
 	if !exists {
 		err = xerrors.Errorf("主キーがありません。: %#v", *dr)

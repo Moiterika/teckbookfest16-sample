@@ -8,7 +8,7 @@ import (
 )
 
 type Dtoリソース変更履歴 struct {
-	FldID    Id
+	FldNo    Id
 	Fld登録日時  time.Time
 	Fldリソース名 string
 	Fld変更区分  string

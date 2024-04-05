@@ -8,22 +8,31 @@ import (
 )
 
 type Entログ struct {
-	GetID      types.No      `json:"ID"`
-	Get登録日時    time.Time     `json:"登録日時"`
-	Get区分      Enumログ区分      `json:"区分"`
-	Get内容      string        `json:"内容"`
-	Getアップロード時 *Valログアップロード時 `json:"アップロード時,omitempty"`
-	Get画面操作時   *Valログ画面操作時   `json:"画面操作時,omitempty"`
+	GetNo   types.No  `json:"No"`
+	Get登録日時 time.Time `json:"登録日時"`
+	Get区分   Enumログ区分  `json:"区分"`
+	Get内容   string    `json:"内容"`
 }
 
-func NewEntログ(登録日時 time.Time, 区分 Enumログ区分, 内容 string, アップロード時 *Valログアップロード時, 画面操作時 *Valログ画面操作時) (*Entログ, error) {
+func NewEntログ(No types.No, 登録日時 time.Time, 区分 Enumログ区分, 内容 string) (*Entログ, error) {
 	e := &Entログ{
-		Getアップロード時: アップロード時,
-		Get内容:      内容,
-		Get区分:      区分,
-		Get画面操作時:   画面操作時,
-		Get登録日時:    登録日時,
+		GetNo:   No,
+		Get内容:   内容,
+		Get区分:   区分,
+		Get登録日時: 登録日時,
 	}
 	err := e.Validate()
 	return e, err
+}
+func (e *Entログ) Id() types.No {
+	return e.GetNo
+}
+func (e *Entログ) Equals(other types.Identifier[types.No]) bool {
+	if other == nil {
+		return false
+	}
+	if other.Equals(e) {
+		return true
+	}
+	return false
 }

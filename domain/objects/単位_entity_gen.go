@@ -17,3 +17,15 @@ func NewEnt単位(コード types.Code単位, 名称 string) (*Ent単位, error)
 	err := e.Validate()
 	return e, err
 }
+func (e *Ent単位) Id() types.Code単位 {
+	return e.Getコード
+}
+func (e *Ent単位) Equals(other types.Identifier[types.Code単位]) bool {
+	if other == nil {
+		return false
+	}
+	if other.Equals(e) {
+		return true
+	}
+	return false
+}

@@ -10,8 +10,8 @@ func Tblリソース変更履歴アップロード時() tblリソース変更履
 
 type fldリソース変更履歴アップロード時 string
 
-func (t tblリソース変更履歴アップロード時) FldID() fldリソース変更履歴アップロード時 {
-	return fldリソース変更履歴アップロード時("ID")
+func (t tblリソース変更履歴アップロード時) FldNo() fldリソース変更履歴アップロード時 {
+	return fldリソース変更履歴アップロード時("No")
 }
 func (t tblリソース変更履歴アップロード時) Fldアップロード履歴ID() fldリソース変更履歴アップロード時 {
 	return fldリソース変更履歴アップロード時("アップロード履歴ID")

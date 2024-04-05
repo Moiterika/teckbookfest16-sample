@@ -21,3 +21,15 @@ func NewEnt生産用品目区分(コード types.Code生産用品目区分, 名�
 	err := e.Validate()
 	return e, err
 }
+func (e *Ent生産用品目区分) Id() types.Code生産用品目区分 {
+	return e.Getコード
+}
+func (e *Ent生産用品目区分) Equals(other types.Identifier[types.Code生産用品目区分]) bool {
+	if other == nil {
+		return false
+	}
+	if other.Equals(e) {
+		return true
+	}
+	return false
+}

@@ -2,11 +2,6 @@
 
 package objects
 
-import types "techbookfest16-sample/domain/types"
-
 type Rep受払 interface {
-	List() ([]*Ent受払, error)
-	GetBy(types.No) (*Ent受払, error)
-	AddNew(*Ent受払) error
-	Save(types.No) error
+	Dummy()
 }

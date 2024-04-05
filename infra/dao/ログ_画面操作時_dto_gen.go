@@ -3,7 +3,7 @@
 package dao
 
 type Dtoログ画面操作時 struct {
-	FldID       Id
+	FldNo       Id
 	Fld操作ユーザーID Id
 
 	rowState DataRowState

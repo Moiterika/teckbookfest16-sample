@@ -23,7 +23,7 @@ func (d *daoTrnリソース変更履歴) init() (err error) {
 		return xerrors.Errorf(": %w", err)
 	}
 	d.dm.mapIDvsDrリソース変更履歴 = a.ToMap(d.dm.dtリソース変更履歴, func(e *Dtoリソース変更履歴) Id {
-		return e.FldID
+		return e.FldNo
 	})
 	return
 }
@@ -61,7 +61,7 @@ func (d daoTrnリソース変更履歴) GetBy(id Id) (dr *Dtoリソース変更�
 	var ok bool
 	dr, ok = d.dm.mapIDvsDrリソース変更履歴[id]
 	if !ok {
-		err = xerrors.Errorf("リソース変更履歴が見つかりません。ID=%d: %w", id, NotFoundError)
+		err = xerrors.Errorf("リソース変更履歴が見つかりません。No=%d: %w", id, NotFoundError)
 		return
 	}
 	return
@@ -76,7 +76,7 @@ func (d daoTrnリソース変更履歴) SelectAll() ([]*Dtoリソース変更履
 	var dt []*Dtoリソース変更履歴
 	for rows.Next() {
 		var dr Dtoリソース変更履歴
-		err = rows.Scan(&dr.FldID, &dr.Fld登録日時, &dr.Fldリソース名, &dr.Fld変更区分, &dr.Fld変更内容)
+		err = rows.Scan(&dr.FldNo, &dr.Fld登録日時, &dr.Fldリソース名, &dr.Fld変更区分, &dr.Fld変更内容)
 		if err != nil {
 			return nil, xerrors.Errorf(": %w", err)
 		}
@@ -99,7 +99,7 @@ func (d daoTrnリソース変更履歴) SelectW(wb Wbリソース変更履歴) (
 		var dt []*Dtoリソース変更履歴
 		for rows.Next() {
 			var dr Dtoリソース変更履歴
-			err = rows.Scan(&dr.FldID, &dr.Fld登録日時, &dr.Fldリソース名, &dr.Fld変更区分, &dr.Fld変更内容)
+			err = rows.Scan(&dr.FldNo, &dr.Fld登録日時, &dr.Fldリソース名, &dr.Fld変更区分, &dr.Fld変更内容)
 			if err != nil {
 				return nil, xerrors.Errorf(": %w", err)
 			}
@@ -119,14 +119,14 @@ func (d daoTrnリソース変更履歴) CountW(wb Wbリソース変更履歴) (c
 	where := wb.build()
 	prms, exists := where.Params()
 	if exists {
-		err = d.trn.QueryRow(fmt.Sprintf(sqlSelectリソース変更履歴ForAggregation, "count(\"ID\")", where.String()), prms...).Scan(&cnt)
+		err = d.trn.QueryRow(fmt.Sprintf(sqlSelectリソース変更履歴ForAggregation, "count(\"No\")", where.String()), prms...).Scan(&cnt)
 		if err != nil {
 			err = xerrors.Errorf(": %w", err)
 			return
 		}
 		return
 	} else {
-		err = d.trn.QueryRow(fmt.Sprintf(sqlSelectリソース変更履歴ForAggregation, "count(\"ID\")", "")).Scan(&cnt)
+		err = d.trn.QueryRow(fmt.Sprintf(sqlSelectリソース変更履歴ForAggregation, "count(\"No\")", "")).Scan(&cnt)
 		if err != nil {
 			err = xerrors.Errorf(": %w", err)
 			return
@@ -184,13 +184,15 @@ func (d daoTrnリソース変更履歴) MaxW(fld fldリソース変更履歴, wb
 	max = x.Int64
 	return
 }
-func (d daoTrnリソース変更履歴) Insert(dr *Dtoリソース変更履歴) (id Id, err error) {
-	err = d.trn.QueryRow(sqlInsertリソース変更履歴, dr.Fld登録日時, dr.Fldリソース名, dr.Fld変更区分, dr.Fld変更内容).Scan(&id)
+func (d daoTrnリソース変更履歴) Insert(dr *Dtoリソース変更履歴) (err error) {
+	err = d.trn.QueryRow(sqlInsertリソース変更履歴, dr.Fld登録日時, dr.Fldリソース名, dr.Fld変更区分, dr.Fld変更内容).Scan(&dr.FldNo)
 	if err != nil {
 		err = xerrors.Errorf(": %w", err)
 		return
 	}
 	dr.rowState = Added
+	d.dm.dtリソース変更履歴 = append(d.dm.dtリソース変更履歴, dr)
+	d.dm.mapIDvsDrリソース変更履歴[dr.FldNo] = dr
 	return
 }
 func (d daoTrnリソース変更履歴) MultiInsert(dt []*Dtoリソース変更履歴) (err error) {
@@ -219,7 +221,7 @@ func (d daoTrnリソース変更履歴) UpdateBy(dr *Dtoリソース変更履歴
 		dr.rowState = UnChanged
 		return
 	}
-	s, w, execArgs := dr.Ub.build(newWbリソース変更履歴WithPrimaryKeys(dr.FldID))
+	s, w, execArgs := dr.Ub.build(newWbリソース変更履歴WithPrimaryKeys(dr.FldNo))
 	sql := fmt.Sprintf(sqlUpdateリソース変更履歴, s, w)
 	result, err := d.trn.Exec(sql, execArgs...)
 	if err != nil {
@@ -250,7 +252,7 @@ func (d daoTrnリソース変更履歴) UpdateW(ub *ubリソース変更履歴, 
 	return
 }
 func (d daoTrnリソース変更履歴) DeleteBy(dr *Dtoリソース変更履歴) (cnt int64, err error) {
-	where := newWbリソース変更履歴WithPrimaryKeys(dr.FldID).build()
+	where := newWbリソース変更履歴WithPrimaryKeys(dr.FldNo).build()
 	prms, exists := where.Params()
 	if !exists {
 		err = xerrors.Errorf("主キーがありません。: %#v", *dr)

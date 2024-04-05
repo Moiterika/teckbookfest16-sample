@@ -19,9 +19,9 @@ type wbリソース変更履歴アップロード時 struct {
 func NewWbリソース変更履歴アップロード時() Wbリソース変更履歴アップロード時 {
 	return &wbリソース変更履歴アップロード時{config: make([]whereBuilderExp, 0)}
 }
-func newWbリソース変更履歴アップロード時WithPrimaryKeys(ID Id) Wbリソース変更履歴アップロード時 {
+func newWbリソース変更履歴アップロード時WithPrimaryKeys(No Id) Wbリソース変更履歴アップロード時 {
 	wb := &wbリソース変更履歴アップロード時{config: make([]whereBuilderExp, 0)}
-	wb.And(Tblリソース変更履歴アップロード時().FldID(), OpEqu, ID)
+	wb.And(Tblリソース変更履歴アップロード時().FldNo(), OpEqu, No)
 
 	return wb
 }

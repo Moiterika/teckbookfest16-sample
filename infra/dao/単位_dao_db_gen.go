@@ -207,13 +207,17 @@ func (d daoDb単位) MaxW(fld fld単位, wb Wb単位) (max int64, err error) {
 	max = x.Int64
 	return
 }
-func (d daoDb単位) Insert(dr *Dto単位) (id Id, err error) {
-	err = d.db.QueryRow(sqlInsert単位, dr.Fldコード, dr.Fld名称).Scan(&id)
+func (d daoDb単位) Insert(dr *Dto単位) (err error) {
+	err = d.db.QueryRow(sqlInsert単位, dr.Fldコード, dr.Fld名称).Scan(&dr.FldID)
 	if err != nil {
 		err = xerrors.Errorf(": %w", err)
 		return
 	}
 	dr.rowState = Added
+	d.dm.dt単位 = append(d.dm.dt単位, dr)
+	d.dm.mapIDvsDr単位[dr.FldID] = dr
+	d.dm.mapコードvsDr単位[dr.Fldコード] = dr
+
 	return
 }
 func (d daoDb単位) MultiInsert(dt []*Dto単位) (err error) {

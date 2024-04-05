@@ -4,16 +4,18 @@ package objects
 
 import types "techbookfest16-sample/domain/types"
 
-type Val受払製造実績 struct {
+type Ent受払製造実績 struct {
+	*Ent受払    `json:"受払,omitempty"`
 	Get製造数量   types.Quantity `json:"製造数量"`
 	Get製造指図ID types.No       `json:"製造指図ID"`
 }
 
-func NewVal受払製造実績(製造数量 types.Quantity, 製造指図ID types.No) (*Val受払製造実績, error) {
-	v := &Val受払製造実績{
+func NewEnt受払製造実績(受払 *Ent受払, 製造数量 types.Quantity, 製造指図ID types.No) (*Ent受払製造実績, error) {
+	e := &Ent受払製造実績{
+		Ent受払:     受払,
 		Get製造指図ID: 製造指図ID,
 		Get製造数量:   製造数量,
 	}
-	err := v.Validate()
-	return v, err
+	err := e.Validate()
+	return e, err
 }

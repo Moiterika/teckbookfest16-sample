@@ -19,9 +19,9 @@ type wbログ struct {
 func NewWbログ() Wbログ {
 	return &wbログ{config: make([]whereBuilderExp, 0)}
 }
-func newWbログWithPrimaryKeys(ID Id) Wbログ {
+func newWbログWithPrimaryKeys(No Id) Wbログ {
 	wb := &wbログ{config: make([]whereBuilderExp, 0)}
-	wb.And(Tblログ().FldID(), OpEqu, ID)
+	wb.And(Tblログ().FldNo(), OpEqu, No)
 
 	return wb
 }

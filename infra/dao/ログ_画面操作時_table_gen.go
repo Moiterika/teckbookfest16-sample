@@ -10,8 +10,8 @@ func Tblログ画面操作時() tblログ画面操作時 {
 
 type fldログ画面操作時 string
 
-func (t tblログ画面操作時) FldID() fldログ画面操作時 {
-	return fldログ画面操作時("ID")
+func (t tblログ画面操作時) FldNo() fldログ画面操作時 {
+	return fldログ画面操作時("No")
 }
 func (t tblログ画面操作時) Fld操作ユーザーID() fldログ画面操作時 {
 	return fldログ画面操作時("操作ユーザーID")

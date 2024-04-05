@@ -23,7 +23,7 @@ func (d *daoDbログアップロード時) init() (err error) {
 		return xerrors.Errorf(": %w", err)
 	}
 	d.dm.mapIDvsDrログアップロード時 = a.ToMap(d.dm.dtログアップロード時, func(e *Dtoログアップロード時) Id {
-		return e.FldID
+		return e.FldNo
 	})
 	return
 }
@@ -61,7 +61,7 @@ func (d daoDbログアップロード時) GetBy(id Id) (dr *Dtoログアップ�
 	var ok bool
 	dr, ok = d.dm.mapIDvsDrログアップロード時[id]
 	if !ok {
-		err = xerrors.Errorf("ログ_アップロード時が見つかりません。ID=%d: %w", id, NotFoundError)
+		err = xerrors.Errorf("ログ_アップロード時が見つかりません。No=%d: %w", id, NotFoundError)
 		return
 	}
 	return
@@ -76,7 +76,7 @@ func (d daoDbログアップロード時) SelectAll() ([]*Dtoログアップロ�
 	var dt []*Dtoログアップロード時
 	for rows.Next() {
 		var dr Dtoログアップロード時
-		err = rows.Scan(&dr.FldID, &dr.Fldアップロード履歴ID)
+		err = rows.Scan(&dr.FldNo, &dr.Fldアップロード履歴ID)
 		if err != nil {
 			return nil, xerrors.Errorf(": %w", err)
 		}
@@ -99,7 +99,7 @@ func (d daoDbログアップロード時) SelectW(wb Wbログアップロード�
 		var dt []*Dtoログアップロード時
 		for rows.Next() {
 			var dr Dtoログアップロード時
-			err = rows.Scan(&dr.FldID, &dr.Fldアップロード履歴ID)
+			err = rows.Scan(&dr.FldNo, &dr.Fldアップロード履歴ID)
 			if err != nil {
 				return nil, xerrors.Errorf(": %w", err)
 			}
@@ -119,14 +119,14 @@ func (d daoDbログアップロード時) CountW(wb Wbログアップロード�
 	where := wb.build()
 	prms, exists := where.Params()
 	if exists {
-		err = d.db.QueryRow(fmt.Sprintf(sqlSelectログアップロード時ForAggregation, "count(\"ID\")", where.String()), prms...).Scan(&cnt)
+		err = d.db.QueryRow(fmt.Sprintf(sqlSelectログアップロード時ForAggregation, "count(\"No\")", where.String()), prms...).Scan(&cnt)
 		if err != nil {
 			err = xerrors.Errorf(": %w", err)
 			return
 		}
 		return
 	} else {
-		err = d.db.QueryRow(fmt.Sprintf(sqlSelectログアップロード時ForAggregation, "count(\"ID\")", "")).Scan(&cnt)
+		err = d.db.QueryRow(fmt.Sprintf(sqlSelectログアップロード時ForAggregation, "count(\"No\")", "")).Scan(&cnt)
 		if err != nil {
 			err = xerrors.Errorf(": %w", err)
 			return
@@ -185,12 +185,14 @@ func (d daoDbログアップロード時) MaxW(fld fldログアップロード�
 	return
 }
 func (d daoDbログアップロード時) Insert(dr *Dtoログアップロード時) (err error) {
-	_, err = d.db.Exec(sqlInsertログアップロード時, dr.FldID, dr.Fldアップロード履歴ID)
+	_, err = d.db.Exec(sqlInsertログアップロード時, dr.FldNo, dr.Fldアップロード履歴ID)
 	if err != nil {
 		err = xerrors.Errorf(": %w", err)
 		return
 	}
 	dr.rowState = Added
+	d.dm.dtログアップロード時 = append(d.dm.dtログアップロード時, dr)
+	d.dm.mapIDvsDrログアップロード時[dr.FldNo] = dr
 	return
 }
 func (d daoDbログアップロード時) MultiInsert(dt []*Dtoログアップロード時) (err error) {
@@ -200,7 +202,7 @@ func (d daoDbログアップロード時) MultiInsert(dt []*Dtoログアップ�
 		args := make([]interface{}, len(c)*2)
 		for i, dr := range c {
 			vals[i] = fmt.Sprintf(sqlValue2, 2*i+1, 2*i+2)
-			args[2*i] = dr.FldID
+			args[2*i] = dr.FldNo
 			args[2*i+1] = dr.Fldアップロード履歴ID
 			dr.rowState = Added
 		}
@@ -217,7 +219,7 @@ func (d daoDbログアップロード時) UpdateBy(dr *Dtoログアップロー�
 		dr.rowState = UnChanged
 		return
 	}
-	s, w, execArgs := dr.Ub.build(newWbログアップロード時WithPrimaryKeys(dr.FldID))
+	s, w, execArgs := dr.Ub.build(newWbログアップロード時WithPrimaryKeys(dr.FldNo))
 	sql := fmt.Sprintf(sqlUpdateログアップロード時, s, w)
 	result, err := d.db.Exec(sql, execArgs...)
 	if err != nil {
@@ -248,7 +250,7 @@ func (d daoDbログアップロード時) UpdateW(ub *ubログアップロード
 	return
 }
 func (d daoDbログアップロード時) DeleteBy(dr *Dtoログアップロード時) (cnt int64, err error) {
-	where := newWbログアップロード時WithPrimaryKeys(dr.FldID).build()
+	where := newWbログアップロード時WithPrimaryKeys(dr.FldNo).build()
 	prms, exists := where.Params()
 	if !exists {
 		err = xerrors.Errorf("主キーがありません。: %#v", *dr)

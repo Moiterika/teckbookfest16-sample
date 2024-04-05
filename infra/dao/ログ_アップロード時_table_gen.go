@@ -10,8 +10,8 @@ func Tblログアップロード時() tblログアップロード時 {
 
 type fldログアップロード時 string
 
-func (t tblログアップロード時) FldID() fldログアップロード時 {
-	return fldログアップロード時("ID")
+func (t tblログアップロード時) FldNo() fldログアップロード時 {
+	return fldログアップロード時("No")
 }
 func (t tblログアップロード時) Fldアップロード履歴ID() fldログアップロード時 {
 	return fldログアップロード時("アップロード履歴ID")

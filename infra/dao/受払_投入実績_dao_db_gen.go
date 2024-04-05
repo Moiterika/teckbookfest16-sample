@@ -191,6 +191,8 @@ func (d daoDb受払投入実績) Insert(dr *Dto受払投入実績) (err error) {
 		return
 	}
 	dr.rowState = Added
+	d.dm.dt受払投入実績 = append(d.dm.dt受払投入実績, dr)
+	d.dm.mapIDvsDr受払投入実績[dr.FldNo] = dr
 	return
 }
 func (d daoDb受払投入実績) MultiInsert(dt []*Dto受払投入実績) (err error) {

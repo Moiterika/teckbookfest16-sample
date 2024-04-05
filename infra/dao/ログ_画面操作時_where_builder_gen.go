@@ -19,9 +19,9 @@ type wbログ画面操作時 struct {
 func NewWbログ画面操作時() Wbログ画面操作時 {
 	return &wbログ画面操作時{config: make([]whereBuilderExp, 0)}
 }
-func newWbログ画面操作時WithPrimaryKeys(ID Id) Wbログ画面操作時 {
+func newWbログ画面操作時WithPrimaryKeys(No Id) Wbログ画面操作時 {
 	wb := &wbログ画面操作時{config: make([]whereBuilderExp, 0)}
-	wb.And(Tblログ画面操作時().FldID(), OpEqu, ID)
+	wb.And(Tblログ画面操作時().FldNo(), OpEqu, No)
 
 	return wb
 }
