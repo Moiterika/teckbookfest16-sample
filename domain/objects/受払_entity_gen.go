@@ -30,15 +30,3 @@ func NewEnt受払(No types.No, 登録日時 time.Time, 計上月 time.Time, 受�
 	err := e.Validate()
 	return e, err
 }
-func (e *Ent受払) Id() types.No {
-	return e.GetNo
-}
-func (e *Ent受払) Equals(other types.Identifier[types.No]) bool {
-	if other == nil {
-		return false
-	}
-	if other.Equals(e) {
-		return true
-	}
-	return false
-}

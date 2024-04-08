@@ -24,15 +24,3 @@ func NewEntログ(No types.No, 登録日時 time.Time, 区分 Enumログ区分, 
 	err := e.Validate()
 	return e, err
 }
-func (e *Entログ) Id() types.No {
-	return e.GetNo
-}
-func (e *Entログ) Equals(other types.Identifier[types.No]) bool {
-	if other == nil {
-		return false
-	}
-	if other.Equals(e) {
-		return true
-	}
-	return false
-}

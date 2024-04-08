@@ -21,15 +21,3 @@ func NewEnt品目(コード types.Code品目, 名称 string, 基準単位 *Ent�
 	err := e.Validate()
 	return e, err
 }
-func (e *Ent品目) Id() types.Code品目 {
-	return e.Getコード
-}
-func (e *Ent品目) Equals(other types.Identifier[types.Code品目]) bool {
-	if other == nil {
-		return false
-	}
-	if other.Equals(e) {
-		return true
-	}
-	return false
-}

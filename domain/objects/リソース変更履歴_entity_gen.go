@@ -26,15 +26,3 @@ func NewEntリソース変更履歴(No types.No, 登録日時 time.Time, リソ�
 	err := e.Validate()
 	return e, err
 }
-func (e *Entリソース変更履歴) Id() types.No {
-	return e.GetNo
-}
-func (e *Entリソース変更履歴) Equals(other types.Identifier[types.No]) bool {
-	if other == nil {
-		return false
-	}
-	if other.Equals(e) {
-		return true
-	}
-	return false
-}
