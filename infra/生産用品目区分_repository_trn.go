@@ -6,98 +6,81 @@ import (
 	"techbookfest16-sample/domain/types"
 	"techbookfest16-sample/infra/dao"
 
-	"github.com/Moiterika/a"
-
 	"golang.org/x/xerrors"
 )
 
 type repTrn生産用品目区分 struct {
-	rm *repManagerTrn
+	rm       *repManagerTrn
+	isLoaded bool
 }
 
-func (r *repTrn生産用品目区分) init() (err error) {
-	r.rm.list生産用品目区分, err = r.list()
+func (r *repTrn生産用品目区分) init() error {
+	dt生産用品目区分, err := r.rm.dm.NewDaoTrn生産用品目区分().Dt()
 	if err != nil {
-		xerrors.Errorf(" :%w", err)
-		return
+		return xerrors.Errorf(" :%w", err)
 	}
-	r.rm.mapIDvs生産用品目区分 = a.ToMap(r.rm.list生産用品目区分, func(e *objects.Ent生産用品目区分) dao.Id {
-		dr, _ := r.rm.dm.NewDaoTrn生産用品目区分().GetByCode(e.Getコード)
-		return dr.FldID
-	})
-	r.rm.mapコードvs生産用品目区分 = a.ToMap(r.rm.list生産用品目区分, func(e *objects.Ent生産用品目区分) types.Code生産用品目区分 {
-		return e.Getコード
-	})
-	return
-}
-
-func (r *repTrn生産用品目区分) list() (list []*objects.Ent生産用品目区分, err error) {
-	dt生産用品目区分, errDt := r.rm.dm.NewDaoTrn生産用品目区分().Dt()
-	if errDt != nil {
-		err = xerrors.Errorf(" :%w", errDt)
-		return
-	}
-	list = make([]*objects.Ent生産用品目区分, len(dt生産用品目区分))
+	r.rm.list生産用品目区分 = make([]*objects.Ent生産用品目区分, len(dt生産用品目区分))
 	for i, dr := range dt生産用品目区分 {
-		e := &objects.Ent生産用品目区分{
-			Getコード:     types.Code生産用品目区分(dr.Fldコード),
-			Get名称:      dr.Fld名称,
-			Get何かのフラグ1: dr.Fld何かのフラグ1,
-			Get何かのフラグ2: dr.Fld何かのフラグ2,
+		e, err := objects.NewEnt生産用品目区分(
+			types.Code生産用品目区分(dr.Fldコード),
+			dr.Fld名称,
+			dr.Fld何かのフラグ1,
+			dr.Fld何かのフラグ2,
+		)
+		if err != nil {
+			return xerrors.Errorf(" :%w", err)
 		}
-		list[i] = e
+		r.rm.list生産用品目区分[i] = e
+		r.rm.mapIDvs生産用品目区分[dr.FldID] = e
+		r.rm.mapコードvs生産用品目区分[e.Getコード] = e
 	}
-	return
+
+	r.isLoaded = true
+
+	return nil
 }
 
 func (r *repTrn生産用品目区分) List() ([]*objects.Ent生産用品目区分, error) {
-	if len(r.rm.list生産用品目区分) == 0 {
+	if !r.isLoaded {
 		err := r.init()
 		if err != nil {
-			xerrors.Errorf(" :%w", err)
-			return nil, err
+			return nil, xerrors.Errorf(" :%w", err)
 		}
 	}
 	return r.rm.list生産用品目区分, nil
 }
 
-func (r *repTrn生産用品目区分) getBy(id dao.Id) (e *objects.Ent生産用品目区分, err error) {
-	if len(r.rm.mapIDvs生産用品目区分) == 0 {
-		err = r.init()
+func (r *repTrn生産用品目区分) getBy(id dao.Id) (*objects.Ent生産用品目区分, error) {
+	if !r.isLoaded {
+		err := r.init()
 		if err != nil {
-			xerrors.Errorf(" :%w", err)
-			return
+			return nil, xerrors.Errorf(" :%w", err)
 		}
 	}
-	var ok bool
-	e, ok = r.rm.mapIDvs生産用品目区分[id]
+	e, ok := r.rm.mapIDvs生産用品目区分[id]
 	if !ok {
-		err = xerrors.Errorf("生産用品目区分が見つかりません。生産用品目区分ID=%s: %w", id, objects.ErrNotFound)
-		return
+		return nil, xerrors.Errorf("生産用品目区分が見つかりません。生産用品目区分ID=%s: %w", id, objects.ErrNotFound)
 	}
-	return
+	return e, nil
 }
 
-func (r *repTrn生産用品目区分) GetBy(コード types.Code生産用品目区分) (e *objects.Ent生産用品目区分, err error) {
-	if len(r.rm.mapIDvs生産用品目区分) == 0 {
-		err = r.init()
+func (r *repTrn生産用品目区分) GetBy(コード types.Code生産用品目区分) (*objects.Ent生産用品目区分, error) {
+	if !r.isLoaded {
+		err := r.init()
 		if err != nil {
-			xerrors.Errorf(" :%w", err)
-			return
+			return nil, xerrors.Errorf(" :%w", err)
 		}
 	}
-	var ok bool
-	e, ok = r.rm.mapコードvs生産用品目区分[コード]
+	e, ok := r.rm.mapコードvs生産用品目区分[コード]
 	if !ok {
-		err = xerrors.Errorf("生産用品目区分が見つかりません。生産用品目区分コード=%s: %w", コード, objects.ErrNotFound)
-		return
+		return nil, xerrors.Errorf("生産用品目区分が見つかりません。生産用品目区分コード=%s: %w", コード, objects.ErrNotFound)
 	}
-	return
+	return e, nil
 }
 
 func (r *repTrn生産用品目区分) AddNew(e *objects.Ent生産用品目区分) error {
 	// エンティティの責務ではなく、コレクション重複チェックはリポジトリーの責務とする
-	if _, err := r.GetBy(e.Getコード); !errors.Is(err, objects.ErrNotFound) {
+	if _, notFound := r.GetBy(e.Getコード); !errors.Is(notFound, objects.ErrNotFound) {
 		return xerrors.Errorf("生産用品目区分がすでに存在します。生産用品目区分コード=%s: %w", e.Getコード, objects.ErrAlreadyExists)
 	}
 
@@ -113,7 +96,7 @@ func (r *repTrn生産用品目区分) Save(アップロード履歴ID types.No) 
 	logger := newCmdTrnリソース変更履歴(r.rm.dm)
 
 	for _, e := range r.rm.list生産用品目区分 {
-		if dr, errCode := dao生産用品目区分.GetByCode(e.Getコード); !errors.Is(errCode, dao.NotFoundError) {
+		if dr, notFound := dao生産用品目区分.GetByCode(e.Getコード); !errors.Is(notFound, dao.NotFoundError) {
 			dr.Import(e.Getコード, e.Get名称, e.Get何かのフラグ1, e.Get何かのフラグ2)
 			_, err = dao生産用品目区分.UpdateBy(dr)
 			if err != nil {

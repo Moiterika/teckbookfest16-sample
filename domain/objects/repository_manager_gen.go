@@ -4,7 +4,6 @@ package objects
 
 type RepManager interface {
 	NewRep単位() Rep単位
-	NewRep受払() Rep受払
 	NewRep品目() Rep品目
 	NewRep生産用品目区分() Rep生産用品目区分
 }

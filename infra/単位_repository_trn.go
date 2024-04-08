@@ -6,8 +6,6 @@ import (
 	"techbookfest16-sample/domain/types"
 	"techbookfest16-sample/infra/dao"
 
-	"github.com/Moiterika/a"
-
 	"golang.org/x/xerrors"
 )
 
@@ -17,38 +15,27 @@ type repTrn単位 struct {
 	//objects.Rep単位
 }
 
-func (r *repTrn単位) init() (err error) {
-	r.rm.list単位, err = r.list()
+func (r *repTrn単位) init() error {
+	dt単位, err := r.rm.dm.NewDaoTrn単位().Dt()
 	if err != nil {
-		xerrors.Errorf(" :%w", err)
-		return
+		return xerrors.Errorf(" :%w", err)
 	}
-	r.rm.mapIDvs単位 = a.ToMap(r.rm.list単位, func(e *objects.Ent単位) dao.Id {
-		dr, _ := r.rm.dm.NewDaoTrn単位().GetByCode(e.Getコード)
-		return dr.FldID
-	})
-	r.rm.mapコードvs単位 = a.ToMap(r.rm.list単位, func(e *objects.Ent単位) types.Code単位 {
-		return e.Getコード
-	})
-	r.isLoaded = true
-	return
-}
-
-func (r *repTrn単位) list() (list []*objects.Ent単位, err error) {
-	dt単位, errDt := r.rm.dm.NewDaoTrn単位().Dt()
-	if errDt != nil {
-		err = xerrors.Errorf(" :%w", errDt)
-		return
-	}
-	list = make([]*objects.Ent単位, len(dt単位))
+	r.rm.list単位 = make([]*objects.Ent単位, len(dt単位))
 	for i, dr := range dt単位 {
-		e := &objects.Ent単位{
-			Getコード: dr.Fldコード,
-			Get名称:  dr.Fld名称,
+		e, err := objects.NewEnt単位(
+			dr.Fldコード,
+			dr.Fld名称,
+		)
+		if err != nil {
+			return xerrors.Errorf(" :%w", err)
 		}
-		list[i] = e
+
+		r.rm.list単位[i] = e
+		r.rm.mapIDvs単位[dr.FldID] = e
+		r.rm.mapコードvs単位[e.Getコード] = e
 	}
-	return
+	r.isLoaded = true
+	return nil
 }
 
 func (r *repTrn単位) List() ([]*objects.Ent単位, error) {
@@ -62,43 +49,37 @@ func (r *repTrn単位) List() ([]*objects.Ent単位, error) {
 	return r.rm.list単位, nil
 }
 
-func (r *repTrn単位) getBy(id dao.Id) (e *objects.Ent単位, err error) {
+func (r *repTrn単位) getBy(id dao.Id) (*objects.Ent単位, error) {
 	if !r.isLoaded {
-		err = r.init()
+		err := r.init()
 		if err != nil {
-			xerrors.Errorf(" :%w", err)
-			return
+			return nil, xerrors.Errorf(" :%w", err)
 		}
 	}
-	var ok bool
-	e, ok = r.rm.mapIDvs単位[id]
+	e, ok := r.rm.mapIDvs単位[id]
 	if !ok {
-		err = xerrors.Errorf("単位が見つかりません。単位ID=%s: %w", id, objects.ErrNotFound)
-		return
+		return nil, xerrors.Errorf("単位が見つかりません。単位ID=%s: %w", id, objects.ErrNotFound)
 	}
-	return
+	return e, nil
 }
 
-func (r *repTrn単位) GetBy(コード types.Code単位) (e *objects.Ent単位, err error) {
+func (r *repTrn単位) GetBy(コード types.Code単位) (*objects.Ent単位, error) {
 	if !r.isLoaded {
-		err = r.init()
+		err := r.init()
 		if err != nil {
-			xerrors.Errorf(" :%w", err)
-			return
+			return nil, xerrors.Errorf(" :%w", err)
 		}
 	}
-	var ok bool
-	e, ok = r.rm.mapコードvs単位[コード]
+	e, ok := r.rm.mapコードvs単位[コード]
 	if !ok {
-		err = xerrors.Errorf("単位が見つかりません。単位コード=%s: %w", コード, objects.ErrNotFound)
-		return
+		return nil, xerrors.Errorf("単位が見つかりません。単位コード=%s: %w", コード, objects.ErrNotFound)
 	}
-	return
+	return e, nil
 }
 
 func (r *repTrn単位) AddNew(e *objects.Ent単位) error {
 	// エンティティの責務ではなく、コレクション重複チェックはリポジトリーの責務とする
-	if _, err := r.GetBy(e.Getコード); !errors.Is(err, objects.ErrNotFound) {
+	if _, notFound := r.GetBy(e.Getコード); !errors.Is(notFound, objects.ErrNotFound) {
 		return xerrors.Errorf("単位がすでに存在します。単位コード=%s: %w", e.Getコード, objects.ErrAlreadyExists)
 	}
 
@@ -108,18 +89,17 @@ func (r *repTrn単位) AddNew(e *objects.Ent単位) error {
 }
 
 // TODO リソースの一括アップロードやイベント系で1行ずつロギングしない場合はMultiInsertを使う
-func (r *repTrn単位) Save(アップロード履歴ID types.No) (err error) {
+func (r *repTrn単位) Save(アップロード履歴ID types.No) error {
 	dao単位 := r.rm.dm.NewDaoTrn単位()
 	defer dao単位.Reset()
 	logger := newCmdTrnリソース変更履歴(r.rm.dm)
 
 	for _, e := range r.rm.list単位 {
-		if dr, errCode := dao単位.GetByCode(e.Getコード); !errors.Is(errCode, dao.NotFoundError) {
+		if dr, notFound := dao単位.GetByCode(e.Getコード); !errors.Is(notFound, dao.NotFoundError) {
 			dr.Import(e.Getコード, e.Get名称)
-			_, err = dao単位.UpdateBy(dr)
+			_, err := dao単位.UpdateBy(dr)
 			if err != nil {
-				err = xerrors.Errorf(": %w", err)
-				return
+				return xerrors.Errorf(": %w", err)
 			}
 			logger.Write(dr, アップロード履歴ID)
 		} else {
@@ -128,14 +108,13 @@ func (r *repTrn単位) Save(アップロード履歴ID types.No) (err error) {
 				Fld名称:  e.Get名称,
 				Ub:     dao.NewUb単位(),
 			}
-			err = dao単位.Insert(dr)
+			err := dao単位.Insert(dr)
 			if err != nil {
-				err = xerrors.Errorf(": %w", err)
-				return
+				return xerrors.Errorf(": %w", err)
 			}
 			logger.Write(dr, アップロード履歴ID)
 		}
 	}
 
-	return
+	return nil
 }
