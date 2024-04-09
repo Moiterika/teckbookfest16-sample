@@ -9,18 +9,18 @@ import (
 	"golang.org/x/xerrors"
 )
 
-type Srv単位登録 struct {
-	rep objects.Rep単位
+type Srv生産用品目区分登録 struct {
+	rep objects.Rep生産用品目区分
 }
 
-func NewSrv単位登録(rep objects.Rep単位) *Srv単位登録 {
-	return &Srv単位登録{
+func NewSrv生産用品目区分登録(rep objects.Rep生産用品目区分) *Srv生産用品目区分登録 {
+	return &Srv生産用品目区分登録{
 		rep: rep,
 	}
 }
 
-// Exec登録 は単位を新規登録または上書きします。
-func (s *Srv単位登録) Exec登録(アップロード履歴 types.No, e *objects.Ent単位) error {
+// Exec登録 は生産用品目区分を新規登録または上書きします。
+func (s *Srv生産用品目区分登録) Exec登録(アップロード履歴 types.No, e *objects.Ent生産用品目区分) error {
 	err := e.Validate()
 	if err != nil {
 		return fmt.Errorf("validate error: %w, %w", err, types.ErrArg)

@@ -11,7 +11,7 @@ import (
 	"techbookfest16-sample/infra"
 )
 
-func (mhs *myHttpServer) UseCase単位(w http.ResponseWriter, r *http.Request) {
+func (mhs *myHttpServer) UseCase生産用品目区分(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.Method, r.URL.Path, r.URL.RawPath)
 	if r.Method == http.MethodGet {
 		// TODO Transactionではなく、Dbを渡して参照だけすること（毎回、トランザクション貼りたくない。1つ前のコミットではできてたので、それを参照）
@@ -25,7 +25,7 @@ func (mhs *myHttpServer) UseCase単位(w http.ResponseWriter, r *http.Request) {
 
 		// 全件返却
 		if r.URL.Path == "" {
-			list, err := rm.NewRep単位().List()
+			list, err := rm.NewRep生産用品目区分().List()
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
@@ -39,9 +39,9 @@ func (mhs *myHttpServer) UseCase単位(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// 単位コードで1件取得して返却
-		単位コード := mhs.GetCode(r)
-		e, err := rm.NewRep単位().GetBy(types.Code単位(単位コード))
+		// コードで1件取得して返却
+		生産用品目区分コード := mhs.GetCode(r)
+		e, err := rm.NewRep生産用品目区分().GetBy(types.Code生産用品目区分(生産用品目区分コード))
 		if err != nil {
 			if errors.Is(err, types.ErrNotFound) {
 				http.Error(w, err.Error(), http.StatusNotFound)
@@ -72,15 +72,15 @@ func (mhs *myHttpServer) UseCase単位(w http.ResponseWriter, r *http.Request) {
 			trn.Commit()
 		}()
 
-		var 単位 objects.Ent単位
-		err = json.NewDecoder(r.Body).Decode(&単位)
+		var 生産用品目区分 objects.Ent生産用品目区分
+		err = json.NewDecoder(r.Body).Decode(&生産用品目区分)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
-		s := domain.NewSrv単位登録(infra.NewRepManagerWithTrn(trn).NewRep単位())
-		err = s.Exec登録(1, &単位) // アップロード履歴は今回の範囲外なので常に1とする
+		s := domain.NewSrv生産用品目区分登録(infra.NewRepManagerWithTrn(trn).NewRep生産用品目区分())
+		err = s.Exec登録(1, &生産用品目区分) // アップロード履歴は今回の範囲外なので常に1とする
 		if err != nil {
 			if errors.Is(err, types.ErrArg) {
 				http.Error(w, err.Error(), http.StatusBadRequest)

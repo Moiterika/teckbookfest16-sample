@@ -6,12 +6,11 @@ import (
 	"fmt"
 	"net/http"
 	"techbookfest16-sample/domain"
-	"techbookfest16-sample/domain/objects"
 	"techbookfest16-sample/domain/types"
 	"techbookfest16-sample/infra"
 )
 
-func (mhs *myHttpServer) UseCase単位(w http.ResponseWriter, r *http.Request) {
+func (mhs *myHttpServer) UseCase仕入品(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.Method, r.URL.Path, r.URL.RawPath)
 	if r.Method == http.MethodGet {
 		// TODO Transactionではなく、Dbを渡して参照だけすること（毎回、トランザクション貼りたくない。1つ前のコミットではできてたので、それを参照）
@@ -25,7 +24,7 @@ func (mhs *myHttpServer) UseCase単位(w http.ResponseWriter, r *http.Request) {
 
 		// 全件返却
 		if r.URL.Path == "" {
-			list, err := rm.NewRep単位().List()
+			list, err := rm.NewRep品目().Get仕入品一覧()
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
@@ -39,9 +38,9 @@ func (mhs *myHttpServer) UseCase単位(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// 単位コードで1件取得して返却
-		単位コード := mhs.GetCode(r)
-		e, err := rm.NewRep単位().GetBy(types.Code単位(単位コード))
+		// コードで1件取得して返却
+		品目コード := mhs.GetCode(r)
+		e, err := rm.NewRep品目().Get仕入品By(types.Code品目(品目コード))
 		if err != nil {
 			if errors.Is(err, types.ErrNotFound) {
 				http.Error(w, err.Error(), http.StatusNotFound)
@@ -72,15 +71,21 @@ func (mhs *myHttpServer) UseCase単位(w http.ResponseWriter, r *http.Request) {
 			trn.Commit()
 		}()
 
-		var 単位 objects.Ent単位
-		err = json.NewDecoder(r.Body).Decode(&単位)
+		var dr仕入品 Dto仕入品
+		err = json.NewDecoder(r.Body).Decode(&dr仕入品)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-
-		s := domain.NewSrv単位登録(infra.NewRepManagerWithTrn(trn).NewRep単位())
-		err = s.Exec登録(1, &単位) // アップロード履歴は今回の範囲外なので常に1とする
+		s := domain.NewSrv仕入品登録(infra.NewRepManagerWithTrn(trn))
+		err = s.Exec登録(
+			1, // アップロード履歴は今回の範囲外なので常に1とする
+			dr仕入品.Getコード,
+			dr仕入品.Get名称,
+			dr仕入品.Get基準単位コード,
+			dr仕入品.Get生産用品目区分コード,
+			dr仕入品.標準単価(),
+		)
 		if err != nil {
 			if errors.Is(err, types.ErrArg) {
 				http.Error(w, err.Error(), http.StatusBadRequest)
