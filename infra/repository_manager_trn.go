@@ -90,7 +90,7 @@ func (rm *repManagerTrn) NewRep品目() objects.Rep品目 {
 	}
 }
 
-// func (rm *repManagerTrn) NewRep受払() objects.Rep受払 {
+// func (rm *repManagerTrn) NewQry受払() objects.Qry受払 {
 // 	return &qryTrn受払{
 // 		rm: rm,
 // 	}

@@ -14,9 +14,8 @@ type Entログ struct {
 	Get内容   string    `json:"内容"`
 }
 
-func NewEntログ(No types.No, 登録日時 time.Time, 区分 Enumログ区分, 内容 string) (*Entログ, error) {
+func NewEntログ(登録日時 time.Time, 区分 Enumログ区分, 内容 string) (*Entログ, error) {
 	e := &Entログ{
-		GetNo:   No,
 		Get内容:   内容,
 		Get区分:   区分,
 		Get登録日時: 登録日時,

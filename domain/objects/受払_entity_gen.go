@@ -17,9 +17,8 @@ type Ent受払 struct {
 	Get基準数量  types.Inventory `json:"基準数量"`
 }
 
-func NewEnt受払(No types.No, 登録日時 time.Time, 計上月 time.Time, 受払区分 Enum受払区分, 赤伝フラグ bool, 品目 *Ent品目, 基準数量 types.Inventory) (*Ent受払, error) {
+func NewEnt受払(登録日時 time.Time, 計上月 time.Time, 受払区分 Enum受払区分, 赤伝フラグ bool, 品目 *Ent品目, 基準数量 types.Inventory) (*Ent受払, error) {
 	e := &Ent受払{
-		GetNo:    No,
 		Get受払区分:  受払区分,
 		Get品目:    品目,
 		Get基準数量:  基準数量,

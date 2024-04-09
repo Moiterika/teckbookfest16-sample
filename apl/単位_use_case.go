@@ -64,7 +64,13 @@ func (mhs *myHttpServer) UseCase単位(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		defer trn.Commit()
+		defer func() {
+			if err != nil {
+				trn.Rollback()
+				return
+			}
+			trn.Commit()
+		}()
 
 		var 単位 objects.Ent単位
 		err = json.NewDecoder(r.Body).Decode(&単位)

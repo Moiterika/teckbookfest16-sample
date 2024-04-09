@@ -15,9 +15,8 @@ type Entリソース変更履歴 struct {
 	Get変更内容  []byte    `json:"変更内容"`
 }
 
-func NewEntリソース変更履歴(No types.No, 登録日時 time.Time, リソース名 string, 変更区分 string, 変更内容 []byte) (*Entリソース変更履歴, error) {
+func NewEntリソース変更履歴(登録日時 time.Time, リソース名 string, 変更区分 string, 変更内容 []byte) (*Entリソース変更履歴, error) {
 	e := &Entリソース変更履歴{
-		GetNo:    No,
 		Getリソース名: リソース名,
 		Get変更内容:  変更内容,
 		Get変更区分:  変更区分,
