@@ -23,7 +23,7 @@ func NewSrv単位登録(rm objects.RepManager) *Srv単位登録 {
 func (s *Srv単位登録) Exec登録(アップロード履歴 types.No, e *objects.Ent単位) (err error) {
 	err = e.Validate()
 	if err != nil {
-		err = fmt.Errorf("validate error: %w, %w", err, objects.ErrArg)
+		err = fmt.Errorf("validate error: %w, %w", err, types.ErrArg)
 		return
 	}
 
@@ -31,7 +31,7 @@ func (s *Srv単位登録) Exec登録(アップロード履歴 types.No, e *objec
 	if 既存単位, err既存単位 := rep.GetBy(e.Getコード); err既存単位 == nil {
 		既存単位.Getコード = e.Getコード
 		既存単位.Get名称 = e.Get名称
-	} else if errors.Is(err既存単位, objects.ErrNotFound) {
+	} else if errors.Is(err既存単位, types.ErrNotFound) {
 		rep.AddNew(e)
 	} else {
 		err = xerrors.Errorf(" :%w", err既存単位)

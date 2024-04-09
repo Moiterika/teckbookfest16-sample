@@ -9,6 +9,7 @@ import (
 	xerrors "golang.org/x/xerrors"
 	"strconv"
 	"strings"
+	types "techbookfest16-sample/domain/types"
 )
 
 type daoDbログ画面操作時 struct {
@@ -61,7 +62,7 @@ func (d daoDbログ画面操作時) GetBy(id Id) (dr *Dtoログ画面操作時, 
 	var ok bool
 	dr, ok = d.dm.mapIDvsDrログ画面操作時[id]
 	if !ok {
-		err = xerrors.Errorf("ログ_画面操作時が見つかりません。No=%d: %w", id, NotFoundError)
+		err = xerrors.Errorf("ログ_画面操作時が見つかりません。No=%d: %w", id, types.ErrNotFound)
 		return
 	}
 	return
@@ -153,7 +154,7 @@ func (d daoDbログ画面操作時) MinW(fld fldログ画面操作時, wb Wbロ�
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	min = x.Int64
@@ -178,7 +179,7 @@ func (d daoDbログ画面操作時) MaxW(fld fldログ画面操作時, wb Wbロ�
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	max = x.Int64

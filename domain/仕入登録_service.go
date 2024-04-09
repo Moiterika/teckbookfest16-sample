@@ -63,7 +63,7 @@ func (s *Srv仕入登録) Exec登録(
 
 	err := e仕入.Validate()
 	if err != nil {
-		return fmt.Errorf("validate error: %w, %w", err, objects.ErrArg)
+		return fmt.Errorf("validate error: %w, %w", err, types.ErrArg)
 	}
 	s.cmd.Entry(e仕入)
 	return nil

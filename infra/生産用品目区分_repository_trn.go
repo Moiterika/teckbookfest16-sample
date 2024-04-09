@@ -59,7 +59,7 @@ func (r *repTrn生産用品目区分) getBy(id dao.Id) (*objects.Ent生産用品
 	}
 	e, ok := r.rm.mapIDvs生産用品目区分[id]
 	if !ok {
-		return nil, xerrors.Errorf("生産用品目区分が見つかりません。生産用品目区分ID=%s: %w", id, objects.ErrNotFound)
+		return nil, xerrors.Errorf("生産用品目区分が見つかりません。生産用品目区分ID=%s: %w", id, types.ErrNotFound)
 	}
 	return e, nil
 }
@@ -73,15 +73,15 @@ func (r *repTrn生産用品目区分) GetBy(コード types.Code生産用品目�
 	}
 	e, ok := r.rm.mapコードvs生産用品目区分[コード]
 	if !ok {
-		return nil, xerrors.Errorf("生産用品目区分が見つかりません。生産用品目区分コード=%s: %w", コード, objects.ErrNotFound)
+		return nil, xerrors.Errorf("生産用品目区分が見つかりません。生産用品目区分コード=%s: %w", コード, types.ErrNotFound)
 	}
 	return e, nil
 }
 
 func (r *repTrn生産用品目区分) AddNew(e *objects.Ent生産用品目区分) error {
 	// エンティティの責務ではなく、コレクション重複チェックはリポジトリーの責務とする
-	if _, notFound := r.GetBy(e.Getコード); !errors.Is(notFound, objects.ErrNotFound) {
-		return xerrors.Errorf("生産用品目区分がすでに存在します。生産用品目区分コード=%s: %w", e.Getコード, objects.ErrAlreadyExists)
+	if _, notFound := r.GetBy(e.Getコード); !errors.Is(notFound, types.ErrNotFound) {
+		return xerrors.Errorf("生産用品目区分がすでに存在します。生産用品目区分コード=%s: %w", e.Getコード, types.ErrAlreadyExists)
 	}
 
 	r.rm.list生産用品目区分 = append(r.rm.list生産用品目区分, e)
@@ -96,7 +96,7 @@ func (r *repTrn生産用品目区分) Save(アップロード履歴ID types.No) 
 	logger := newCmdTrnリソース変更履歴(r.rm.dm)
 
 	for _, e := range r.rm.list生産用品目区分 {
-		if dr, notFound := dao生産用品目区分.GetByCode(e.Getコード); !errors.Is(notFound, dao.NotFoundError) {
+		if dr, notFound := dao生産用品目区分.GetByCode(e.Getコード); !errors.Is(notFound, types.ErrNotFound) {
 			dr.Import(e.Getコード, e.Get名称, e.Get何かのフラグ1, e.Get何かのフラグ2)
 			_, err = dao生産用品目区分.UpdateBy(dr)
 			if err != nil {

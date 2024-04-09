@@ -78,7 +78,7 @@ func (r *qryTrn受払) GetBy(no types.No) (*objects.Ent受払, error) {
 	}
 	e, ok := r.rm.mapNovs受払[no]
 	if !ok {
-		return nil, xerrors.Errorf("受払が見つかりません。受払No=%d: %w", no, objects.ErrNotFound)
+		return nil, xerrors.Errorf("受払が見つかりません。受払No=%d: %w", no, types.ErrNotFound)
 	}
 	return e, nil
 }

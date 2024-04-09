@@ -68,7 +68,7 @@ func (d daoTrn単位) GetBy(id Id) (dr *Dto単位, err error) {
 	var ok bool
 	dr, ok = d.dm.mapIDvsDr単位[id]
 	if !ok {
-		err = xerrors.Errorf("単位が見つかりません。ID=%d: %w", id, NotFoundError)
+		err = xerrors.Errorf("単位が見つかりません。ID=%d: %w", id, types.ErrNotFound)
 		return
 	}
 	return
@@ -84,7 +84,7 @@ func (d daoTrn単位) GetByCode(コード types.Code単位) (dr *Dto単位, err 
 	var ok bool
 	dr, ok = d.dm.mapコードvsDr単位[コード]
 	if !ok {
-		err = xerrors.Errorf("単位が見つかりません。コード=%s: %w", コード, NotFoundError)
+		err = xerrors.Errorf("単位が見つかりません。コード=%s: %w", コード, types.ErrNotFound)
 		return
 	}
 	return
@@ -176,7 +176,7 @@ func (d daoTrn単位) MinW(fld fld単位, wb Wb単位) (min int64, err error) {
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	min = x.Int64
@@ -201,7 +201,7 @@ func (d daoTrn単位) MaxW(fld fld単位, wb Wb単位) (max int64, err error) {
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	max = x.Int64

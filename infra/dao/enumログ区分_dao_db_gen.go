@@ -7,6 +7,7 @@ import (
 	"fmt"
 	xerrors "golang.org/x/xerrors"
 	"strconv"
+	types "techbookfest16-sample/domain/types"
 )
 
 type daoDbEnumログ区分 struct {
@@ -132,7 +133,7 @@ func (d daoDbEnumログ区分) MinW(fld fldEnumログ区分, wb WbEnumログ区�
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	min = x.Int64
@@ -157,7 +158,7 @@ func (d daoDbEnumログ区分) MaxW(fld fldEnumログ区分, wb WbEnumログ区�
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	max = x.Int64

@@ -2,11 +2,6 @@
 
 package dao
 
-import "errors"
-
-var NotFoundError error = errors.New("Not Found")
-var AlreadyExistsError error = errors.New("Already Exists")
-
 const sqlValue2 string = "($%d,$%d)"
 const sqlValue3 string = "($%d,$%d,$%d)"
 const sqlValue4 string = "($%d,$%d,$%d,$%d)"

@@ -58,7 +58,7 @@ func (r *repTrn単位) getBy(id dao.Id) (*objects.Ent単位, error) {
 	}
 	e, ok := r.rm.mapIDvs単位[id]
 	if !ok {
-		return nil, xerrors.Errorf("単位が見つかりません。単位ID=%s: %w", id, objects.ErrNotFound)
+		return nil, xerrors.Errorf("単位が見つかりません。単位ID=%s: %w", id, types.ErrNotFound)
 	}
 	return e, nil
 }
@@ -72,15 +72,15 @@ func (r *repTrn単位) GetBy(コード types.Code単位) (*objects.Ent単位, er
 	}
 	e, ok := r.rm.mapコードvs単位[コード]
 	if !ok {
-		return nil, xerrors.Errorf("単位が見つかりません。単位コード=%s: %w", コード, objects.ErrNotFound)
+		return nil, xerrors.Errorf("単位が見つかりません。単位コード=%s: %w", コード, types.ErrNotFound)
 	}
 	return e, nil
 }
 
 func (r *repTrn単位) AddNew(e *objects.Ent単位) error {
 	// エンティティの責務ではなく、コレクション重複チェックはリポジトリーの責務とする
-	if _, notFound := r.GetBy(e.Getコード); !errors.Is(notFound, objects.ErrNotFound) {
-		return xerrors.Errorf("単位がすでに存在します。単位コード=%s: %w", e.Getコード, objects.ErrAlreadyExists)
+	if _, notFound := r.GetBy(e.Getコード); !errors.Is(notFound, types.ErrNotFound) {
+		return xerrors.Errorf("単位がすでに存在します。単位コード=%s: %w", e.Getコード, types.ErrAlreadyExists)
 	}
 
 	r.rm.list単位 = append(r.rm.list単位, e)
@@ -95,7 +95,7 @@ func (r *repTrn単位) Save(アップロード履歴ID types.No) error {
 	logger := newCmdTrnリソース変更履歴(r.rm.dm)
 
 	for _, e := range r.rm.list単位 {
-		if dr, notFound := dao単位.GetByCode(e.Getコード); !errors.Is(notFound, dao.NotFoundError) {
+		if dr, notFound := dao単位.GetByCode(e.Getコード); !errors.Is(notFound, types.ErrNotFound) {
 			dr.Import(e.Getコード, e.Get名称)
 			_, err := dao単位.UpdateBy(dr)
 			if err != nil {

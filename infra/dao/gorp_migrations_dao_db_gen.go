@@ -7,6 +7,7 @@ import (
 	"fmt"
 	xerrors "golang.org/x/xerrors"
 	"strconv"
+	types "techbookfest16-sample/domain/types"
 )
 
 type daoDbgorpmigrations struct {
@@ -132,7 +133,7 @@ func (d daoDbgorpmigrations) MinW(fld fldgorpmigrations, wb Wbgorpmigrations) (m
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	min = x.Int64
@@ -157,7 +158,7 @@ func (d daoDbgorpmigrations) MaxW(fld fldgorpmigrations, wb Wbgorpmigrations) (m
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	max = x.Int64

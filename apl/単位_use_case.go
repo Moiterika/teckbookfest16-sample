@@ -43,7 +43,7 @@ func (mhs *myHttpServer) UseCase単位(w http.ResponseWriter, r *http.Request) {
 		単位コード := mhs.GetCode(r)
 		e, err := rm.NewRep単位().GetBy(types.Code単位(単位コード))
 		if err != nil {
-			if errors.Is(err, objects.ErrNotFound) {
+			if errors.Is(err, types.ErrNotFound) {
 				http.Error(w, err.Error(), http.StatusNotFound)
 				return
 			} else {
@@ -82,7 +82,7 @@ func (mhs *myHttpServer) UseCase単位(w http.ResponseWriter, r *http.Request) {
 		s := domain.NewSrv単位登録(infra.NewRepManagerWithTrn(trn))
 		err = s.Exec登録(1, &単位) // アップロード履歴は今回の範囲外なので常に1とする
 		if err != nil {
-			if errors.Is(err, objects.ErrArg) {
+			if errors.Is(err, types.ErrArg) {
 				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}

@@ -68,7 +68,7 @@ func (d daoTrn生産用品目区分) GetBy(id Id) (dr *Dto生産用品目区分,
 	var ok bool
 	dr, ok = d.dm.mapIDvsDr生産用品目区分[id]
 	if !ok {
-		err = xerrors.Errorf("生産用品目区分が見つかりません。ID=%d: %w", id, NotFoundError)
+		err = xerrors.Errorf("生産用品目区分が見つかりません。ID=%d: %w", id, types.ErrNotFound)
 		return
 	}
 	return
@@ -84,7 +84,7 @@ func (d daoTrn生産用品目区分) GetByCode(コード types.Code生産用品�
 	var ok bool
 	dr, ok = d.dm.mapコードvsDr生産用品目区分[コード]
 	if !ok {
-		err = xerrors.Errorf("生産用品目区分が見つかりません。コード=%s: %w", コード, NotFoundError)
+		err = xerrors.Errorf("生産用品目区分が見つかりません。コード=%s: %w", コード, types.ErrNotFound)
 		return
 	}
 	return
@@ -176,7 +176,7 @@ func (d daoTrn生産用品目区分) MinW(fld fld生産用品目区分, wb Wb生
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	min = x.Int64
@@ -201,7 +201,7 @@ func (d daoTrn生産用品目区分) MaxW(fld fld生産用品目区分, wb Wb生
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	max = x.Int64

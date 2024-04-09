@@ -60,7 +60,7 @@ func (r *repTrn品目) init() error {
 		// 理由：この時点では!r.isLoadedなので、rep品目.getByを呼び出すと無限ループするため。
 		e品目, ok := r.rm.mapIDvs品目[dr.FldID]
 		if !ok {
-			return xerrors.Errorf("品目が見つかりません。品目ID=%d: %w", dr.FldID, objects.ErrNotFound)
+			return xerrors.Errorf("品目が見つかりません。品目ID=%d: %w", dr.FldID, types.ErrNotFound)
 		}
 		e単位, err := rep単位.getBy(dr.Fld標準単価単位ID)
 		if err != nil {
@@ -109,7 +109,7 @@ func (r *repTrn品目) getBy(id dao.Id) (*objects.Ent品目, error) {
 	}
 	e, ok := r.rm.mapIDvs品目[id]
 	if !ok {
-		return nil, xerrors.Errorf("品目が見つかりません。品目ID=%d: %w", id, objects.ErrNotFound)
+		return nil, xerrors.Errorf("品目が見つかりません。品目ID=%d: %w", id, types.ErrNotFound)
 	}
 	return e, nil
 }
@@ -123,7 +123,7 @@ func (r *repTrn品目) Get品目By(コード types.Code品目) (*objects.Ent品�
 	}
 	e, ok := r.rm.mapコードvs品目[コード]
 	if !ok {
-		return nil, xerrors.Errorf("品目が見つかりません。品目コード=%s: %w", コード, objects.ErrNotFound)
+		return nil, xerrors.Errorf("品目が見つかりません。品目コード=%s: %w", コード, types.ErrNotFound)
 	}
 	return e, nil
 }
@@ -137,18 +137,18 @@ func (r *repTrn品目) Get仕入品By(コード types.Code品目) (*objects.Ent�
 	}
 	e, ok := r.rm.mapコードvs仕入品[コード]
 	if !ok {
-		return nil, xerrors.Errorf("品目が見つかりません。品目コード=%s: %w", コード, objects.ErrNotFound)
+		return nil, xerrors.Errorf("品目が見つかりません。品目コード=%s: %w", コード, types.ErrNotFound)
 	}
 	return e, nil
 }
 
 func (r *repTrn品目) AddNew仕入品(e *objects.Ent品目仕入品) error {
 	// エンティティの責務ではなく、コレクション重複チェックはリポジトリーの責務とする
-	if _, err := r.Get仕入品By(e.Getコード); !errors.Is(err, objects.ErrNotFound) {
-		return xerrors.Errorf("仕入品がすでに存在します。品目コード=%s: %w", e.Getコード, objects.ErrAlreadyExists)
+	if _, err := r.Get仕入品By(e.Getコード); !errors.Is(err, types.ErrNotFound) {
+		return xerrors.Errorf("仕入品がすでに存在します。品目コード=%s: %w", e.Getコード, types.ErrAlreadyExists)
 	}
 
-	if _, err := r.Get品目By(e.Getコード); errors.Is(err, objects.ErrNotFound) {
+	if _, err := r.Get品目By(e.Getコード); errors.Is(err, types.ErrNotFound) {
 		r.rm.list品目 = append(r.rm.list品目, e.Ent品目)
 		// r.品目tempId--
 		// r.rm.mapIDvs品目[r.品目tempId] = e.Ent品目
@@ -183,7 +183,7 @@ func (r *repTrn品目) Save(アップロード履歴ID types.No) error {
 			return xerrors.Errorf("品目コード=%s: %w", e.Getコード, err)
 		}
 
-		if dr, notFound := dao品目.GetByCode(e.Getコード); errors.Is(notFound, dao.NotFoundError) {
+		if dr, notFound := dao品目.GetByCode(e.Getコード); errors.Is(notFound, types.ErrNotFound) {
 			dr := &dao.Dto品目{
 				//FldID:        0,
 				Fldコード:       e.Getコード,
@@ -216,7 +216,7 @@ func (r *repTrn品目) Save(アップロード履歴ID types.No) error {
 		if err != nil {
 			return xerrors.Errorf("品目コード=%s: %w", e.Getコード, err)
 		}
-		if dr, notFound := dao仕入品.GetBy(dr品目.FldID); errors.Is(notFound, dao.NotFoundError) {
+		if dr, notFound := dao仕入品.GetBy(dr品目.FldID); errors.Is(notFound, types.ErrNotFound) {
 			dr := &dao.Dto品目仕入品{
 				//FldID:       0,
 				Fld標準単価:     e.Get標準単価.Amt(),

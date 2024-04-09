@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"techbookfest16-sample/domain"
-	"techbookfest16-sample/domain/objects"
+	"techbookfest16-sample/domain/types"
 	"techbookfest16-sample/infra"
 )
 
@@ -49,7 +49,7 @@ func (mhs *myHttpServer) UseCase仕入(w http.ResponseWriter, r *http.Request) {
 		}
 		e, err := q.GetBy(受払No)
 		if err != nil {
-			if errors.Is(err, objects.ErrNotFound) {
+			if errors.Is(err, types.ErrNotFound) {
 				http.Error(w, err.Error(), http.StatusNotFound)
 				return
 			} else {
@@ -102,7 +102,7 @@ func (mhs *myHttpServer) UseCase仕入(w http.ResponseWriter, r *http.Request) {
 			仕入.仕入単価(),   // 仕入単価 types.Price,
 		)
 		if err != nil {
-			if errors.Is(err, objects.ErrArg) {
+			if errors.Is(err, types.ErrArg) {
 				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}

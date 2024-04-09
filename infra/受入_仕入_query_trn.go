@@ -31,7 +31,7 @@ func (r *qryTrn受払仕入) init() error {
 	}
 	for i, dr := range dt仕入 {
 		e単位, err := rep単位.getBy(dr.Fld仕入単位ID)
-		if err != nil && errors.Is(err, objects.ErrNotFound) {
+		if err != nil && errors.Is(err, types.ErrNotFound) {
 			return xerrors.Errorf(" :%w", err)
 		}
 		e受払, notFound := q.GetBy(types.No(dr.FldNo))
@@ -78,7 +78,7 @@ func (r *qryTrn受払仕入) GetBy(no types.No) (*objects.Ent受払仕入, error
 	}
 	e, ok := r.rm.mapNovs仕入[no]
 	if !ok {
-		return nil, xerrors.Errorf("仕入が見つかりません。受払No=%d: %w", no, objects.ErrNotFound)
+		return nil, xerrors.Errorf("仕入が見つかりません。受払No=%d: %w", no, types.ErrNotFound)
 	}
 	return e, nil
 }

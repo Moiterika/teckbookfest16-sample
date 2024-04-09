@@ -7,6 +7,7 @@ import (
 	"fmt"
 	xerrors "golang.org/x/xerrors"
 	"strconv"
+	types "techbookfest16-sample/domain/types"
 )
 
 type daoTrnEnum受払区分 struct {
@@ -132,7 +133,7 @@ func (d daoTrnEnum受払区分) MinW(fld fldEnum受払区分, wb WbEnum受払区
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	min = x.Int64
@@ -157,7 +158,7 @@ func (d daoTrnEnum受払区分) MaxW(fld fldEnum受払区分, wb WbEnum受払区
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	max = x.Int64

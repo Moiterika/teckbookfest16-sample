@@ -9,6 +9,7 @@ import (
 	xerrors "golang.org/x/xerrors"
 	"strconv"
 	"strings"
+	types "techbookfest16-sample/domain/types"
 )
 
 type daoDbリソース変更履歴 struct {
@@ -61,7 +62,7 @@ func (d daoDbリソース変更履歴) GetBy(id Id) (dr *Dtoリソース変更�
 	var ok bool
 	dr, ok = d.dm.mapIDvsDrリソース変更履歴[id]
 	if !ok {
-		err = xerrors.Errorf("リソース変更履歴が見つかりません。No=%d: %w", id, NotFoundError)
+		err = xerrors.Errorf("リソース変更履歴が見つかりません。No=%d: %w", id, types.ErrNotFound)
 		return
 	}
 	return
@@ -153,7 +154,7 @@ func (d daoDbリソース変更履歴) MinW(fld fldリソース変更履歴, wb 
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	min = x.Int64
@@ -178,7 +179,7 @@ func (d daoDbリソース変更履歴) MaxW(fld fldリソース変更履歴, wb 
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	max = x.Int64

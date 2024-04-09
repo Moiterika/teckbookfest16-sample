@@ -9,6 +9,7 @@ import (
 	xerrors "golang.org/x/xerrors"
 	"strconv"
 	"strings"
+	types "techbookfest16-sample/domain/types"
 )
 
 type daoTrnログアップロード時 struct {
@@ -61,7 +62,7 @@ func (d daoTrnログアップロード時) GetBy(id Id) (dr *Dtoログアップ�
 	var ok bool
 	dr, ok = d.dm.mapIDvsDrログアップロード時[id]
 	if !ok {
-		err = xerrors.Errorf("ログ_アップロード時が見つかりません。No=%d: %w", id, NotFoundError)
+		err = xerrors.Errorf("ログ_アップロード時が見つかりません。No=%d: %w", id, types.ErrNotFound)
 		return
 	}
 	return
@@ -153,7 +154,7 @@ func (d daoTrnログアップロード時) MinW(fld fldログアップロード�
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	min = x.Int64
@@ -178,7 +179,7 @@ func (d daoTrnログアップロード時) MaxW(fld fldログアップロード�
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	max = x.Int64

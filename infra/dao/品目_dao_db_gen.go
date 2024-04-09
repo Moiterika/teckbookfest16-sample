@@ -68,7 +68,7 @@ func (d daoDb品目) GetBy(id Id) (dr *Dto品目, err error) {
 	var ok bool
 	dr, ok = d.dm.mapIDvsDr品目[id]
 	if !ok {
-		err = xerrors.Errorf("品目が見つかりません。ID=%d: %w", id, NotFoundError)
+		err = xerrors.Errorf("品目が見つかりません。ID=%d: %w", id, types.ErrNotFound)
 		return
 	}
 	return
@@ -84,7 +84,7 @@ func (d daoDb品目) GetByCode(コード types.Code品目) (dr *Dto品目, err e
 	var ok bool
 	dr, ok = d.dm.mapコードvsDr品目[コード]
 	if !ok {
-		err = xerrors.Errorf("品目が見つかりません。コード=%s: %w", コード, NotFoundError)
+		err = xerrors.Errorf("品目が見つかりません。コード=%s: %w", コード, types.ErrNotFound)
 		return
 	}
 	return
@@ -176,7 +176,7 @@ func (d daoDb品目) MinW(fld fld品目, wb Wb品目) (min int64, err error) {
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	min = x.Int64
@@ -201,7 +201,7 @@ func (d daoDb品目) MaxW(fld fld品目, wb Wb品目) (max int64, err error) {
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	max = x.Int64

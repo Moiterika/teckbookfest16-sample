@@ -9,6 +9,7 @@ import (
 	xerrors "golang.org/x/xerrors"
 	"strconv"
 	"strings"
+	types "techbookfest16-sample/domain/types"
 )
 
 type daoDb受払仕入 struct {
@@ -61,7 +62,7 @@ func (d daoDb受払仕入) GetBy(id Id) (dr *Dto受払仕入, err error) {
 	var ok bool
 	dr, ok = d.dm.mapIDvsDr受払仕入[id]
 	if !ok {
-		err = xerrors.Errorf("受払_仕入が見つかりません。No=%d: %w", id, NotFoundError)
+		err = xerrors.Errorf("受払_仕入が見つかりません。No=%d: %w", id, types.ErrNotFound)
 		return
 	}
 	return
@@ -153,7 +154,7 @@ func (d daoDb受払仕入) MinW(fld fld受払仕入, wb Wb受払仕入) (min int
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	min = x.Int64
@@ -178,7 +179,7 @@ func (d daoDb受払仕入) MaxW(fld fld受払仕入, wb Wb受払仕入) (max int
 		return
 	}
 	if !x.Valid {
-		err = xerrors.Errorf(": %w", NotFoundError)
+		err = xerrors.Errorf(": %w", types.ErrNotFound)
 		return
 	}
 	max = x.Int64
