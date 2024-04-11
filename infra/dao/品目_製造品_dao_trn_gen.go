@@ -70,10 +70,10 @@ func (d daoTrn品目製造品) GetBy(id Id) (dr *Dto品目製造品, err error) 
 func (d daoTrn品目製造品) SelectAll() ([]*Dto品目製造品, error) {
 	sql := fmt.Sprintf(sqlSelect品目製造品, "")
 	rows, err := d.trn.Query(sql)
-	defer rows.Close()
 	if err != nil {
 		return nil, xerrors.Errorf("sql=%s: %w", sql, err)
 	}
+	defer rows.Close()
 	var dt []*Dto品目製造品
 	for rows.Next() {
 		var dr Dto品目製造品
@@ -93,10 +93,10 @@ func (d daoTrn品目製造品) SelectW(wb Wb品目製造品) ([]*Dto品目製造
 	if exists {
 		sql := fmt.Sprintf(sqlSelect品目製造品, where.String())
 		rows, err := d.trn.Query(sql, prms...)
-		defer rows.Close()
 		if err != nil {
 			return nil, xerrors.Errorf("sql=%s, args=%v: %w", sql, prms, err)
 		}
+		defer rows.Close()
 		var dt []*Dto品目製造品
 		for rows.Next() {
 			var dr Dto品目製造品

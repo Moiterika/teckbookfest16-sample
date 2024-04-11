@@ -49,10 +49,10 @@ func (d daoTrngorpmigrations) Dt() ([]*Dtogorpmigrations, error) {
 func (d daoTrngorpmigrations) SelectAll() ([]*Dtogorpmigrations, error) {
 	sql := fmt.Sprintf(sqlSelectgorpmigrations, "")
 	rows, err := d.trn.Query(sql)
-	defer rows.Close()
 	if err != nil {
 		return nil, xerrors.Errorf("sql=%s: %w", sql, err)
 	}
+	defer rows.Close()
 	var dt []*Dtogorpmigrations
 	for rows.Next() {
 		var dr Dtogorpmigrations
@@ -72,10 +72,10 @@ func (d daoTrngorpmigrations) SelectW(wb Wbgorpmigrations) ([]*Dtogorpmigrations
 	if exists {
 		sql := fmt.Sprintf(sqlSelectgorpmigrations, where.String())
 		rows, err := d.trn.Query(sql, prms...)
-		defer rows.Close()
 		if err != nil {
 			return nil, xerrors.Errorf("sql=%s, args=%v: %w", sql, prms, err)
 		}
+		defer rows.Close()
 		var dt []*Dtogorpmigrations
 		for rows.Next() {
 			var dr Dtogorpmigrations

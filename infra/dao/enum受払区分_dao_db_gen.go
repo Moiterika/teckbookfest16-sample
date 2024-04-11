@@ -49,10 +49,10 @@ func (d daoDbEnum受払区分) Dt() ([]*DtoEnum受払区分, error) {
 func (d daoDbEnum受払区分) SelectAll() ([]*DtoEnum受払区分, error) {
 	sql := fmt.Sprintf(sqlSelectEnum受払区分, "")
 	rows, err := d.db.Query(sql)
-	defer rows.Close()
 	if err != nil {
 		return nil, xerrors.Errorf("sql=%s: %w", sql, err)
 	}
+	defer rows.Close()
 	var dt []*DtoEnum受払区分
 	for rows.Next() {
 		var dr DtoEnum受払区分
@@ -72,10 +72,10 @@ func (d daoDbEnum受払区分) SelectW(wb WbEnum受払区分) ([]*DtoEnum受払�
 	if exists {
 		sql := fmt.Sprintf(sqlSelectEnum受払区分, where.String())
 		rows, err := d.db.Query(sql, prms...)
-		defer rows.Close()
 		if err != nil {
 			return nil, xerrors.Errorf("sql=%s, args=%v: %w", sql, prms, err)
 		}
+		defer rows.Close()
 		var dt []*DtoEnum受払区分
 		for rows.Next() {
 			var dr DtoEnum受払区分

@@ -70,10 +70,10 @@ func (d daoTrn受払製造実績) GetBy(id Id) (dr *Dto受払製造実績, err e
 func (d daoTrn受払製造実績) SelectAll() ([]*Dto受払製造実績, error) {
 	sql := fmt.Sprintf(sqlSelect受払製造実績, "")
 	rows, err := d.trn.Query(sql)
-	defer rows.Close()
 	if err != nil {
 		return nil, xerrors.Errorf("sql=%s: %w", sql, err)
 	}
+	defer rows.Close()
 	var dt []*Dto受払製造実績
 	for rows.Next() {
 		var dr Dto受払製造実績
@@ -93,10 +93,10 @@ func (d daoTrn受払製造実績) SelectW(wb Wb受払製造実績) ([]*Dto受払
 	if exists {
 		sql := fmt.Sprintf(sqlSelect受払製造実績, where.String())
 		rows, err := d.trn.Query(sql, prms...)
-		defer rows.Close()
 		if err != nil {
 			return nil, xerrors.Errorf("sql=%s, args=%v: %w", sql, prms, err)
 		}
+		defer rows.Close()
 		var dt []*Dto受払製造実績
 		for rows.Next() {
 			var dr Dto受払製造実績

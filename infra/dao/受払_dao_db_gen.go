@@ -70,10 +70,10 @@ func (d daoDb受払) GetBy(id Id) (dr *Dto受払, err error) {
 func (d daoDb受払) SelectAll() ([]*Dto受払, error) {
 	sql := fmt.Sprintf(sqlSelect受払, "")
 	rows, err := d.db.Query(sql)
-	defer rows.Close()
 	if err != nil {
 		return nil, xerrors.Errorf("sql=%s: %w", sql, err)
 	}
+	defer rows.Close()
 	var dt []*Dto受払
 	for rows.Next() {
 		var dr Dto受払
@@ -93,10 +93,10 @@ func (d daoDb受払) SelectW(wb Wb受払) ([]*Dto受払, error) {
 	if exists {
 		sql := fmt.Sprintf(sqlSelect受払, where.String())
 		rows, err := d.db.Query(sql, prms...)
-		defer rows.Close()
 		if err != nil {
 			return nil, xerrors.Errorf("sql=%s, args=%v: %w", sql, prms, err)
 		}
+		defer rows.Close()
 		var dt []*Dto受払
 		for rows.Next() {
 			var dr Dto受払

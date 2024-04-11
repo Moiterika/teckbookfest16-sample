@@ -70,10 +70,10 @@ func (d daoTrnログ画面操作時) GetBy(id Id) (dr *Dtoログ画面操作時,
 func (d daoTrnログ画面操作時) SelectAll() ([]*Dtoログ画面操作時, error) {
 	sql := fmt.Sprintf(sqlSelectログ画面操作時, "")
 	rows, err := d.trn.Query(sql)
-	defer rows.Close()
 	if err != nil {
 		return nil, xerrors.Errorf("sql=%s: %w", sql, err)
 	}
+	defer rows.Close()
 	var dt []*Dtoログ画面操作時
 	for rows.Next() {
 		var dr Dtoログ画面操作時
@@ -93,10 +93,10 @@ func (d daoTrnログ画面操作時) SelectW(wb Wbログ画面操作時) ([]*Dto
 	if exists {
 		sql := fmt.Sprintf(sqlSelectログ画面操作時, where.String())
 		rows, err := d.trn.Query(sql, prms...)
-		defer rows.Close()
 		if err != nil {
 			return nil, xerrors.Errorf("sql=%s, args=%v: %w", sql, prms, err)
 		}
+		defer rows.Close()
 		var dt []*Dtoログ画面操作時
 		for rows.Next() {
 			var dr Dtoログ画面操作時

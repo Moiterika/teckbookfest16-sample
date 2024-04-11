@@ -70,10 +70,10 @@ func (d daoTrnログ) GetBy(id Id) (dr *Dtoログ, err error) {
 func (d daoTrnログ) SelectAll() ([]*Dtoログ, error) {
 	sql := fmt.Sprintf(sqlSelectログ, "")
 	rows, err := d.trn.Query(sql)
-	defer rows.Close()
 	if err != nil {
 		return nil, xerrors.Errorf("sql=%s: %w", sql, err)
 	}
+	defer rows.Close()
 	var dt []*Dtoログ
 	for rows.Next() {
 		var dr Dtoログ
@@ -93,10 +93,10 @@ func (d daoTrnログ) SelectW(wb Wbログ) ([]*Dtoログ, error) {
 	if exists {
 		sql := fmt.Sprintf(sqlSelectログ, where.String())
 		rows, err := d.trn.Query(sql, prms...)
-		defer rows.Close()
 		if err != nil {
 			return nil, xerrors.Errorf("sql=%s, args=%v: %w", sql, prms, err)
 		}
+		defer rows.Close()
 		var dt []*Dtoログ
 		for rows.Next() {
 			var dr Dtoログ

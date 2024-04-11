@@ -92,10 +92,10 @@ func (d daoDb生産用品目区分) GetByCode(コード types.Code生産用品�
 func (d daoDb生産用品目区分) SelectAll() ([]*Dto生産用品目区分, error) {
 	sql := fmt.Sprintf(sqlSelect生産用品目区分, "")
 	rows, err := d.db.Query(sql)
-	defer rows.Close()
 	if err != nil {
 		return nil, xerrors.Errorf("sql=%s: %w", sql, err)
 	}
+	defer rows.Close()
 	var dt []*Dto生産用品目区分
 	for rows.Next() {
 		var dr Dto生産用品目区分
@@ -115,10 +115,10 @@ func (d daoDb生産用品目区分) SelectW(wb Wb生産用品目区分) ([]*Dto�
 	if exists {
 		sql := fmt.Sprintf(sqlSelect生産用品目区分, where.String())
 		rows, err := d.db.Query(sql, prms...)
-		defer rows.Close()
 		if err != nil {
 			return nil, xerrors.Errorf("sql=%s, args=%v: %w", sql, prms, err)
 		}
+		defer rows.Close()
 		var dt []*Dto生産用品目区分
 		for rows.Next() {
 			var dr Dto生産用品目区分

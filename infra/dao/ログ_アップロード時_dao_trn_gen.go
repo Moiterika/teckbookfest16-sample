@@ -70,10 +70,10 @@ func (d daoTrnログアップロード時) GetBy(id Id) (dr *Dtoログアップ�
 func (d daoTrnログアップロード時) SelectAll() ([]*Dtoログアップロード時, error) {
 	sql := fmt.Sprintf(sqlSelectログアップロード時, "")
 	rows, err := d.trn.Query(sql)
-	defer rows.Close()
 	if err != nil {
 		return nil, xerrors.Errorf("sql=%s: %w", sql, err)
 	}
+	defer rows.Close()
 	var dt []*Dtoログアップロード時
 	for rows.Next() {
 		var dr Dtoログアップロード時
@@ -93,10 +93,10 @@ func (d daoTrnログアップロード時) SelectW(wb Wbログアップロード
 	if exists {
 		sql := fmt.Sprintf(sqlSelectログアップロード時, where.String())
 		rows, err := d.trn.Query(sql, prms...)
-		defer rows.Close()
 		if err != nil {
 			return nil, xerrors.Errorf("sql=%s, args=%v: %w", sql, prms, err)
 		}
+		defer rows.Close()
 		var dt []*Dtoログアップロード時
 		for rows.Next() {
 			var dr Dtoログアップロード時

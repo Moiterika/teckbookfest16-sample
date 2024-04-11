@@ -49,10 +49,10 @@ func (d daoDbEnumログ区分) Dt() ([]*DtoEnumログ区分, error) {
 func (d daoDbEnumログ区分) SelectAll() ([]*DtoEnumログ区分, error) {
 	sql := fmt.Sprintf(sqlSelectEnumログ区分, "")
 	rows, err := d.db.Query(sql)
-	defer rows.Close()
 	if err != nil {
 		return nil, xerrors.Errorf("sql=%s: %w", sql, err)
 	}
+	defer rows.Close()
 	var dt []*DtoEnumログ区分
 	for rows.Next() {
 		var dr DtoEnumログ区分
@@ -72,10 +72,10 @@ func (d daoDbEnumログ区分) SelectW(wb WbEnumログ区分) ([]*DtoEnumログ�
 	if exists {
 		sql := fmt.Sprintf(sqlSelectEnumログ区分, where.String())
 		rows, err := d.db.Query(sql, prms...)
-		defer rows.Close()
 		if err != nil {
 			return nil, xerrors.Errorf("sql=%s, args=%v: %w", sql, prms, err)
 		}
+		defer rows.Close()
 		var dt []*DtoEnumログ区分
 		for rows.Next() {
 			var dr DtoEnumログ区分

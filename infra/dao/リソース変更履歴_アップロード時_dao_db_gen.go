@@ -70,10 +70,10 @@ func (d daoDbリソース変更履歴アップロード時) GetBy(id Id) (dr *Dt
 func (d daoDbリソース変更履歴アップロード時) SelectAll() ([]*Dtoリソース変更履歴アップロード時, error) {
 	sql := fmt.Sprintf(sqlSelectリソース変更履歴アップロード時, "")
 	rows, err := d.db.Query(sql)
-	defer rows.Close()
 	if err != nil {
 		return nil, xerrors.Errorf("sql=%s: %w", sql, err)
 	}
+	defer rows.Close()
 	var dt []*Dtoリソース変更履歴アップロード時
 	for rows.Next() {
 		var dr Dtoリソース変更履歴アップロード時
@@ -93,10 +93,10 @@ func (d daoDbリソース変更履歴アップロード時) SelectW(wb Wbリソ�
 	if exists {
 		sql := fmt.Sprintf(sqlSelectリソース変更履歴アップロード時, where.String())
 		rows, err := d.db.Query(sql, prms...)
-		defer rows.Close()
 		if err != nil {
 			return nil, xerrors.Errorf("sql=%s, args=%v: %w", sql, prms, err)
 		}
+		defer rows.Close()
 		var dt []*Dtoリソース変更履歴アップロード時
 		for rows.Next() {
 			var dr Dtoリソース変更履歴アップロード時

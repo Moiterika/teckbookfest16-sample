@@ -92,10 +92,10 @@ func (d daoTrn単位) GetByCode(コード types.Code単位) (dr *Dto単位, err 
 func (d daoTrn単位) SelectAll() ([]*Dto単位, error) {
 	sql := fmt.Sprintf(sqlSelect単位, "")
 	rows, err := d.trn.Query(sql)
-	defer rows.Close()
 	if err != nil {
 		return nil, xerrors.Errorf("sql=%s: %w", sql, err)
 	}
+	defer rows.Close()
 	var dt []*Dto単位
 	for rows.Next() {
 		var dr Dto単位
@@ -115,10 +115,10 @@ func (d daoTrn単位) SelectW(wb Wb単位) ([]*Dto単位, error) {
 	if exists {
 		sql := fmt.Sprintf(sqlSelect単位, where.String())
 		rows, err := d.trn.Query(sql, prms...)
-		defer rows.Close()
 		if err != nil {
 			return nil, xerrors.Errorf("sql=%s, args=%v: %w", sql, prms, err)
 		}
+		defer rows.Close()
 		var dt []*Dto単位
 		for rows.Next() {
 			var dr Dto単位

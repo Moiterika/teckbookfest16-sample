@@ -92,10 +92,10 @@ func (d daoDb品目) GetByCode(コード types.Code品目) (dr *Dto品目, err e
 func (d daoDb品目) SelectAll() ([]*Dto品目, error) {
 	sql := fmt.Sprintf(sqlSelect品目, "")
 	rows, err := d.db.Query(sql)
-	defer rows.Close()
 	if err != nil {
 		return nil, xerrors.Errorf("sql=%s: %w", sql, err)
 	}
+	defer rows.Close()
 	var dt []*Dto品目
 	for rows.Next() {
 		var dr Dto品目
@@ -115,10 +115,10 @@ func (d daoDb品目) SelectW(wb Wb品目) ([]*Dto品目, error) {
 	if exists {
 		sql := fmt.Sprintf(sqlSelect品目, where.String())
 		rows, err := d.db.Query(sql, prms...)
-		defer rows.Close()
 		if err != nil {
 			return nil, xerrors.Errorf("sql=%s, args=%v: %w", sql, prms, err)
 		}
+		defer rows.Close()
 		var dt []*Dto品目
 		for rows.Next() {
 			var dr Dto品目

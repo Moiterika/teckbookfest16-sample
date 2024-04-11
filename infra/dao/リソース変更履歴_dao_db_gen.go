@@ -70,10 +70,10 @@ func (d daoDbリソース変更履歴) GetBy(id Id) (dr *Dtoリソース変更�
 func (d daoDbリソース変更履歴) SelectAll() ([]*Dtoリソース変更履歴, error) {
 	sql := fmt.Sprintf(sqlSelectリソース変更履歴, "")
 	rows, err := d.db.Query(sql)
-	defer rows.Close()
 	if err != nil {
 		return nil, xerrors.Errorf("sql=%s: %w", sql, err)
 	}
+	defer rows.Close()
 	var dt []*Dtoリソース変更履歴
 	for rows.Next() {
 		var dr Dtoリソース変更履歴
@@ -93,10 +93,10 @@ func (d daoDbリソース変更履歴) SelectW(wb Wbリソース変更履歴) ([
 	if exists {
 		sql := fmt.Sprintf(sqlSelectリソース変更履歴, where.String())
 		rows, err := d.db.Query(sql, prms...)
-		defer rows.Close()
 		if err != nil {
 			return nil, xerrors.Errorf("sql=%s, args=%v: %w", sql, prms, err)
 		}
+		defer rows.Close()
 		var dt []*Dtoリソース変更履歴
 		for rows.Next() {
 			var dr Dtoリソース変更履歴
