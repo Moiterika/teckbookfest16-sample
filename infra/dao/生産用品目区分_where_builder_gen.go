@@ -10,7 +10,7 @@ import (
 type Wb生産用品目区分 interface {
 	And(field fld生産用品目区分, op whereBuilderOperater, val interface{}) Wb生産用品目区分
 	Clear()
-	Exists(...Eb生産用品目区分)
+	Exists(Eb生産用品目区分) Wb生産用品目区分
 	build(argCntStart ...int) (where Where)
 }
 type wb生産用品目区分 struct {
@@ -41,8 +41,9 @@ func (wb *wb生産用品目区分) And(field fld生産用品目区分, op whereB
 func (wb *wb生産用品目区分) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wb生産用品目区分) Exists(ebs ...Eb生産用品目区分) {
-	wb.ebs = append(wb.ebs, ebs...)
+func (wb *wb生産用品目区分) Exists(eb Eb生産用品目区分) Wb生産用品目区分 {
+	wb.ebs = append(wb.ebs, eb)
+	return wb
 }
 func (wb *wb生産用品目区分) build(argsCntStart ...int) (where Where) {
 	where.w = ""
@@ -81,8 +82,10 @@ type nothingWb生産用品目区分 struct{}
 func (wb *nothingWb生産用品目区分) And(field fld生産用品目区分, op whereBuilderOperater, val interface{}) Wb生産用品目区分 {
 	return wb
 }
-func (wb *nothingWb生産用品目区分) Clear()                {}
-func (wb *nothingWb生産用品目区分) Exists(_ ...Eb生産用品目区分) {}
+func (wb *nothingWb生産用品目区分) Clear() {}
+func (wb *nothingWb生産用品目区分) Exists(_ Eb生産用品目区分) Wb生産用品目区分 {
+	return wb
+}
 func (wb *nothingWb生産用品目区分) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

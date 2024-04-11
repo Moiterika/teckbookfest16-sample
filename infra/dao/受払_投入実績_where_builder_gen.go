@@ -10,7 +10,7 @@ import (
 type Wb受払投入実績 interface {
 	And(field fld受払投入実績, op whereBuilderOperater, val interface{}) Wb受払投入実績
 	Clear()
-	Exists(...Eb受払投入実績)
+	Exists(Eb受払投入実績) Wb受払投入実績
 	build(argCntStart ...int) (where Where)
 }
 type wb受払投入実績 struct {
@@ -41,8 +41,9 @@ func (wb *wb受払投入実績) And(field fld受払投入実績, op whereBuilder
 func (wb *wb受払投入実績) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wb受払投入実績) Exists(ebs ...Eb受払投入実績) {
-	wb.ebs = append(wb.ebs, ebs...)
+func (wb *wb受払投入実績) Exists(eb Eb受払投入実績) Wb受払投入実績 {
+	wb.ebs = append(wb.ebs, eb)
+	return wb
 }
 func (wb *wb受払投入実績) build(argsCntStart ...int) (where Where) {
 	where.w = ""
@@ -81,8 +82,10 @@ type nothingWb受払投入実績 struct{}
 func (wb *nothingWb受払投入実績) And(field fld受払投入実績, op whereBuilderOperater, val interface{}) Wb受払投入実績 {
 	return wb
 }
-func (wb *nothingWb受払投入実績) Clear()               {}
-func (wb *nothingWb受払投入実績) Exists(_ ...Eb受払投入実績) {}
+func (wb *nothingWb受払投入実績) Clear() {}
+func (wb *nothingWb受払投入実績) Exists(_ Eb受払投入実績) Wb受払投入実績 {
+	return wb
+}
 func (wb *nothingWb受払投入実績) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

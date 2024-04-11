@@ -8,6 +8,8 @@ import (
 	"techbookfest16-sample/domain"
 	"techbookfest16-sample/domain/types"
 	"techbookfest16-sample/infra"
+	"techbookfest16-sample/infra/dao"
+	"time"
 )
 
 func (mhs *myHttpServer) UseCase仕入(w http.ResponseWriter, r *http.Request) {
@@ -21,12 +23,32 @@ func (mhs *myHttpServer) UseCase仕入(w http.ResponseWriter, r *http.Request) {
 		}
 		defer trn.Commit()
 
-		q := infra.NewQryTrn受払仕入(infra.NewRepManagerWithTrn(trn))
+		wb受払 := dao.NewWb受払()
+		wb品目 := dao.NewWb品目()
+		// TODO wb仕入品を入れ子にできるかは後で確かめる
 
-		// 全件返却
-		// TODO 件数が多すぎる可能性があるので、ページネーションで1リクエストあたりの返却件数を区切るか、計上年月を必須にして返却件数を制限すべき
-		// TODO その代わりに全件返却の仕組みもどこかに必要ではある
 		if r.URL.Path == "" {
+			// クエリパラメータis_idをtrue/false判定
+			var 計上年月 time.Time
+			年月 := r.URL.Query().Get("年月")
+			if 年月 != "" {
+				計上年月, err = time.Parse("200601", 年月)
+				if err != nil {
+					http.Error(w, "年月はyyyyMMの書式にしてください。", http.StatusBadRequest)
+					return
+				}
+				// 検索条件にセット
+				wb受払.And(dao.Tbl受払().Fld計上月(), dao.OpEqu, 計上年月)
+				wb品目.Exists(dao.NewEb品目join受払().And(dao.Tbl受払().Fld計上月(), dao.OpEqu, 計上年月))
+			}
+			q := infra.NewQryTrn受払仕入(
+				infra.NewRepManagerWithTrn(
+					trn,
+					infra.Wb受払(wb受払),
+					infra.Wb品目(wb品目),
+					infra.Wb製造品(dao.NewNothingWb品目製造品()),
+				),
+			)
 			list, err := q.List()
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -47,6 +69,18 @@ func (mhs *myHttpServer) UseCase仕入(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+		// 検索条件にセット
+		wb受払.And(dao.Tbl受払().FldNo(), dao.OpEqu, 受払No)
+		wb品目.Exists(dao.NewEb品目join受払().And(dao.Tbl受払().FldNo(), dao.OpEqu, 受払No))
+		// TODO wb仕入品を入れ子にできるかは後で確かめる
+
+		q := infra.NewQryTrn受払仕入(
+			infra.NewRepManagerWithTrn(
+				trn,
+				infra.Wb受払(wb受払),
+				infra.Wb品目(wb品目),
+			),
+		)
 		e, err := q.GetBy(受払No)
 		if err != nil {
 			if errors.Is(err, types.ErrNotFound) {
@@ -84,7 +118,12 @@ func (mhs *myHttpServer) UseCase仕入(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		s := domain.NewSrv仕入登録(infra.NewCmdTrn受払(infra.NewRepManagerWithTrn(trn)))
+		// ここでは1件だけ登録する仕様なので、DBの検索条件をセット
+		// TODO 別のユースケースとして、複数の仕入をバッチ登録する場合、DBの検索条件をセットせず、品目リポジトリに全件取得した方が効率が良い
+		wb品目 := dao.NewWb品目().And(dao.Tbl品目().Fldコード(), dao.OpEqu, 仕入.Get品目コード)
+		wb仕入品 := dao.NewWb品目仕入品().Exists(dao.NewEb品目仕入品join品目().And(dao.Tbl品目().Fldコード(), dao.OpEqu, 仕入.Get品目コード))
+
+		s := domain.NewSrv仕入登録(infra.NewCmdTrn受払(infra.NewRepManagerWithTrn(trn, infra.Wb品目(wb品目), infra.Wb仕入品(wb仕入品), infra.Wb製造品(dao.NewNothingWb品目製造品()))))
 		仕入数量, err := 仕入.仕入数量()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)

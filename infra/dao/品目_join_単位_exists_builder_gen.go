@@ -8,7 +8,7 @@ type eb品目join単位 struct {
 	wb Wb単位
 }
 
-func NewEb品目join単位() Eb品目 {
+func NewEb品目join単位() *eb品目join単位 {
 	return &eb品目join単位{wb: NewWb単位()}
 }
 func (eb *eb品目join単位) And(field fld単位, op whereBuilderOperater, val interface{}) Eb品目 {

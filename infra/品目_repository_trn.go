@@ -51,7 +51,6 @@ func (r *repTrn品目) init() error {
 		r.rm.mapコードvs品目[e.Getコード] = e
 	}
 
-	// TODO DAOにWHERE句をapl層で差し込めるようにしておきたい。
 	dt仕入品, err := r.rm.dm.NewDaoTrn品目仕入品With(r.wb仕入品).Dt()
 	if err != nil {
 		return xerrors.Errorf(" :%w", err)

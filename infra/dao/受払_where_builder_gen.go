@@ -10,7 +10,7 @@ import (
 type Wb受払 interface {
 	And(field fld受払, op whereBuilderOperater, val interface{}) Wb受払
 	Clear()
-	Exists(...Eb受払)
+	Exists(Eb受払) Wb受払
 	build(argCntStart ...int) (where Where)
 }
 type wb受払 struct {
@@ -41,8 +41,9 @@ func (wb *wb受払) And(field fld受払, op whereBuilderOperater, val interface{
 func (wb *wb受払) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wb受払) Exists(ebs ...Eb受払) {
-	wb.ebs = append(wb.ebs, ebs...)
+func (wb *wb受払) Exists(eb Eb受払) Wb受払 {
+	wb.ebs = append(wb.ebs, eb)
+	return wb
 }
 func (wb *wb受払) build(argsCntStart ...int) (where Where) {
 	where.w = ""
@@ -81,8 +82,10 @@ type nothingWb受払 struct{}
 func (wb *nothingWb受払) And(field fld受払, op whereBuilderOperater, val interface{}) Wb受払 {
 	return wb
 }
-func (wb *nothingWb受払) Clear()           {}
-func (wb *nothingWb受払) Exists(_ ...Eb受払) {}
+func (wb *nothingWb受払) Clear() {}
+func (wb *nothingWb受払) Exists(_ Eb受払) Wb受払 {
+	return wb
+}
 func (wb *nothingWb受払) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

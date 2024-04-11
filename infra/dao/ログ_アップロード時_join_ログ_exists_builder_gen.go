@@ -8,7 +8,7 @@ type ebログアップロード時joinログ struct {
 	wb Wbログ
 }
 
-func NewEbログアップロード時joinログ() Ebログアップロード時 {
+func NewEbログアップロード時joinログ() *ebログアップロード時joinログ {
 	return &ebログアップロード時joinログ{wb: NewWbログ()}
 }
 func (eb *ebログアップロード時joinログ) And(field fldログ, op whereBuilderOperater, val interface{}) Ebログアップロード時 {

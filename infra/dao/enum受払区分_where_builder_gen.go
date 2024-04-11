@@ -11,7 +11,7 @@ import (
 type WbEnum受払区分 interface {
 	And(field fldEnum受払区分, op whereBuilderOperater, val interface{}) WbEnum受払区分
 	Clear()
-	Exists(...EbEnum受払区分)
+	Exists(EbEnum受払区分) WbEnum受払区分
 	build(argCntStart ...int) (where Where)
 }
 type wbEnum受払区分 struct {
@@ -42,8 +42,9 @@ func (wb *wbEnum受払区分) And(field fldEnum受払区分, op whereBuilderOper
 func (wb *wbEnum受払区分) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wbEnum受払区分) Exists(ebs ...EbEnum受払区分) {
-	wb.ebs = append(wb.ebs, ebs...)
+func (wb *wbEnum受払区分) Exists(eb EbEnum受払区分) WbEnum受払区分 {
+	wb.ebs = append(wb.ebs, eb)
+	return wb
 }
 func (wb *wbEnum受払区分) build(argsCntStart ...int) (where Where) {
 	where.w = ""
@@ -82,8 +83,10 @@ type nothingWbEnum受払区分 struct{}
 func (wb *nothingWbEnum受払区分) And(field fldEnum受払区分, op whereBuilderOperater, val interface{}) WbEnum受払区分 {
 	return wb
 }
-func (wb *nothingWbEnum受払区分) Clear()                 {}
-func (wb *nothingWbEnum受払区分) Exists(_ ...EbEnum受払区分) {}
+func (wb *nothingWbEnum受払区分) Clear() {}
+func (wb *nothingWbEnum受払区分) Exists(_ EbEnum受払区分) WbEnum受払区分 {
+	return wb
+}
 func (wb *nothingWbEnum受払区分) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

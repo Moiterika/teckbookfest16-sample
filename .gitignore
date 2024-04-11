@@ -3,3 +3,4 @@
 /cmd/code_gen/table/my_table_list.go
 /cmd/code_gen/repo2repo/repo.go
 /cmd/code_gen/entity2repo/my_entity.go
+/*.zip

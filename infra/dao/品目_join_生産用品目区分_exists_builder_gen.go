@@ -8,7 +8,7 @@ type eb品目join生産用品目区分 struct {
 	wb Wb生産用品目区分
 }
 
-func NewEb品目join生産用品目区分() Eb品目 {
+func NewEb品目join生産用品目区分() *eb品目join生産用品目区分 {
 	return &eb品目join生産用品目区分{wb: NewWb生産用品目区分()}
 }
 func (eb *eb品目join生産用品目区分) And(field fld生産用品目区分, op whereBuilderOperater, val interface{}) Eb品目 {

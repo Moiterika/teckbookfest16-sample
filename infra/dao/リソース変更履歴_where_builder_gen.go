@@ -10,7 +10,7 @@ import (
 type Wbリソース変更履歴 interface {
 	And(field fldリソース変更履歴, op whereBuilderOperater, val interface{}) Wbリソース変更履歴
 	Clear()
-	Exists(...Ebリソース変更履歴)
+	Exists(Ebリソース変更履歴) Wbリソース変更履歴
 	build(argCntStart ...int) (where Where)
 }
 type wbリソース変更履歴 struct {
@@ -41,8 +41,9 @@ func (wb *wbリソース変更履歴) And(field fldリソース変更履歴, op 
 func (wb *wbリソース変更履歴) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wbリソース変更履歴) Exists(ebs ...Ebリソース変更履歴) {
-	wb.ebs = append(wb.ebs, ebs...)
+func (wb *wbリソース変更履歴) Exists(eb Ebリソース変更履歴) Wbリソース変更履歴 {
+	wb.ebs = append(wb.ebs, eb)
+	return wb
 }
 func (wb *wbリソース変更履歴) build(argsCntStart ...int) (where Where) {
 	where.w = ""
@@ -81,8 +82,10 @@ type nothingWbリソース変更履歴 struct{}
 func (wb *nothingWbリソース変更履歴) And(field fldリソース変更履歴, op whereBuilderOperater, val interface{}) Wbリソース変更履歴 {
 	return wb
 }
-func (wb *nothingWbリソース変更履歴) Clear()                 {}
-func (wb *nothingWbリソース変更履歴) Exists(_ ...Ebリソース変更履歴) {}
+func (wb *nothingWbリソース変更履歴) Clear() {}
+func (wb *nothingWbリソース変更履歴) Exists(_ Ebリソース変更履歴) Wbリソース変更履歴 {
+	return wb
+}
 func (wb *nothingWbリソース変更履歴) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

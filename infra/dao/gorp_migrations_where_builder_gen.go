@@ -10,7 +10,7 @@ import (
 type Wbgorpmigrations interface {
 	And(field fldgorpmigrations, op whereBuilderOperater, val interface{}) Wbgorpmigrations
 	Clear()
-	Exists(...Ebgorpmigrations)
+	Exists(Ebgorpmigrations) Wbgorpmigrations
 	build(argCntStart ...int) (where Where)
 }
 type wbgorpmigrations struct {
@@ -41,8 +41,9 @@ func (wb *wbgorpmigrations) And(field fldgorpmigrations, op whereBuilderOperater
 func (wb *wbgorpmigrations) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wbgorpmigrations) Exists(ebs ...Ebgorpmigrations) {
-	wb.ebs = append(wb.ebs, ebs...)
+func (wb *wbgorpmigrations) Exists(eb Ebgorpmigrations) Wbgorpmigrations {
+	wb.ebs = append(wb.ebs, eb)
+	return wb
 }
 func (wb *wbgorpmigrations) build(argsCntStart ...int) (where Where) {
 	where.w = ""
@@ -81,8 +82,10 @@ type nothingWbgorpmigrations struct{}
 func (wb *nothingWbgorpmigrations) And(field fldgorpmigrations, op whereBuilderOperater, val interface{}) Wbgorpmigrations {
 	return wb
 }
-func (wb *nothingWbgorpmigrations) Clear()                       {}
-func (wb *nothingWbgorpmigrations) Exists(_ ...Ebgorpmigrations) {}
+func (wb *nothingWbgorpmigrations) Clear() {}
+func (wb *nothingWbgorpmigrations) Exists(_ Ebgorpmigrations) Wbgorpmigrations {
+	return wb
+}
 func (wb *nothingWbgorpmigrations) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

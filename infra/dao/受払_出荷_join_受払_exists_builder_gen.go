@@ -8,7 +8,7 @@ type eb受払出荷join受払 struct {
 	wb Wb受払
 }
 
-func NewEb受払出荷join受払() Eb受払出荷 {
+func NewEb受払出荷join受払() *eb受払出荷join受払 {
 	return &eb受払出荷join受払{wb: NewWb受払()}
 }
 func (eb *eb受払出荷join受払) And(field fld受払, op whereBuilderOperater, val interface{}) Eb受払出荷 {

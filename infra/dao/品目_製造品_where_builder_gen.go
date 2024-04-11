@@ -10,7 +10,7 @@ import (
 type Wb品目製造品 interface {
 	And(field fld品目製造品, op whereBuilderOperater, val interface{}) Wb品目製造品
 	Clear()
-	Exists(...Eb品目製造品)
+	Exists(Eb品目製造品) Wb品目製造品
 	build(argCntStart ...int) (where Where)
 }
 type wb品目製造品 struct {
@@ -41,8 +41,9 @@ func (wb *wb品目製造品) And(field fld品目製造品, op whereBuilderOperat
 func (wb *wb品目製造品) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wb品目製造品) Exists(ebs ...Eb品目製造品) {
-	wb.ebs = append(wb.ebs, ebs...)
+func (wb *wb品目製造品) Exists(eb Eb品目製造品) Wb品目製造品 {
+	wb.ebs = append(wb.ebs, eb)
+	return wb
 }
 func (wb *wb品目製造品) build(argsCntStart ...int) (where Where) {
 	where.w = ""
@@ -81,8 +82,10 @@ type nothingWb品目製造品 struct{}
 func (wb *nothingWb品目製造品) And(field fld品目製造品, op whereBuilderOperater, val interface{}) Wb品目製造品 {
 	return wb
 }
-func (wb *nothingWb品目製造品) Clear()              {}
-func (wb *nothingWb品目製造品) Exists(_ ...Eb品目製造品) {}
+func (wb *nothingWb品目製造品) Clear() {}
+func (wb *nothingWb品目製造品) Exists(_ Eb品目製造品) Wb品目製造品 {
+	return wb
+}
 func (wb *nothingWb品目製造品) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

@@ -8,7 +8,7 @@ type ebログ画面操作時joinログ struct {
 	wb Wbログ
 }
 
-func NewEbログ画面操作時joinログ() Ebログ画面操作時 {
+func NewEbログ画面操作時joinログ() *ebログ画面操作時joinログ {
 	return &ebログ画面操作時joinログ{wb: NewWbログ()}
 }
 func (eb *ebログ画面操作時joinログ) And(field fldログ, op whereBuilderOperater, val interface{}) Ebログ画面操作時 {

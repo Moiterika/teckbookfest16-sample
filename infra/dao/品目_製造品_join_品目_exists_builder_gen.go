@@ -8,7 +8,7 @@ type eb品目製造品join品目 struct {
 	wb Wb品目
 }
 
-func NewEb品目製造品join品目() Eb品目製造品 {
+func NewEb品目製造品join品目() *eb品目製造品join品目 {
 	return &eb品目製造品join品目{wb: NewWb品目()}
 }
 func (eb *eb品目製造品join品目) And(field fld品目, op whereBuilderOperater, val interface{}) Eb品目製造品 {

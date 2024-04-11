@@ -10,7 +10,7 @@ import (
 type Wbログ interface {
 	And(field fldログ, op whereBuilderOperater, val interface{}) Wbログ
 	Clear()
-	Exists(...Ebログ)
+	Exists(Ebログ) Wbログ
 	build(argCntStart ...int) (where Where)
 }
 type wbログ struct {
@@ -41,8 +41,9 @@ func (wb *wbログ) And(field fldログ, op whereBuilderOperater, val interface{
 func (wb *wbログ) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wbログ) Exists(ebs ...Ebログ) {
-	wb.ebs = append(wb.ebs, ebs...)
+func (wb *wbログ) Exists(eb Ebログ) Wbログ {
+	wb.ebs = append(wb.ebs, eb)
+	return wb
 }
 func (wb *wbログ) build(argsCntStart ...int) (where Where) {
 	where.w = ""
@@ -81,8 +82,10 @@ type nothingWbログ struct{}
 func (wb *nothingWbログ) And(field fldログ, op whereBuilderOperater, val interface{}) Wbログ {
 	return wb
 }
-func (wb *nothingWbログ) Clear()           {}
-func (wb *nothingWbログ) Exists(_ ...Ebログ) {}
+func (wb *nothingWbログ) Clear() {}
+func (wb *nothingWbログ) Exists(_ Ebログ) Wbログ {
+	return wb
+}
 func (wb *nothingWbログ) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

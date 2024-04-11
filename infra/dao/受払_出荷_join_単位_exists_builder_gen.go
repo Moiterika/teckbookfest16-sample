@@ -8,7 +8,7 @@ type eb受払出荷join単位 struct {
 	wb Wb単位
 }
 
-func NewEb受払出荷join単位() Eb受払出荷 {
+func NewEb受払出荷join単位() *eb受払出荷join単位 {
 	return &eb受払出荷join単位{wb: NewWb単位()}
 }
 func (eb *eb受払出荷join単位) And(field fld単位, op whereBuilderOperater, val interface{}) Eb受払出荷 {

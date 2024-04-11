@@ -10,7 +10,7 @@ import (
 type Wbログアップロード時 interface {
 	And(field fldログアップロード時, op whereBuilderOperater, val interface{}) Wbログアップロード時
 	Clear()
-	Exists(...Ebログアップロード時)
+	Exists(Ebログアップロード時) Wbログアップロード時
 	build(argCntStart ...int) (where Where)
 }
 type wbログアップロード時 struct {
@@ -41,8 +41,9 @@ func (wb *wbログアップロード時) And(field fldログアップロード�
 func (wb *wbログアップロード時) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wbログアップロード時) Exists(ebs ...Ebログアップロード時) {
-	wb.ebs = append(wb.ebs, ebs...)
+func (wb *wbログアップロード時) Exists(eb Ebログアップロード時) Wbログアップロード時 {
+	wb.ebs = append(wb.ebs, eb)
+	return wb
 }
 func (wb *wbログアップロード時) build(argsCntStart ...int) (where Where) {
 	where.w = ""
@@ -81,8 +82,10 @@ type nothingWbログアップロード時 struct{}
 func (wb *nothingWbログアップロード時) And(field fldログアップロード時, op whereBuilderOperater, val interface{}) Wbログアップロード時 {
 	return wb
 }
-func (wb *nothingWbログアップロード時) Clear()                  {}
-func (wb *nothingWbログアップロード時) Exists(_ ...Ebログアップロード時) {}
+func (wb *nothingWbログアップロード時) Clear() {}
+func (wb *nothingWbログアップロード時) Exists(_ Ebログアップロード時) Wbログアップロード時 {
+	return wb
+}
 func (wb *nothingWbログアップロード時) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

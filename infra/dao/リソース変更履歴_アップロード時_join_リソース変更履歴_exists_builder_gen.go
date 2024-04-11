@@ -8,7 +8,7 @@ type ebリソース変更履歴アップロード時joinリソース変更履歴
 	wb Wbリソース変更履歴
 }
 
-func NewEbリソース変更履歴アップロード時joinリソース変更履歴() Ebリソース変更履歴アップロード時 {
+func NewEbリソース変更履歴アップロード時joinリソース変更履歴() *ebリソース変更履歴アップロード時joinリソース変更履歴 {
 	return &ebリソース変更履歴アップロード時joinリソース変更履歴{wb: NewWbリソース変更履歴()}
 }
 func (eb *ebリソース変更履歴アップロード時joinリソース変更履歴) And(field fldリソース変更履歴, op whereBuilderOperater, val interface{}) Ebリソース変更履歴アップロード時 {

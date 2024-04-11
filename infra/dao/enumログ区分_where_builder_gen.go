@@ -11,7 +11,7 @@ import (
 type WbEnumログ区分 interface {
 	And(field fldEnumログ区分, op whereBuilderOperater, val interface{}) WbEnumログ区分
 	Clear()
-	Exists(...EbEnumログ区分)
+	Exists(EbEnumログ区分) WbEnumログ区分
 	build(argCntStart ...int) (where Where)
 }
 type wbEnumログ区分 struct {
@@ -42,8 +42,9 @@ func (wb *wbEnumログ区分) And(field fldEnumログ区分, op whereBuilderOper
 func (wb *wbEnumログ区分) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wbEnumログ区分) Exists(ebs ...EbEnumログ区分) {
-	wb.ebs = append(wb.ebs, ebs...)
+func (wb *wbEnumログ区分) Exists(eb EbEnumログ区分) WbEnumログ区分 {
+	wb.ebs = append(wb.ebs, eb)
+	return wb
 }
 func (wb *wbEnumログ区分) build(argsCntStart ...int) (where Where) {
 	where.w = ""
@@ -82,8 +83,10 @@ type nothingWbEnumログ区分 struct{}
 func (wb *nothingWbEnumログ区分) And(field fldEnumログ区分, op whereBuilderOperater, val interface{}) WbEnumログ区分 {
 	return wb
 }
-func (wb *nothingWbEnumログ区分) Clear()                 {}
-func (wb *nothingWbEnumログ区分) Exists(_ ...EbEnumログ区分) {}
+func (wb *nothingWbEnumログ区分) Clear() {}
+func (wb *nothingWbEnumログ区分) Exists(_ EbEnumログ区分) WbEnumログ区分 {
+	return wb
+}
 func (wb *nothingWbEnumログ区分) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

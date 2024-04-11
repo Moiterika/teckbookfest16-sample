@@ -95,8 +95,10 @@ func (rm *repManagerTrn) rep品目() *repTrn品目 {
 
 func (rm *repManagerTrn) NewRep品目() objects.Rep品目 {
 	return &repTrn品目{
-		rm:   rm,
-		wb品目: rm.repManagerArgs.wb品目,
+		rm:    rm,
+		wb品目:  rm.repManagerArgs.wb品目,
+		wb仕入品: rm.repManagerArgs.wb仕入品,
+		wb製造品: rm.repManagerArgs.wb製造品,
 	}
 }
 

@@ -10,7 +10,7 @@ import (
 type Wbログ画面操作時 interface {
 	And(field fldログ画面操作時, op whereBuilderOperater, val interface{}) Wbログ画面操作時
 	Clear()
-	Exists(...Ebログ画面操作時)
+	Exists(Ebログ画面操作時) Wbログ画面操作時
 	build(argCntStart ...int) (where Where)
 }
 type wbログ画面操作時 struct {
@@ -41,8 +41,9 @@ func (wb *wbログ画面操作時) And(field fldログ画面操作時, op whereB
 func (wb *wbログ画面操作時) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wbログ画面操作時) Exists(ebs ...Ebログ画面操作時) {
-	wb.ebs = append(wb.ebs, ebs...)
+func (wb *wbログ画面操作時) Exists(eb Ebログ画面操作時) Wbログ画面操作時 {
+	wb.ebs = append(wb.ebs, eb)
+	return wb
 }
 func (wb *wbログ画面操作時) build(argsCntStart ...int) (where Where) {
 	where.w = ""
@@ -81,8 +82,10 @@ type nothingWbログ画面操作時 struct{}
 func (wb *nothingWbログ画面操作時) And(field fldログ画面操作時, op whereBuilderOperater, val interface{}) Wbログ画面操作時 {
 	return wb
 }
-func (wb *nothingWbログ画面操作時) Clear()                {}
-func (wb *nothingWbログ画面操作時) Exists(_ ...Ebログ画面操作時) {}
+func (wb *nothingWbログ画面操作時) Clear() {}
+func (wb *nothingWbログ画面操作時) Exists(_ Ebログ画面操作時) Wbログ画面操作時 {
+	return wb
+}
 func (wb *nothingWbログ画面操作時) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }
