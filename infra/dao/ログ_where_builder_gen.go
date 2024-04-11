@@ -10,14 +10,19 @@ import (
 type Wbログ interface {
 	And(field fldログ, op whereBuilderOperater, val interface{}) Wbログ
 	Clear()
+	Exists(...Ebログ)
 	build(argCntStart ...int) (where Where)
 }
 type wbログ struct {
 	config []whereBuilderExp
+	ebs    []Ebログ
 }
 
 func NewWbログ() Wbログ {
-	return &wbログ{config: make([]whereBuilderExp, 0)}
+	return &wbログ{
+		config: make([]whereBuilderExp, 0),
+		ebs:    make([]Ebログ, 0),
+	}
 }
 func newWbログWithPrimaryKeys(No Id) Wbログ {
 	wb := &wbログ{config: make([]whereBuilderExp, 0)}
@@ -36,18 +41,20 @@ func (wb *wbログ) And(field fldログ, op whereBuilderOperater, val interface{
 func (wb *wbログ) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wbログ) build(argCntStart ...int) (where Where) {
+func (wb *wbログ) Exists(ebs ...Ebログ) {
+	wb.ebs = append(wb.ebs, ebs...)
+}
+func (wb *wbログ) build(argsCntStart ...int) (where Where) {
 	where.w = ""
 	where.prms = make([]interface{}, 0, len(wb.config))
-	argCnt := 1
-	if len(argCntStart) == 1 {
-		argCnt = argCntStart[0]
+	if len(argsCntStart) == 1 {
+		where.argsCnt = argsCntStart[0]
 	}
 	for _, e := range wb.config {
 		switch e.op {
 		case OpIn:
-			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", argCnt)))
-			argCnt++
+			where.argsCnt++
+			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", where.argsCnt)))
 			where.prms = append(where.prms, pq.Array(e.val))
 			continue
 		case OpIsNull:
@@ -56,11 +63,15 @@ func (wb *wbログ) build(argCntStart ...int) (where Where) {
 			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, e.op.string())
 			continue
 		default:
-			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", argCnt)))
-			argCnt++
+			where.argsCnt++
+			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", where.argsCnt)))
 			where.prms = append(where.prms, e.val)
 			continue
 		}
+	}
+	for _, eb := range wb.ebs {
+		w := eb.buildEbログ(where.argsCnt)
+		where.Append(w)
 	}
 	return
 }
@@ -70,7 +81,8 @@ type nothingWbログ struct{}
 func (wb *nothingWbログ) And(field fldログ, op whereBuilderOperater, val interface{}) Wbログ {
 	return wb
 }
-func (wb *nothingWbログ) Clear() {}
+func (wb *nothingWbログ) Clear()           {}
+func (wb *nothingWbログ) Exists(_ ...Ebログ) {}
 func (wb *nothingWbログ) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

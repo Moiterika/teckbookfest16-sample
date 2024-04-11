@@ -11,14 +11,19 @@ import (
 type WbEnum受払区分 interface {
 	And(field fldEnum受払区分, op whereBuilderOperater, val interface{}) WbEnum受払区分
 	Clear()
+	Exists(...EbEnum受払区分)
 	build(argCntStart ...int) (where Where)
 }
 type wbEnum受払区分 struct {
 	config []whereBuilderExp
+	ebs    []EbEnum受払区分
 }
 
 func NewWbEnum受払区分() WbEnum受払区分 {
-	return &wbEnum受払区分{config: make([]whereBuilderExp, 0)}
+	return &wbEnum受払区分{
+		config: make([]whereBuilderExp, 0),
+		ebs:    make([]EbEnum受払区分, 0),
+	}
 }
 func newWbEnum受払区分WithPrimaryKeys(受払区分 objects.Enum受払区分) WbEnum受払区分 {
 	wb := &wbEnum受払区分{config: make([]whereBuilderExp, 0)}
@@ -37,18 +42,20 @@ func (wb *wbEnum受払区分) And(field fldEnum受払区分, op whereBuilderOper
 func (wb *wbEnum受払区分) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wbEnum受払区分) build(argCntStart ...int) (where Where) {
+func (wb *wbEnum受払区分) Exists(ebs ...EbEnum受払区分) {
+	wb.ebs = append(wb.ebs, ebs...)
+}
+func (wb *wbEnum受払区分) build(argsCntStart ...int) (where Where) {
 	where.w = ""
 	where.prms = make([]interface{}, 0, len(wb.config))
-	argCnt := 1
-	if len(argCntStart) == 1 {
-		argCnt = argCntStart[0]
+	if len(argsCntStart) == 1 {
+		where.argsCnt = argsCntStart[0]
 	}
 	for _, e := range wb.config {
 		switch e.op {
 		case OpIn:
-			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", argCnt)))
-			argCnt++
+			where.argsCnt++
+			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", where.argsCnt)))
 			where.prms = append(where.prms, pq.Array(e.val))
 			continue
 		case OpIsNull:
@@ -57,11 +64,15 @@ func (wb *wbEnum受払区分) build(argCntStart ...int) (where Where) {
 			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, e.op.string())
 			continue
 		default:
-			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", argCnt)))
-			argCnt++
+			where.argsCnt++
+			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", where.argsCnt)))
 			where.prms = append(where.prms, e.val)
 			continue
 		}
+	}
+	for _, eb := range wb.ebs {
+		w := eb.buildEbEnum受払区分(where.argsCnt)
+		where.Append(w)
 	}
 	return
 }
@@ -71,7 +82,8 @@ type nothingWbEnum受払区分 struct{}
 func (wb *nothingWbEnum受払区分) And(field fldEnum受払区分, op whereBuilderOperater, val interface{}) WbEnum受払区分 {
 	return wb
 }
-func (wb *nothingWbEnum受払区分) Clear() {}
+func (wb *nothingWbEnum受払区分) Clear()                 {}
+func (wb *nothingWbEnum受払区分) Exists(_ ...EbEnum受払区分) {}
 func (wb *nothingWbEnum受払区分) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

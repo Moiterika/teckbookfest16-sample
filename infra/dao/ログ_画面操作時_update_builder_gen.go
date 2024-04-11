@@ -48,7 +48,7 @@ func (ub *ubログ画面操作時) build(wb Wbログ画面操作時) (s string, 
 		// 更新項目なし
 		return
 	}
-	where := wb.build(ub.Count() + 1)
+	where := wb.build(ub.Count())
 	whereParams, exists := where.Params()
 	execArgs = make([]interface{}, ub.Count(), ub.Count()+len(whereParams))
 	tmp := make([]string, ub.Count())

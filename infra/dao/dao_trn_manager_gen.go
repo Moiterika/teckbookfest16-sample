@@ -80,12 +80,32 @@ func (dm *DaoTrnManager) NewDaoTrnEnumログ区分() daoTrnEnumログ区分 {
 		trn:       dm.trn,
 	}
 }
+func (dm *DaoTrnManager) NewDaoTrnEnumログ区分With(wb WbEnumログ区分) daoTrnEnumログ区分 {
+	if wb != nil {
+		return daoTrnEnumログ区分{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrnEnumログ区分()
+}
 func (dm *DaoTrnManager) NewDaoTrnEnum受払区分() daoTrnEnum受払区分 {
 	return daoTrnEnum受払区分{
 		WbForInit: NewWbEnum受払区分(),
 		dm:        dm,
 		trn:       dm.trn,
 	}
+}
+func (dm *DaoTrnManager) NewDaoTrnEnum受払区分With(wb WbEnum受払区分) daoTrnEnum受払区分 {
+	if wb != nil {
+		return daoTrnEnum受払区分{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrnEnum受払区分()
 }
 func (dm *DaoTrnManager) NewDaoTrngorpmigrations() daoTrngorpmigrations {
 	return daoTrngorpmigrations{
@@ -94,12 +114,32 @@ func (dm *DaoTrnManager) NewDaoTrngorpmigrations() daoTrngorpmigrations {
 		trn:       dm.trn,
 	}
 }
+func (dm *DaoTrnManager) NewDaoTrngorpmigrationsWith(wb Wbgorpmigrations) daoTrngorpmigrations {
+	if wb != nil {
+		return daoTrngorpmigrations{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrngorpmigrations()
+}
 func (dm *DaoTrnManager) NewDaoTrnリソース変更履歴() daoTrnリソース変更履歴 {
 	return daoTrnリソース変更履歴{
 		WbForInit: NewWbリソース変更履歴(),
 		dm:        dm,
 		trn:       dm.trn,
 	}
+}
+func (dm *DaoTrnManager) NewDaoTrnリソース変更履歴With(wb Wbリソース変更履歴) daoTrnリソース変更履歴 {
+	if wb != nil {
+		return daoTrnリソース変更履歴{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrnリソース変更履歴()
 }
 func (dm *DaoTrnManager) NewDaoTrnリソース変更履歴アップロード時() daoTrnリソース変更履歴アップロード時 {
 	return daoTrnリソース変更履歴アップロード時{
@@ -108,12 +148,32 @@ func (dm *DaoTrnManager) NewDaoTrnリソース変更履歴アップロード時(
 		trn:       dm.trn,
 	}
 }
+func (dm *DaoTrnManager) NewDaoTrnリソース変更履歴アップロード時With(wb Wbリソース変更履歴アップロード時) daoTrnリソース変更履歴アップロード時 {
+	if wb != nil {
+		return daoTrnリソース変更履歴アップロード時{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrnリソース変更履歴アップロード時()
+}
 func (dm *DaoTrnManager) NewDaoTrnログ() daoTrnログ {
 	return daoTrnログ{
 		WbForInit: NewWbログ(),
 		dm:        dm,
 		trn:       dm.trn,
 	}
+}
+func (dm *DaoTrnManager) NewDaoTrnログWith(wb Wbログ) daoTrnログ {
+	if wb != nil {
+		return daoTrnログ{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrnログ()
 }
 func (dm *DaoTrnManager) NewDaoTrnログアップロード時() daoTrnログアップロード時 {
 	return daoTrnログアップロード時{
@@ -122,12 +182,32 @@ func (dm *DaoTrnManager) NewDaoTrnログアップロード時() daoTrnログア�
 		trn:       dm.trn,
 	}
 }
+func (dm *DaoTrnManager) NewDaoTrnログアップロード時With(wb Wbログアップロード時) daoTrnログアップロード時 {
+	if wb != nil {
+		return daoTrnログアップロード時{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrnログアップロード時()
+}
 func (dm *DaoTrnManager) NewDaoTrnログ画面操作時() daoTrnログ画面操作時 {
 	return daoTrnログ画面操作時{
 		WbForInit: NewWbログ画面操作時(),
 		dm:        dm,
 		trn:       dm.trn,
 	}
+}
+func (dm *DaoTrnManager) NewDaoTrnログ画面操作時With(wb Wbログ画面操作時) daoTrnログ画面操作時 {
+	if wb != nil {
+		return daoTrnログ画面操作時{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrnログ画面操作時()
 }
 func (dm *DaoTrnManager) NewDaoTrn単位() daoTrn単位 {
 	return daoTrn単位{
@@ -136,12 +216,32 @@ func (dm *DaoTrnManager) NewDaoTrn単位() daoTrn単位 {
 		trn:       dm.trn,
 	}
 }
+func (dm *DaoTrnManager) NewDaoTrn単位With(wb Wb単位) daoTrn単位 {
+	if wb != nil {
+		return daoTrn単位{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrn単位()
+}
 func (dm *DaoTrnManager) NewDaoTrn受払() daoTrn受払 {
 	return daoTrn受払{
 		WbForInit: NewWb受払(),
 		dm:        dm,
 		trn:       dm.trn,
 	}
+}
+func (dm *DaoTrnManager) NewDaoTrn受払With(wb Wb受払) daoTrn受払 {
+	if wb != nil {
+		return daoTrn受払{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrn受払()
 }
 func (dm *DaoTrnManager) NewDaoTrn受払仕入() daoTrn受払仕入 {
 	return daoTrn受払仕入{
@@ -150,12 +250,32 @@ func (dm *DaoTrnManager) NewDaoTrn受払仕入() daoTrn受払仕入 {
 		trn:       dm.trn,
 	}
 }
+func (dm *DaoTrnManager) NewDaoTrn受払仕入With(wb Wb受払仕入) daoTrn受払仕入 {
+	if wb != nil {
+		return daoTrn受払仕入{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrn受払仕入()
+}
 func (dm *DaoTrnManager) NewDaoTrn受払出荷() daoTrn受払出荷 {
 	return daoTrn受払出荷{
 		WbForInit: NewWb受払出荷(),
 		dm:        dm,
 		trn:       dm.trn,
 	}
+}
+func (dm *DaoTrnManager) NewDaoTrn受払出荷With(wb Wb受払出荷) daoTrn受払出荷 {
+	if wb != nil {
+		return daoTrn受払出荷{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrn受払出荷()
 }
 func (dm *DaoTrnManager) NewDaoTrn受払投入実績() daoTrn受払投入実績 {
 	return daoTrn受払投入実績{
@@ -164,12 +284,32 @@ func (dm *DaoTrnManager) NewDaoTrn受払投入実績() daoTrn受払投入実績 
 		trn:       dm.trn,
 	}
 }
+func (dm *DaoTrnManager) NewDaoTrn受払投入実績With(wb Wb受払投入実績) daoTrn受払投入実績 {
+	if wb != nil {
+		return daoTrn受払投入実績{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrn受払投入実績()
+}
 func (dm *DaoTrnManager) NewDaoTrn受払製造実績() daoTrn受払製造実績 {
 	return daoTrn受払製造実績{
 		WbForInit: NewWb受払製造実績(),
 		dm:        dm,
 		trn:       dm.trn,
 	}
+}
+func (dm *DaoTrnManager) NewDaoTrn受払製造実績With(wb Wb受払製造実績) daoTrn受払製造実績 {
+	if wb != nil {
+		return daoTrn受払製造実績{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrn受払製造実績()
 }
 func (dm *DaoTrnManager) NewDaoTrn品目() daoTrn品目 {
 	return daoTrn品目{
@@ -178,12 +318,32 @@ func (dm *DaoTrnManager) NewDaoTrn品目() daoTrn品目 {
 		trn:       dm.trn,
 	}
 }
+func (dm *DaoTrnManager) NewDaoTrn品目With(wb Wb品目) daoTrn品目 {
+	if wb != nil {
+		return daoTrn品目{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrn品目()
+}
 func (dm *DaoTrnManager) NewDaoTrn品目仕入品() daoTrn品目仕入品 {
 	return daoTrn品目仕入品{
 		WbForInit: NewWb品目仕入品(),
 		dm:        dm,
 		trn:       dm.trn,
 	}
+}
+func (dm *DaoTrnManager) NewDaoTrn品目仕入品With(wb Wb品目仕入品) daoTrn品目仕入品 {
+	if wb != nil {
+		return daoTrn品目仕入品{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrn品目仕入品()
 }
 func (dm *DaoTrnManager) NewDaoTrn品目製造品() daoTrn品目製造品 {
 	return daoTrn品目製造品{
@@ -192,10 +352,30 @@ func (dm *DaoTrnManager) NewDaoTrn品目製造品() daoTrn品目製造品 {
 		trn:       dm.trn,
 	}
 }
+func (dm *DaoTrnManager) NewDaoTrn品目製造品With(wb Wb品目製造品) daoTrn品目製造品 {
+	if wb != nil {
+		return daoTrn品目製造品{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrn品目製造品()
+}
 func (dm *DaoTrnManager) NewDaoTrn生産用品目区分() daoTrn生産用品目区分 {
 	return daoTrn生産用品目区分{
 		WbForInit: NewWb生産用品目区分(),
 		dm:        dm,
 		trn:       dm.trn,
 	}
+}
+func (dm *DaoTrnManager) NewDaoTrn生産用品目区分With(wb Wb生産用品目区分) daoTrn生産用品目区分 {
+	if wb != nil {
+		return daoTrn生産用品目区分{
+			WbForInit: wb,
+			dm:        dm,
+			trn:       dm.trn,
+		}
+	}
+	return dm.NewDaoTrn生産用品目区分()
 }

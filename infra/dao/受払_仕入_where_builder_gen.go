@@ -10,14 +10,19 @@ import (
 type Wb受払仕入 interface {
 	And(field fld受払仕入, op whereBuilderOperater, val interface{}) Wb受払仕入
 	Clear()
+	Exists(...Eb受払仕入)
 	build(argCntStart ...int) (where Where)
 }
 type wb受払仕入 struct {
 	config []whereBuilderExp
+	ebs    []Eb受払仕入
 }
 
 func NewWb受払仕入() Wb受払仕入 {
-	return &wb受払仕入{config: make([]whereBuilderExp, 0)}
+	return &wb受払仕入{
+		config: make([]whereBuilderExp, 0),
+		ebs:    make([]Eb受払仕入, 0),
+	}
 }
 func newWb受払仕入WithPrimaryKeys(No Id) Wb受払仕入 {
 	wb := &wb受払仕入{config: make([]whereBuilderExp, 0)}
@@ -36,18 +41,20 @@ func (wb *wb受払仕入) And(field fld受払仕入, op whereBuilderOperater, va
 func (wb *wb受払仕入) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wb受払仕入) build(argCntStart ...int) (where Where) {
+func (wb *wb受払仕入) Exists(ebs ...Eb受払仕入) {
+	wb.ebs = append(wb.ebs, ebs...)
+}
+func (wb *wb受払仕入) build(argsCntStart ...int) (where Where) {
 	where.w = ""
 	where.prms = make([]interface{}, 0, len(wb.config))
-	argCnt := 1
-	if len(argCntStart) == 1 {
-		argCnt = argCntStart[0]
+	if len(argsCntStart) == 1 {
+		where.argsCnt = argsCntStart[0]
 	}
 	for _, e := range wb.config {
 		switch e.op {
 		case OpIn:
-			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", argCnt)))
-			argCnt++
+			where.argsCnt++
+			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", where.argsCnt)))
 			where.prms = append(where.prms, pq.Array(e.val))
 			continue
 		case OpIsNull:
@@ -56,11 +63,15 @@ func (wb *wb受払仕入) build(argCntStart ...int) (where Where) {
 			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, e.op.string())
 			continue
 		default:
-			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", argCnt)))
-			argCnt++
+			where.argsCnt++
+			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", where.argsCnt)))
 			where.prms = append(where.prms, e.val)
 			continue
 		}
+	}
+	for _, eb := range wb.ebs {
+		w := eb.buildEb受払仕入(where.argsCnt)
+		where.Append(w)
 	}
 	return
 }
@@ -70,7 +81,8 @@ type nothingWb受払仕入 struct{}
 func (wb *nothingWb受払仕入) And(field fld受払仕入, op whereBuilderOperater, val interface{}) Wb受払仕入 {
 	return wb
 }
-func (wb *nothingWb受払仕入) Clear() {}
+func (wb *nothingWb受払仕入) Clear()             {}
+func (wb *nothingWb受払仕入) Exists(_ ...Eb受払仕入) {}
 func (wb *nothingWb受払仕入) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

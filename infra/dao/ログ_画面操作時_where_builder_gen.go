@@ -10,14 +10,19 @@ import (
 type Wbログ画面操作時 interface {
 	And(field fldログ画面操作時, op whereBuilderOperater, val interface{}) Wbログ画面操作時
 	Clear()
+	Exists(...Ebログ画面操作時)
 	build(argCntStart ...int) (where Where)
 }
 type wbログ画面操作時 struct {
 	config []whereBuilderExp
+	ebs    []Ebログ画面操作時
 }
 
 func NewWbログ画面操作時() Wbログ画面操作時 {
-	return &wbログ画面操作時{config: make([]whereBuilderExp, 0)}
+	return &wbログ画面操作時{
+		config: make([]whereBuilderExp, 0),
+		ebs:    make([]Ebログ画面操作時, 0),
+	}
 }
 func newWbログ画面操作時WithPrimaryKeys(No Id) Wbログ画面操作時 {
 	wb := &wbログ画面操作時{config: make([]whereBuilderExp, 0)}
@@ -36,18 +41,20 @@ func (wb *wbログ画面操作時) And(field fldログ画面操作時, op whereB
 func (wb *wbログ画面操作時) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wbログ画面操作時) build(argCntStart ...int) (where Where) {
+func (wb *wbログ画面操作時) Exists(ebs ...Ebログ画面操作時) {
+	wb.ebs = append(wb.ebs, ebs...)
+}
+func (wb *wbログ画面操作時) build(argsCntStart ...int) (where Where) {
 	where.w = ""
 	where.prms = make([]interface{}, 0, len(wb.config))
-	argCnt := 1
-	if len(argCntStart) == 1 {
-		argCnt = argCntStart[0]
+	if len(argsCntStart) == 1 {
+		where.argsCnt = argsCntStart[0]
 	}
 	for _, e := range wb.config {
 		switch e.op {
 		case OpIn:
-			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", argCnt)))
-			argCnt++
+			where.argsCnt++
+			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", where.argsCnt)))
 			where.prms = append(where.prms, pq.Array(e.val))
 			continue
 		case OpIsNull:
@@ -56,11 +63,15 @@ func (wb *wbログ画面操作時) build(argCntStart ...int) (where Where) {
 			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, e.op.string())
 			continue
 		default:
-			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", argCnt)))
-			argCnt++
+			where.argsCnt++
+			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", where.argsCnt)))
 			where.prms = append(where.prms, e.val)
 			continue
 		}
+	}
+	for _, eb := range wb.ebs {
+		w := eb.buildEbログ画面操作時(where.argsCnt)
+		where.Append(w)
 	}
 	return
 }
@@ -70,7 +81,8 @@ type nothingWbログ画面操作時 struct{}
 func (wb *nothingWbログ画面操作時) And(field fldログ画面操作時, op whereBuilderOperater, val interface{}) Wbログ画面操作時 {
 	return wb
 }
-func (wb *nothingWbログ画面操作時) Clear() {}
+func (wb *nothingWbログ画面操作時) Clear()                {}
+func (wb *nothingWbログ画面操作時) Exists(_ ...Ebログ画面操作時) {}
 func (wb *nothingWbログ画面操作時) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

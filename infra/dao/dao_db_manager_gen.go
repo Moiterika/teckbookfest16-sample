@@ -80,12 +80,32 @@ func (dm *DaoDbManager) NewDaoDbEnumログ区分() daoDbEnumログ区分 {
 		dm:        dm,
 	}
 }
+func (dm *DaoDbManager) NewDaoDbEnumログ区分With(wb WbEnumログ区分) daoDbEnumログ区分 {
+	if wb != nil {
+		return daoDbEnumログ区分{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDbEnumログ区分()
+}
 func (dm *DaoDbManager) NewDaoDbEnum受払区分() daoDbEnum受払区分 {
 	return daoDbEnum受払区分{
 		WbForInit: NewWbEnum受払区分(),
 		db:        dm.db,
 		dm:        dm,
 	}
+}
+func (dm *DaoDbManager) NewDaoDbEnum受払区分With(wb WbEnum受払区分) daoDbEnum受払区分 {
+	if wb != nil {
+		return daoDbEnum受払区分{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDbEnum受払区分()
 }
 func (dm *DaoDbManager) NewDaoDbgorpmigrations() daoDbgorpmigrations {
 	return daoDbgorpmigrations{
@@ -94,12 +114,32 @@ func (dm *DaoDbManager) NewDaoDbgorpmigrations() daoDbgorpmigrations {
 		dm:        dm,
 	}
 }
+func (dm *DaoDbManager) NewDaoDbgorpmigrationsWith(wb Wbgorpmigrations) daoDbgorpmigrations {
+	if wb != nil {
+		return daoDbgorpmigrations{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDbgorpmigrations()
+}
 func (dm *DaoDbManager) NewDaoDbリソース変更履歴() daoDbリソース変更履歴 {
 	return daoDbリソース変更履歴{
 		WbForInit: NewWbリソース変更履歴(),
 		db:        dm.db,
 		dm:        dm,
 	}
+}
+func (dm *DaoDbManager) NewDaoDbリソース変更履歴With(wb Wbリソース変更履歴) daoDbリソース変更履歴 {
+	if wb != nil {
+		return daoDbリソース変更履歴{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDbリソース変更履歴()
 }
 func (dm *DaoDbManager) NewDaoDbリソース変更履歴アップロード時() daoDbリソース変更履歴アップロード時 {
 	return daoDbリソース変更履歴アップロード時{
@@ -108,12 +148,32 @@ func (dm *DaoDbManager) NewDaoDbリソース変更履歴アップロード時() 
 		dm:        dm,
 	}
 }
+func (dm *DaoDbManager) NewDaoDbリソース変更履歴アップロード時With(wb Wbリソース変更履歴アップロード時) daoDbリソース変更履歴アップロード時 {
+	if wb != nil {
+		return daoDbリソース変更履歴アップロード時{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDbリソース変更履歴アップロード時()
+}
 func (dm *DaoDbManager) NewDaoDbログ() daoDbログ {
 	return daoDbログ{
 		WbForInit: NewWbログ(),
 		db:        dm.db,
 		dm:        dm,
 	}
+}
+func (dm *DaoDbManager) NewDaoDbログWith(wb Wbログ) daoDbログ {
+	if wb != nil {
+		return daoDbログ{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDbログ()
 }
 func (dm *DaoDbManager) NewDaoDbログアップロード時() daoDbログアップロード時 {
 	return daoDbログアップロード時{
@@ -122,12 +182,32 @@ func (dm *DaoDbManager) NewDaoDbログアップロード時() daoDbログアッ�
 		dm:        dm,
 	}
 }
+func (dm *DaoDbManager) NewDaoDbログアップロード時With(wb Wbログアップロード時) daoDbログアップロード時 {
+	if wb != nil {
+		return daoDbログアップロード時{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDbログアップロード時()
+}
 func (dm *DaoDbManager) NewDaoDbログ画面操作時() daoDbログ画面操作時 {
 	return daoDbログ画面操作時{
 		WbForInit: NewWbログ画面操作時(),
 		db:        dm.db,
 		dm:        dm,
 	}
+}
+func (dm *DaoDbManager) NewDaoDbログ画面操作時With(wb Wbログ画面操作時) daoDbログ画面操作時 {
+	if wb != nil {
+		return daoDbログ画面操作時{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDbログ画面操作時()
 }
 func (dm *DaoDbManager) NewDaoDb単位() daoDb単位 {
 	return daoDb単位{
@@ -136,12 +216,32 @@ func (dm *DaoDbManager) NewDaoDb単位() daoDb単位 {
 		dm:        dm,
 	}
 }
+func (dm *DaoDbManager) NewDaoDb単位With(wb Wb単位) daoDb単位 {
+	if wb != nil {
+		return daoDb単位{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDb単位()
+}
 func (dm *DaoDbManager) NewDaoDb受払() daoDb受払 {
 	return daoDb受払{
 		WbForInit: NewWb受払(),
 		db:        dm.db,
 		dm:        dm,
 	}
+}
+func (dm *DaoDbManager) NewDaoDb受払With(wb Wb受払) daoDb受払 {
+	if wb != nil {
+		return daoDb受払{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDb受払()
 }
 func (dm *DaoDbManager) NewDaoDb受払仕入() daoDb受払仕入 {
 	return daoDb受払仕入{
@@ -150,12 +250,32 @@ func (dm *DaoDbManager) NewDaoDb受払仕入() daoDb受払仕入 {
 		dm:        dm,
 	}
 }
+func (dm *DaoDbManager) NewDaoDb受払仕入With(wb Wb受払仕入) daoDb受払仕入 {
+	if wb != nil {
+		return daoDb受払仕入{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDb受払仕入()
+}
 func (dm *DaoDbManager) NewDaoDb受払出荷() daoDb受払出荷 {
 	return daoDb受払出荷{
 		WbForInit: NewWb受払出荷(),
 		db:        dm.db,
 		dm:        dm,
 	}
+}
+func (dm *DaoDbManager) NewDaoDb受払出荷With(wb Wb受払出荷) daoDb受払出荷 {
+	if wb != nil {
+		return daoDb受払出荷{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDb受払出荷()
 }
 func (dm *DaoDbManager) NewDaoDb受払投入実績() daoDb受払投入実績 {
 	return daoDb受払投入実績{
@@ -164,12 +284,32 @@ func (dm *DaoDbManager) NewDaoDb受払投入実績() daoDb受払投入実績 {
 		dm:        dm,
 	}
 }
+func (dm *DaoDbManager) NewDaoDb受払投入実績With(wb Wb受払投入実績) daoDb受払投入実績 {
+	if wb != nil {
+		return daoDb受払投入実績{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDb受払投入実績()
+}
 func (dm *DaoDbManager) NewDaoDb受払製造実績() daoDb受払製造実績 {
 	return daoDb受払製造実績{
 		WbForInit: NewWb受払製造実績(),
 		db:        dm.db,
 		dm:        dm,
 	}
+}
+func (dm *DaoDbManager) NewDaoDb受払製造実績With(wb Wb受払製造実績) daoDb受払製造実績 {
+	if wb != nil {
+		return daoDb受払製造実績{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDb受払製造実績()
 }
 func (dm *DaoDbManager) NewDaoDb品目() daoDb品目 {
 	return daoDb品目{
@@ -178,12 +318,32 @@ func (dm *DaoDbManager) NewDaoDb品目() daoDb品目 {
 		dm:        dm,
 	}
 }
+func (dm *DaoDbManager) NewDaoDb品目With(wb Wb品目) daoDb品目 {
+	if wb != nil {
+		return daoDb品目{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDb品目()
+}
 func (dm *DaoDbManager) NewDaoDb品目仕入品() daoDb品目仕入品 {
 	return daoDb品目仕入品{
 		WbForInit: NewWb品目仕入品(),
 		db:        dm.db,
 		dm:        dm,
 	}
+}
+func (dm *DaoDbManager) NewDaoDb品目仕入品With(wb Wb品目仕入品) daoDb品目仕入品 {
+	if wb != nil {
+		return daoDb品目仕入品{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDb品目仕入品()
 }
 func (dm *DaoDbManager) NewDaoDb品目製造品() daoDb品目製造品 {
 	return daoDb品目製造品{
@@ -192,10 +352,30 @@ func (dm *DaoDbManager) NewDaoDb品目製造品() daoDb品目製造品 {
 		dm:        dm,
 	}
 }
+func (dm *DaoDbManager) NewDaoDb品目製造品With(wb Wb品目製造品) daoDb品目製造品 {
+	if wb != nil {
+		return daoDb品目製造品{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDb品目製造品()
+}
 func (dm *DaoDbManager) NewDaoDb生産用品目区分() daoDb生産用品目区分 {
 	return daoDb生産用品目区分{
 		WbForInit: NewWb生産用品目区分(),
 		db:        dm.db,
 		dm:        dm,
 	}
+}
+func (dm *DaoDbManager) NewDaoDb生産用品目区分With(wb Wb生産用品目区分) daoDb生産用品目区分 {
+	if wb != nil {
+		return daoDb生産用品目区分{
+			WbForInit: wb,
+			db:        dm.db,
+			dm:        dm,
+		}
+	}
+	return dm.NewDaoDb生産用品目区分()
 }

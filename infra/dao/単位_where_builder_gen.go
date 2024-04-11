@@ -10,14 +10,19 @@ import (
 type Wb単位 interface {
 	And(field fld単位, op whereBuilderOperater, val interface{}) Wb単位
 	Clear()
+	Exists(...Eb単位)
 	build(argCntStart ...int) (where Where)
 }
 type wb単位 struct {
 	config []whereBuilderExp
+	ebs    []Eb単位
 }
 
 func NewWb単位() Wb単位 {
-	return &wb単位{config: make([]whereBuilderExp, 0)}
+	return &wb単位{
+		config: make([]whereBuilderExp, 0),
+		ebs:    make([]Eb単位, 0),
+	}
 }
 func newWb単位WithPrimaryKeys(ID Id) Wb単位 {
 	wb := &wb単位{config: make([]whereBuilderExp, 0)}
@@ -36,18 +41,20 @@ func (wb *wb単位) And(field fld単位, op whereBuilderOperater, val interface{
 func (wb *wb単位) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wb単位) build(argCntStart ...int) (where Where) {
+func (wb *wb単位) Exists(ebs ...Eb単位) {
+	wb.ebs = append(wb.ebs, ebs...)
+}
+func (wb *wb単位) build(argsCntStart ...int) (where Where) {
 	where.w = ""
 	where.prms = make([]interface{}, 0, len(wb.config))
-	argCnt := 1
-	if len(argCntStart) == 1 {
-		argCnt = argCntStart[0]
+	if len(argsCntStart) == 1 {
+		where.argsCnt = argsCntStart[0]
 	}
 	for _, e := range wb.config {
 		switch e.op {
 		case OpIn:
-			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", argCnt)))
-			argCnt++
+			where.argsCnt++
+			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", where.argsCnt)))
 			where.prms = append(where.prms, pq.Array(e.val))
 			continue
 		case OpIsNull:
@@ -56,11 +63,15 @@ func (wb *wb単位) build(argCntStart ...int) (where Where) {
 			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, e.op.string())
 			continue
 		default:
-			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", argCnt)))
-			argCnt++
+			where.argsCnt++
+			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", where.argsCnt)))
 			where.prms = append(where.prms, e.val)
 			continue
 		}
+	}
+	for _, eb := range wb.ebs {
+		w := eb.buildEb単位(where.argsCnt)
+		where.Append(w)
 	}
 	return
 }
@@ -70,7 +81,8 @@ type nothingWb単位 struct{}
 func (wb *nothingWb単位) And(field fld単位, op whereBuilderOperater, val interface{}) Wb単位 {
 	return wb
 }
-func (wb *nothingWb単位) Clear() {}
+func (wb *nothingWb単位) Clear()           {}
+func (wb *nothingWb単位) Exists(_ ...Eb単位) {}
 func (wb *nothingWb単位) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

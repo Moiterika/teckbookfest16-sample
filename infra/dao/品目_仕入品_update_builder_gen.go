@@ -48,7 +48,7 @@ func (ub *ub品目仕入品) build(wb Wb品目仕入品) (s string, w string, ex
 		// 更新項目なし
 		return
 	}
-	where := wb.build(ub.Count() + 1)
+	where := wb.build(ub.Count())
 	whereParams, exists := where.Params()
 	execArgs = make([]interface{}, ub.Count(), ub.Count()+len(whereParams))
 	tmp := make([]string, ub.Count())

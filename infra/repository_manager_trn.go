@@ -30,9 +30,17 @@ type repManagerTrn struct {
 	mapNovs受払 map[types.No]*objects.Ent受払
 	list仕入    []*objects.Ent受払仕入
 	mapNovs仕入 map[types.No]*objects.Ent受払仕入
+
+	*repManagerArgs
 }
 
-func NewRepManagerWithTrn(trn *sql.Tx) *repManagerTrn {
+func NewRepManagerWithTrn(trn *sql.Tx, options ...repManagerOption) *repManagerTrn {
+
+	args := &repManagerArgs{}
+	for _, op := range options {
+		op(args)
+	}
+
 	return &repManagerTrn{
 		dm:              dao.NewDaoTrnManager(trn),
 		list単位:          make([]*objects.Ent単位, 0),
@@ -51,6 +59,7 @@ func NewRepManagerWithTrn(trn *sql.Tx) *repManagerTrn {
 		mapNovs受払:       make(map[types.No]*objects.Ent受払),
 		list仕入:          make([]*objects.Ent受払仕入, 0),
 		mapNovs仕入:       make(map[types.No]*objects.Ent受払仕入),
+		repManagerArgs:  args,
 	}
 }
 
@@ -86,7 +95,8 @@ func (rm *repManagerTrn) rep品目() *repTrn品目 {
 
 func (rm *repManagerTrn) NewRep品目() objects.Rep品目 {
 	return &repTrn品目{
-		rm: rm,
+		rm:   rm,
+		wb品目: rm.repManagerArgs.wb品目,
 	}
 }
 

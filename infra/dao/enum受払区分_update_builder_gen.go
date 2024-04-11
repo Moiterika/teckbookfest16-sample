@@ -48,7 +48,7 @@ func (ub *ubEnum受払区分) build(wb WbEnum受払区分) (s string, w string, 
 		// 更新項目なし
 		return
 	}
-	where := wb.build(ub.Count() + 1)
+	where := wb.build(ub.Count())
 	whereParams, exists := where.Params()
 	execArgs = make([]interface{}, ub.Count(), ub.Count()+len(whereParams))
 	tmp := make([]string, ub.Count())

@@ -11,14 +11,19 @@ import (
 type WbEnumログ区分 interface {
 	And(field fldEnumログ区分, op whereBuilderOperater, val interface{}) WbEnumログ区分
 	Clear()
+	Exists(...EbEnumログ区分)
 	build(argCntStart ...int) (where Where)
 }
 type wbEnumログ区分 struct {
 	config []whereBuilderExp
+	ebs    []EbEnumログ区分
 }
 
 func NewWbEnumログ区分() WbEnumログ区分 {
-	return &wbEnumログ区分{config: make([]whereBuilderExp, 0)}
+	return &wbEnumログ区分{
+		config: make([]whereBuilderExp, 0),
+		ebs:    make([]EbEnumログ区分, 0),
+	}
 }
 func newWbEnumログ区分WithPrimaryKeys(区分 objects.Enumログ区分) WbEnumログ区分 {
 	wb := &wbEnumログ区分{config: make([]whereBuilderExp, 0)}
@@ -37,18 +42,20 @@ func (wb *wbEnumログ区分) And(field fldEnumログ区分, op whereBuilderOper
 func (wb *wbEnumログ区分) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wbEnumログ区分) build(argCntStart ...int) (where Where) {
+func (wb *wbEnumログ区分) Exists(ebs ...EbEnumログ区分) {
+	wb.ebs = append(wb.ebs, ebs...)
+}
+func (wb *wbEnumログ区分) build(argsCntStart ...int) (where Where) {
 	where.w = ""
 	where.prms = make([]interface{}, 0, len(wb.config))
-	argCnt := 1
-	if len(argCntStart) == 1 {
-		argCnt = argCntStart[0]
+	if len(argsCntStart) == 1 {
+		where.argsCnt = argsCntStart[0]
 	}
 	for _, e := range wb.config {
 		switch e.op {
 		case OpIn:
-			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", argCnt)))
-			argCnt++
+			where.argsCnt++
+			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", where.argsCnt)))
 			where.prms = append(where.prms, pq.Array(e.val))
 			continue
 		case OpIsNull:
@@ -57,11 +64,15 @@ func (wb *wbEnumログ区分) build(argCntStart ...int) (where Where) {
 			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, e.op.string())
 			continue
 		default:
-			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", argCnt)))
-			argCnt++
+			where.argsCnt++
+			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", where.argsCnt)))
 			where.prms = append(where.prms, e.val)
 			continue
 		}
+	}
+	for _, eb := range wb.ebs {
+		w := eb.buildEbEnumログ区分(where.argsCnt)
+		where.Append(w)
 	}
 	return
 }
@@ -71,7 +82,8 @@ type nothingWbEnumログ区分 struct{}
 func (wb *nothingWbEnumログ区分) And(field fldEnumログ区分, op whereBuilderOperater, val interface{}) WbEnumログ区分 {
 	return wb
 }
-func (wb *nothingWbEnumログ区分) Clear() {}
+func (wb *nothingWbEnumログ区分) Clear()                 {}
+func (wb *nothingWbEnumログ区分) Exists(_ ...EbEnumログ区分) {}
 func (wb *nothingWbEnumログ区分) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

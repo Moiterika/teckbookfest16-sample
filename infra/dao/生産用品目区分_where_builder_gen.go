@@ -10,14 +10,19 @@ import (
 type Wb生産用品目区分 interface {
 	And(field fld生産用品目区分, op whereBuilderOperater, val interface{}) Wb生産用品目区分
 	Clear()
+	Exists(...Eb生産用品目区分)
 	build(argCntStart ...int) (where Where)
 }
 type wb生産用品目区分 struct {
 	config []whereBuilderExp
+	ebs    []Eb生産用品目区分
 }
 
 func NewWb生産用品目区分() Wb生産用品目区分 {
-	return &wb生産用品目区分{config: make([]whereBuilderExp, 0)}
+	return &wb生産用品目区分{
+		config: make([]whereBuilderExp, 0),
+		ebs:    make([]Eb生産用品目区分, 0),
+	}
 }
 func newWb生産用品目区分WithPrimaryKeys(ID Id) Wb生産用品目区分 {
 	wb := &wb生産用品目区分{config: make([]whereBuilderExp, 0)}
@@ -36,18 +41,20 @@ func (wb *wb生産用品目区分) And(field fld生産用品目区分, op whereB
 func (wb *wb生産用品目区分) Clear() {
 	wb.config = make([]whereBuilderExp, 0)
 }
-func (wb *wb生産用品目区分) build(argCntStart ...int) (where Where) {
+func (wb *wb生産用品目区分) Exists(ebs ...Eb生産用品目区分) {
+	wb.ebs = append(wb.ebs, ebs...)
+}
+func (wb *wb生産用品目区分) build(argsCntStart ...int) (where Where) {
 	where.w = ""
 	where.prms = make([]interface{}, 0, len(wb.config))
-	argCnt := 1
-	if len(argCntStart) == 1 {
-		argCnt = argCntStart[0]
+	if len(argsCntStart) == 1 {
+		where.argsCnt = argsCntStart[0]
 	}
 	for _, e := range wb.config {
 		switch e.op {
 		case OpIn:
-			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", argCnt)))
-			argCnt++
+			where.argsCnt++
+			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", where.argsCnt)))
 			where.prms = append(where.prms, pq.Array(e.val))
 			continue
 		case OpIsNull:
@@ -56,11 +63,15 @@ func (wb *wb生産用品目区分) build(argCntStart ...int) (where Where) {
 			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, e.op.string())
 			continue
 		default:
-			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", argCnt)))
-			argCnt++
+			where.argsCnt++
+			where.w += fmt.Sprintf(" AND (\"%s\"%s)", e.field, fmt.Sprintf(e.op.string(), fmt.Sprintf("$%d", where.argsCnt)))
 			where.prms = append(where.prms, e.val)
 			continue
 		}
+	}
+	for _, eb := range wb.ebs {
+		w := eb.buildEb生産用品目区分(where.argsCnt)
+		where.Append(w)
 	}
 	return
 }
@@ -70,7 +81,8 @@ type nothingWb生産用品目区分 struct{}
 func (wb *nothingWb生産用品目区分) And(field fld生産用品目区分, op whereBuilderOperater, val interface{}) Wb生産用品目区分 {
 	return wb
 }
-func (wb *nothingWb生産用品目区分) Clear() {}
+func (wb *nothingWb生産用品目区分) Clear()                {}
+func (wb *nothingWb生産用品目区分) Exists(_ ...Eb生産用品目区分) {}
 func (wb *nothingWb生産用品目区分) build(argCntStart ...int) (where Where) {
 	return Where{w: " AND 1<>1"}
 }

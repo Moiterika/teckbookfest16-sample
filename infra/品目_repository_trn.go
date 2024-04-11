@@ -14,11 +14,13 @@ type repTrn品目 struct {
 	isLoaded bool
 	// 品目tempId  dao.Id
 	// 仕入品tempId dao.Id
+	wb品目  dao.Wb品目
+	wb仕入品 dao.Wb品目仕入品
+	wb製造品 dao.Wb品目製造品
 }
 
 func (r *repTrn品目) init() error {
-	// TODO DAOにWHERE句をapl層で差し込めるようにしておきたい。
-	dt品目, err := r.rm.dm.NewDaoTrn品目().Dt()
+	dt品目, err := r.rm.dm.NewDaoTrn品目With(r.wb品目).Dt()
 	if err != nil {
 		return xerrors.Errorf(" :%w", err)
 	}
@@ -50,7 +52,7 @@ func (r *repTrn品目) init() error {
 	}
 
 	// TODO DAOにWHERE句をapl層で差し込めるようにしておきたい。
-	dt仕入品, err := r.rm.dm.NewDaoTrn品目仕入品().Dt()
+	dt仕入品, err := r.rm.dm.NewDaoTrn品目仕入品With(r.wb仕入品).Dt()
 	if err != nil {
 		return xerrors.Errorf(" :%w", err)
 	}
