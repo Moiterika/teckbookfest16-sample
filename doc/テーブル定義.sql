@@ -1,5 +1,5 @@
 -- Project Name : 技術書典16サンプル
--- Date/Time    : 2024/03/14 10:44:17
+-- Date/Time    : 2024/04/12 20:29:06
 -- Author       : 合同会社モイテリカ
 -- RDBMS Type   : PostgreSQL
 -- Application  : A5:SQL Mk-2
@@ -25,42 +25,42 @@ create table "gorp_migrations" (
 ) ;
 
 create table "リソース変更履歴" (
-  "ID" bigserial not null
+  "No" bigserial not null
   , "登録日時" timestamp with time zone default now() not null
   , "リソース名" text not null
   , "変更区分" char(1) not null
   , "変更内容" jsonb not null
-  , constraint "リソース変更履歴_PKC" primary key ("ID")
+  , constraint "リソース変更履歴_PKC" primary key ("No")
 ) ;
 
 create table "リソース変更履歴_アップロード時" (
-  "ID" bigint not null
+  "No" bigint not null
   , "アップロード履歴ID" bigint not null
-  , constraint "リソース変更履歴_アップロード時_PKC" primary key ("ID")
+  , constraint "リソース変更履歴_アップロード時_PKC" primary key ("No")
 ) ;
 
 create table "ログ" (
-  "ID" bigserial not null
+  "No" bigserial not null
   , "登録日時" timestamp with time zone default now() not null
   , "区分" char(1) default 'I' not null
   , "内容" text not null
-  , constraint "ログ_PKC" primary key ("ID")
+  , constraint "ログ_PKC" primary key ("No")
 ) ;
 
 create table "ログ_アップロード時" (
-  "ID" bigint not null
+  "No" bigint not null
   , "アップロード履歴ID" bigint not null
-  , constraint "ログ_アップロード時_PKC" primary key ("ID")
+  , constraint "ログ_アップロード時_PKC" primary key ("No")
 ) ;
 
 create table "ログ_画面操作時" (
-  "ID" bigint not null
+  "No" bigint not null
   , "操作ユーザーID" bigint not null
-  , constraint "ログ_画面操作時_PKC" primary key ("ID")
+  , constraint "ログ_画面操作時_PKC" primary key ("No")
 ) ;
 
 create table "単位" (
-  "ID" smallserial not null
+  "ID" bigserial not null
   , "コード" text not null
   , "名称" text not null
   , constraint "単位_PKC" primary key ("ID")
@@ -163,24 +163,24 @@ comment on column "Enum受払区分"."符号" is '';
 comment on column "gorp_migrations"."id" is '';
 comment on column "gorp_migrations"."applied_at" is '';
 
-comment on column "リソース変更履歴"."ID" is '';
+comment on column "リソース変更履歴"."No" is '';
 comment on column "リソース変更履歴"."登録日時" is '';
 comment on column "リソース変更履歴"."リソース名" is '';
 comment on column "リソース変更履歴"."変更区分" is ':A, M , D';
 comment on column "リソース変更履歴"."変更内容" is '';
 
-comment on column "リソース変更履歴_アップロード時"."ID" is '';
+comment on column "リソース変更履歴_アップロード時"."No" is '';
 comment on column "リソース変更履歴_アップロード時"."アップロード履歴ID" is '';
 
-comment on column "ログ"."ID" is '';
+comment on column "ログ"."No" is '';
 comment on column "ログ"."登録日時" is '';
 comment on column "ログ"."区分" is '';
 comment on column "ログ"."内容" is '';
 
-comment on column "ログ_アップロード時"."ID" is '';
+comment on column "ログ_アップロード時"."No" is '';
 comment on column "ログ_アップロード時"."アップロード履歴ID" is '';
 
-comment on column "ログ_画面操作時"."ID" is '';
+comment on column "ログ_画面操作時"."No" is '';
 comment on column "ログ_画面操作時"."操作ユーザーID" is '';
 
 comment on column "単位"."ID" is '';

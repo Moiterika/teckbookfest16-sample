@@ -29,6 +29,9 @@ func main() {
 
 	mhs := apl.NewMyHttpServer(db, 8080)
 	mhs.EntryUsecaseWithNo("/単位/", mhs.UseCase単位)
+	mhs.EntryUsecaseWithNo("/生産用品目区分/", mhs.UseCase生産用品目区分)
+	mhs.EntryUsecaseWithNo("/仕入品/", mhs.UseCase仕入品)
+	mhs.EntryUsecaseWithNo("/仕入/", mhs.UseCase仕入)
 	mhs.ListenAndServe()
 	fmt.Println("終了")
 }

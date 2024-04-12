@@ -56,7 +56,6 @@ func (mhs *myHttpServer) UseCase仕入品(w http.ResponseWriter, r *http.Request
 			return
 		}
 		w.Write(jsonb)
-		return
 	} else if r.Method == http.MethodPatch {
 		trn, err := mhs.defaultDb.Begin()
 		if err != nil {
@@ -94,6 +93,7 @@ func (mhs *myHttpServer) UseCase仕入品(w http.ResponseWriter, r *http.Request
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+	} else {
+		http.Error(w, fmt.Sprintf("HTTP method=%sは許可されていません。", r.Method), http.StatusMethodNotAllowed)
 	}
-	http.Error(w, fmt.Sprintf("HTTP method=%sは許可されていません。", r.Method), http.StatusMethodNotAllowed)
 }
