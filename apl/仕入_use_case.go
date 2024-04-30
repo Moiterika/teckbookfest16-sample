@@ -122,7 +122,10 @@ func (mhs *myHttpServer) UseCase仕入(w http.ResponseWriter, r *http.Request) {
 		wb品目 := dao.NewWb品目().And(dao.Tbl品目().Fldコード(), dao.OpEqu, 仕入.Get品目コード)
 		wb仕入品 := dao.NewWb品目仕入品().Exists(dao.NewEb品目仕入品join品目().And(dao.Tbl品目().Fldコード(), dao.OpEqu, 仕入.Get品目コード))
 
-		rm := infra.NewRepManagerWithTrn(trn, infra.Wb品目(wb品目), infra.Wb仕入品(wb仕入品), infra.Wb製造品(dao.NewNothingWb品目製造品()))
+		rm := infra.NewRepManagerWithTrn(trn,
+			infra.Wb品目(wb品目),
+			infra.Wb仕入品(wb仕入品),
+			infra.Wb製造品(dao.NewNothingWb品目製造品()))
 		s := domain.NewSrv仕入登録(rm, infra.NewCmdTrn受払(rm))
 		err = s.Exec登録(
 			仕入.Get登録日時,  // 登録日時 time.Time,
