@@ -83,7 +83,7 @@ func (mhs *myHttpServer) UseCase仕入品(w http.ResponseWriter, r *http.Request
 			dr仕入品.Get名称,
 			dr仕入品.Get基準単位コード,
 			dr仕入品.Get生産用品目区分コード,
-			dr仕入品.標準単価(),
+			dr仕入品.Get標準単価,
 		)
 		if err != nil {
 			if errors.Is(err, types.ErrArg) {

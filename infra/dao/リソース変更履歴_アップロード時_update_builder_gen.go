@@ -49,6 +49,7 @@ func (ub *ubリソース変更履歴アップロード時) build(wb Wbリソー�
 		return
 	}
 	where := wb.build(ub.Count())
+	w = where.w
 	whereParams, exists := where.Params()
 	execArgs = make([]interface{}, ub.Count(), ub.Count()+len(whereParams))
 	tmp := make([]string, ub.Count())

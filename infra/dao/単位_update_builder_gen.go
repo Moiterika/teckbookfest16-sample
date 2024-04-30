@@ -49,6 +49,7 @@ func (ub *ub単位) build(wb Wb単位) (s string, w string, execArgs []interface
 		return
 	}
 	where := wb.build(ub.Count())
+	w = where.w
 	whereParams, exists := where.Params()
 	execArgs = make([]interface{}, ub.Count(), ub.Count()+len(whereParams))
 	tmp := make([]string, ub.Count())

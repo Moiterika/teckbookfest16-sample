@@ -213,16 +213,17 @@ func (r *repTrn品目) Save(アップロード履歴ID types.No) error {
 		if err != nil {
 			return xerrors.Errorf(": %w", err)
 		}
-		dr単位, err := dao単位.GetByCode(e.Get基準単位.Getコード)
+		dr標準単価単位, err := dao単位.GetByCode(e.Get標準単価.PerUnit())
 		if err != nil {
 			return xerrors.Errorf("品目コード=%s: %w", e.Getコード, err)
 		}
+
 		if dr, notFound := dao仕入品.GetBy(dr品目.FldID); errors.Is(notFound, types.ErrNotFound) {
 			dr := &dao.Dto品目仕入品{
 				FldID:       dr品目.FldID,
 				Fld標準単価:     e.Get標準単価.Amt(),
 				Fld標準単価通貨ID: e.Get標準単価.Cur(),
-				Fld標準単価単位ID: dr単位.FldID,
+				Fld標準単価単位ID: dr標準単価単位.FldID,
 				Ub:          dao.NewUb品目仕入品(),
 			}
 			err = dao仕入品.Insert(dr)
@@ -233,7 +234,7 @@ func (r *repTrn品目) Save(アップロード履歴ID types.No) error {
 		} else {
 			dr.Import(e.Get標準単価.Amt(),
 				e.Get標準単価.Cur(),
-				dr単位.FldID)
+				dr標準単価単位.FldID)
 			_, err = dao仕入品.UpdateBy(dr)
 			if err != nil {
 				return xerrors.Errorf(": %w", err)

@@ -49,6 +49,7 @@ func (ub *ub受払製造実績) build(wb Wb受払製造実績) (s string, w stri
 		return
 	}
 	where := wb.build(ub.Count())
+	w = where.w
 	whereParams, exists := where.Params()
 	execArgs = make([]interface{}, ub.Count(), ub.Count()+len(whereParams))
 	tmp := make([]string, ub.Count())

@@ -49,6 +49,7 @@ func (ub *ub受払出荷) build(wb Wb受払出荷) (s string, w string, execArgs
 		return
 	}
 	where := wb.build(ub.Count())
+	w = where.w
 	whereParams, exists := where.Params()
 	execArgs = make([]interface{}, ub.Count(), ub.Count()+len(whereParams))
 	tmp := make([]string, ub.Count())
