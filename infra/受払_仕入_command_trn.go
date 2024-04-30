@@ -28,19 +28,9 @@ func (c *cmdTrn受払仕入) Entry(
 		return fmt.Errorf(" :%w", err)
 	}
 
-	if dr基準単位, err := dao単位.GetBy(dr品目.Fld基準単位ID); err != nil {
-		return fmt.Errorf(" :%w", err)
-	} else if e.Get基準数量.Unit() != dr基準単位.Fldコード {
-		return fmt.Errorf("基準単位コードは%sであるべきです。基準単位コード=%s :%w", dr基準単位.Fldコード, e.Get基準数量.Unit(), err)
-	}
-
 	dr仕入単位, err := dao単位.GetByCode(e.Get仕入数量.Unit())
 	if err != nil {
 		return fmt.Errorf(" :%w", err)
-	}
-
-	if e.Get仕入数量.Unit() != e.Get仕入単価.PerUnit() {
-		return fmt.Errorf("仕入数量と仕入単価の数量単位が異なります。 :%w", err)
 	}
 
 	dr受払 := &dao.Dto受払{

@@ -1,6 +1,8 @@
 package types
 
 import (
+	"encoding/json"
+
 	decimal "github.com/shopspring/decimal"
 )
 
@@ -26,4 +28,17 @@ func (p Price) Cur() CurrencyUnit {
 }
 func (p Price) PerUnit() Code単位 {
 	return p.perUnit
+}
+
+func (p Price) MarshalJSON() ([]byte, error) {
+	v, err := json.Marshal(&struct {
+		Amt  decimal.Decimal `json:"amt"`
+		Cur  CurrencyUnit    `json:"cur"`
+		Unit Code単位          `json:"per_unit"`
+	}{
+		Amt:  p.amt,
+		Cur:  p.cur,
+		Unit: p.perUnit,
+	})
+	return v, err
 }

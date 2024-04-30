@@ -29,6 +29,7 @@ func (r *qryTrn受払仕入) init() error {
 	if err != nil {
 		return xerrors.Errorf(" :%w", err)
 	}
+	r.rm.list仕入 = make([]*objects.Ent受払仕入, len(dt仕入))
 	for i, dr := range dt仕入 {
 		e単位, err := rep単位.getBy(dr.Fld仕入単位ID)
 		if err != nil && errors.Is(err, types.ErrNotFound) {

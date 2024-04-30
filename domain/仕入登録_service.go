@@ -12,8 +12,9 @@ type Srv仕入登録 struct {
 	cmd objects.Cmd受払仕入
 }
 
-func NewSrv仕入登録(cmd objects.Cmd受払仕入) *Srv仕入登録 {
+func NewSrv仕入登録(rm objects.RepManager, cmd objects.Cmd受払仕入) *Srv仕入登録 {
 	return &Srv仕入登録{
+		rm:  rm,
 		cmd: cmd,
 	}
 }
@@ -56,15 +57,18 @@ func (s *Srv仕入登録) Exec登録(
 			Get品目:    仕入品.Ent品目,
 			Get基準数量:  基準数量,
 		},
-		Get仕入数量: types.Quantity{},
-		Get仕入金額: types.Amount{},
-		Get仕入単価: types.Price{},
+		Get仕入数量: 仕入数量,
+		Get仕入金額: 仕入金額,
+		Get仕入単価: 仕入単価,
 	}
 
 	err := e仕入.Validate()
 	if err != nil {
 		return fmt.Errorf("validate error: %w, %w", err, types.ErrArg)
 	}
-	s.cmd.Entry(e仕入)
+	err = s.cmd.Entry(e仕入)
+	if err != nil {
+		return fmt.Errorf("entry error: %w, %w", err, types.ErrArg)
+	}
 	return nil
 }

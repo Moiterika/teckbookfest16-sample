@@ -39,7 +39,7 @@ func (r *qryTrn受払) init() error {
 		if notFound != nil {
 			return xerrors.Errorf(" :%w", notFound)
 		}
-		e, notFound := objects.NewEnt受払(
+		e, err := objects.NewEnt受払(
 			dr.Fld登録日時,
 			dr.Fld計上月,
 			dr.Fld受払区分,
@@ -47,9 +47,11 @@ func (r *qryTrn受払) init() error {
 			品目,
 			types.NewInventory(dr.Fld基準数量, e単位.Getコード),
 		)
-		if notFound != nil {
-			return xerrors.Errorf(" :%w", notFound)
+		if err != nil {
+			return xerrors.Errorf(" :%w", err)
 		}
+		e.GetNo = types.No(dr.FldNo)
+
 		r.rm.list受払[i] = e
 		r.rm.mapNovs受払[e.GetNo] = e
 	}

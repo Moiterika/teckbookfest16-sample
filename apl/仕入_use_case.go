@@ -28,7 +28,7 @@ func (mhs *myHttpServer) UseCase仕入(w http.ResponseWriter, r *http.Request) {
 		// TODO wb仕入品を入れ子にできるかは後で確かめる
 
 		if r.URL.Path == "" {
-			// クエリパラメータis_idをtrue/false判定
+			// クエリパラメータ年月を取得
 			var 計上年月 time.Time
 			年月 := r.URL.Query().Get("年月")
 			if 年月 != "" {
@@ -122,7 +122,8 @@ func (mhs *myHttpServer) UseCase仕入(w http.ResponseWriter, r *http.Request) {
 		wb品目 := dao.NewWb品目().And(dao.Tbl品目().Fldコード(), dao.OpEqu, 仕入.Get品目コード)
 		wb仕入品 := dao.NewWb品目仕入品().Exists(dao.NewEb品目仕入品join品目().And(dao.Tbl品目().Fldコード(), dao.OpEqu, 仕入.Get品目コード))
 
-		s := domain.NewSrv仕入登録(infra.NewCmdTrn受払(infra.NewRepManagerWithTrn(trn, infra.Wb品目(wb品目), infra.Wb仕入品(wb仕入品), infra.Wb製造品(dao.NewNothingWb品目製造品()))))
+		rm := infra.NewRepManagerWithTrn(trn, infra.Wb品目(wb品目), infra.Wb仕入品(wb仕入品), infra.Wb製造品(dao.NewNothingWb品目製造品()))
+		s := domain.NewSrv仕入登録(rm, infra.NewCmdTrn受払(rm))
 		仕入数量, err := 仕入.仕入数量()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)

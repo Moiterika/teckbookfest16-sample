@@ -1,6 +1,8 @@
 package types
 
 import (
+	"encoding/json"
+
 	decimal "github.com/shopspring/decimal"
 	"golang.org/x/xerrors"
 )
@@ -19,6 +21,17 @@ func (q Quantity) Val() decimal.Decimal {
 // Unit は按分用のメソッド
 func (q Quantity) Unit() Code単位 {
 	return q.unit
+}
+
+func (q Quantity) MarshalJSON() ([]byte, error) {
+	v, err := json.Marshal(&struct {
+		Val  decimal.Decimal `json:"val"`
+		Unit Code単位          `json:"unit"`
+	}{
+		Val:  q.val,
+		Unit: q.unit,
+	})
+	return v, err
 }
 
 // NewQuantity は数量（Quantity型）を生成する。マイナスの場合、エラーとなる。

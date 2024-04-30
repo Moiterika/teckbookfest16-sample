@@ -16,10 +16,10 @@ func SumAmount(x ...Amount) (ret Amount, err error) {
 
 	// 初期値
 	ret.val = decimal.Zero
-	ret.unit = x[0].unit
+	ret.cur = x[0].cur
 	curMap := make(map[CurrencyUnit]struct{})
 	for i := range x {
-		if _, ok := curMap[x[i].unit]; !ok {
+		if _, ok := curMap[x[i].cur]; !ok {
 			err = xerrors.Errorf("単位違うの居る……")
 			return
 		}
@@ -73,7 +73,7 @@ func Calc単価(a Amount, q Quantity) (p Price, err error) {
 		err = xerrors.Errorf("0除算エラー: 金額=%d、数量=%d", a.val, q.val)
 	}
 	p.amt = a.val.Div(q.val).Round(6)
-	p.cur = a.unit
+	p.cur = a.cur
 	p.perUnit = q.unit
 	return
 }
@@ -130,8 +130,8 @@ func Prorate[T Code単位 | CurrencyUnit](a Amount, bs []ProrationBasis[T]) (as 
 	sumAs := decimal.Zero
 	for i, b := range bs {
 		as[i] = Amount{
-			val:  a.val.Mul(b.Val()).Div(basisTotal).Round(0),
-			unit: a.unit,
+			val: a.val.Mul(b.Val()).Div(basisTotal).Round(0),
+			cur: a.cur,
 		}
 		sumAs = sumAs.Add(as[i].val)
 	}
@@ -177,8 +177,8 @@ func Calc按分[T Code単位 | CurrencyUnit](按分元金額 Amount, 按分基�
 	按分結果合計 := decimal.Zero
 	for i, 按分基準 := range 按分基準一覧 {
 		按分結果[i] = Amount{
-			val:  按分元金額.val.Mul(按分基準.Val()).Div(按分基準合計).Round(0),
-			unit: 按分元金額.unit,
+			val: 按分元金額.val.Mul(按分基準.Val()).Div(按分基準合計).Round(0),
+			cur: 按分元金額.cur,
 		}
 		按分結果合計 = 按分結果合計.Add(按分結果[i].val)
 	}
@@ -206,7 +206,7 @@ func MulQPrice(q Quantity, price Price) (amt Amount, err error) {
 	}
 
 	amt.val = q.val.Mul(price.amt)
-	amt.unit = price.cur
+	amt.cur = price.cur
 	return
 }
 
@@ -217,7 +217,7 @@ func MulARate(a Amount, rate Rate, round ...int32) (amt Amount) {
 		n = round[0]
 	}
 	amt.val = a.val.Mul(decimal.Decimal(rate)).Round(n)
-	amt.unit = a.unit
+	amt.cur = a.cur
 	return
 }
 
@@ -225,13 +225,13 @@ func MulARate(a Amount, rate Rate, round ...int32) (amt Amount) {
 func CalcPrice(a Amount, q Quantity) (p Price) {
 	if q.IsZero() {
 		p.amt = decimal.Zero
-		p.cur = a.unit
+		p.cur = a.cur
 		p.perUnit = q.unit
 		return
 	}
 
 	p.amt = a.val.Div(q.val).Round(DefaultPriceRound)
-	p.cur = a.unit
+	p.cur = a.cur
 	p.perUnit = q.unit
 	return
 }

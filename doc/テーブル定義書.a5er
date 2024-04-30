@@ -103,7 +103,7 @@ EffectMode=None
 Tag=RESOURCE
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20240312095215
+ModifiedDateTime=20240412202955
 Position="MAIN",650,300
 ZOrder=2
 
@@ -371,7 +371,7 @@ EffectMode=None
 Tag=RESOURCE
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20240402175105
+ModifiedDateTime=20240412202959
 Position="MAIN",850,50,132,90
 ZOrder=125
 

@@ -22,8 +22,8 @@ func TestProrate(t *testing.T) {
 			name: "通常按分",
 			args: args{
 				a: Amount{
-					val:  decimal.NewFromInt32(200),
-					unit: Jpy,
+					val: decimal.NewFromInt32(200),
+					cur: Jpy,
 				},
 				bs: []ProrationBasis[Code単位]{
 					Quantity{val: decimal.NewFromInt32(40), unit: "kg"},
@@ -33,10 +33,10 @@ func TestProrate(t *testing.T) {
 				},
 			},
 			wantAs: []Amount{
-				{val: decimal.NewFromInt32(80), unit: Jpy},
-				{val: decimal.NewFromInt32(60), unit: Jpy},
-				{val: decimal.NewFromInt32(40), unit: Jpy},
-				{val: decimal.NewFromInt32(20), unit: Jpy},
+				{val: decimal.NewFromInt32(80), cur: Jpy},
+				{val: decimal.NewFromInt32(60), cur: Jpy},
+				{val: decimal.NewFromInt32(40), cur: Jpy},
+				{val: decimal.NewFromInt32(20), cur: Jpy},
 			},
 			wantErr: false,
 		},
@@ -44,8 +44,8 @@ func TestProrate(t *testing.T) {
 			name: "通常按分。端数誤差あり",
 			args: args{
 				a: Amount{
-					val:  decimal.NewFromInt32(1000),
-					unit: Jpy,
+					val: decimal.NewFromInt32(1000),
+					cur: Jpy,
 				},
 				bs: []ProrationBasis[Code単位]{
 					Quantity{val: decimal.NewFromInt32(100), unit: "kg"},
@@ -54,9 +54,9 @@ func TestProrate(t *testing.T) {
 				},
 			},
 			wantAs: []Amount{
-				{val: decimal.NewFromInt32(334), unit: Jpy},
-				{val: decimal.NewFromInt32(333), unit: Jpy},
-				{val: decimal.NewFromInt32(333), unit: Jpy},
+				{val: decimal.NewFromInt32(334), cur: Jpy},
+				{val: decimal.NewFromInt32(333), cur: Jpy},
+				{val: decimal.NewFromInt32(333), cur: Jpy},
 			},
 			wantErr: false,
 		},
@@ -64,15 +64,15 @@ func TestProrate(t *testing.T) {
 			name: "通常按分。按分なし",
 			args: args{
 				a: Amount{
-					val:  decimal.NewFromInt32(1000),
-					unit: Jpy,
+					val: decimal.NewFromInt32(1000),
+					cur: Jpy,
 				},
 				bs: []ProrationBasis[Code単位]{
 					Quantity{val: decimal.NewFromInt32(25), unit: "kg"},
 				},
 			},
 			wantAs: []Amount{
-				{val: decimal.NewFromInt32(1000), unit: Jpy},
+				{val: decimal.NewFromInt32(1000), cur: Jpy},
 			},
 			wantErr: false,
 		},
@@ -80,8 +80,8 @@ func TestProrate(t *testing.T) {
 			name: "エラー。計算不能",
 			args: args{
 				a: Amount{
-					val:  decimal.NewFromInt32(1000),
-					unit: Jpy,
+					val: decimal.NewFromInt32(1000),
+					cur: Jpy,
 				},
 				bs: make([]ProrationBasis[Code単位], 0),
 			},
@@ -91,8 +91,8 @@ func TestProrate(t *testing.T) {
 			name: "エラー。計算不能",
 			args: args{
 				a: Amount{
-					val:  decimal.NewFromInt32(1000),
-					unit: Jpy,
+					val: decimal.NewFromInt32(1000),
+					cur: Jpy,
 				},
 				bs: nil,
 			},
@@ -102,8 +102,8 @@ func TestProrate(t *testing.T) {
 			name: "エラー。按分基準の単位違い",
 			args: args{
 				a: Amount{
-					val:  decimal.NewFromInt32(1000),
-					unit: Jpy,
+					val: decimal.NewFromInt32(1000),
+					cur: Jpy,
 				},
 				bs: []ProrationBasis[Code単位]{
 					Quantity{val: decimal.NewFromInt32(100), unit: "kg"},
@@ -117,8 +117,8 @@ func TestProrate(t *testing.T) {
 			name: "エラー。按分時に0除算発生",
 			args: args{
 				a: Amount{
-					val:  decimal.NewFromInt32(1000),
-					unit: Jpy,
+					val: decimal.NewFromInt32(1000),
+					cur: Jpy,
 				},
 				bs: []ProrationBasis[Code単位]{
 					Quantity{val: decimal.NewFromInt32(0), unit: "kg"},
