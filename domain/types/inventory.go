@@ -12,6 +12,13 @@ type Inventory struct {
 	unit Code単位
 }
 
+func NewInventory(数量 decimal.Decimal, 数量単位 Code単位) Inventory {
+	return Inventory{
+		val:  数量,
+		unit: 数量単位,
+	}
+}
+
 // Val は按分用のメソッド
 func (i Inventory) Val() decimal.Decimal {
 	return i.val
@@ -33,9 +40,18 @@ func (i Inventory) MarshalJSON() ([]byte, error) {
 	return v, err
 }
 
-func NewInventory(数量 decimal.Decimal, 数量単位 Code単位) Inventory {
-	return Inventory{
-		val:  数量,
-		unit: 数量単位,
+func (i *Inventory) UnmarshalJSON(byte []byte) error {
+	var s struct {
+		Val  decimal.Decimal `json:"val"`
+		Unit Code単位          `json:"unit"`
 	}
+
+	err := json.Unmarshal(byte, &s)
+	if err != nil {
+		return err
+	}
+
+	*i = NewInventory(s.Val, s.Unit)
+
+	return nil
 }

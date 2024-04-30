@@ -42,10 +42,13 @@ func (s *Srv仕入登録) Exec登録(
 		return fmt.Errorf("仕入時の基準数量の単位コードは%sであるべきです（品目コード=%s、単位コード=%s）。", 仕入品.Get基準単位.Getコード, 品目コード, 基準数量.Unit())
 	}
 
-	// 到達しない分岐
-	// if 仕入数量.Unit() != 仕入単価.PerUnit() {
-	// 	return fmt.Errorf("仕入数量と仕入単価の単位が一致しません（品目コード=%s、単位コード=%s）。", 品目コード, 仕入数量.Unit())
-	// }
+	if 仕入金額.Unit() != 仕入単価.Cur() {
+		return fmt.Errorf("仕入金額と仕入単価の通貨単位が一致しません（品目コード=%s、通貨単位コード=%s、%s）。", 品目コード, 仕入金額.Unit(), 仕入単価.Cur())
+	}
+
+	if 仕入数量.Unit() != 仕入単価.PerUnit() {
+		return fmt.Errorf("仕入数量と仕入単価の単位が一致しません（品目コード=%s、単位コード=%s、%s）。", 品目コード, 仕入数量.Unit(), 仕入単価.PerUnit())
+	}
 
 	e仕入 := &objects.Ent受払仕入{
 		Ent受払: &objects.Ent受払{

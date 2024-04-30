@@ -124,21 +124,16 @@ func (mhs *myHttpServer) UseCase仕入(w http.ResponseWriter, r *http.Request) {
 
 		rm := infra.NewRepManagerWithTrn(trn, infra.Wb品目(wb品目), infra.Wb仕入品(wb仕入品), infra.Wb製造品(dao.NewNothingWb品目製造品()))
 		s := domain.NewSrv仕入登録(rm, infra.NewCmdTrn受払(rm))
-		仕入数量, err := 仕入.仕入数量()
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
 		err = s.Exec登録(
 			仕入.Get登録日時,  // 登録日時 time.Time,
 			仕入.Get計上月,   // 計上月 time.Time,
 			仕入.Get受払区分,  // 受払区分 objects.Enum受払区分,
 			仕入.Get赤伝フラグ, // 赤伝フラグ bool,
 			仕入.Get品目コード, // 品目コード types.Code品目,
-			仕入.基準数量(),   // 基準数量 types.Inventory,
-			仕入数量,        // 仕入数量 types.Quantity,
-			仕入.仕入金額(),   // 仕入金額 types.Amount,
-			仕入.仕入単価(),   // 仕入単価 types.Price,
+			仕入.Get基準数量,  // 基準数量 types.Inventory,
+			仕入.Get仕入数量,  // 仕入数量 types.Quantity,
+			仕入.Get仕入金額,  // 仕入金額 types.Amount,
+			仕入.Get仕入単価,  // 仕入単価 types.Price,
 		)
 		if err != nil {
 			if errors.Is(err, types.ErrArg) {
