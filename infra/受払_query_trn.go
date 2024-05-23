@@ -21,7 +21,7 @@ func NewQryTrn受払(rm *repManagerTrn) objects.Qry受払 {
 func (r *qryTrn受払) init() error {
 	// TODO 計上年月で絞るなどしないと、全件取得はそのうち破綻する。
 	// サンプルなのでいったんヨシ
-	dt受払, err := r.rm.dm.NewDaoTrn受払().Dt()
+	dt受払, err := r.rm.dm.NewDaoTrn受払With(r.rm.repManagerArgs.wb受払).Dt()
 	if err != nil {
 		return xerrors.Errorf(" :%w", err)
 	}
