@@ -22,6 +22,13 @@
 developブランチは書籍執筆時からバージョンが進んでいる可能性があります。  
 mainブランチに反映後、[リリース](https://github.com/Moiterika/teckbookfest16-sample/releases)または[タグ](https://github.com/Moiterika/teckbookfest16-sample/releases/tag)で管理します。
 
+### 起動方法
+
+1. vscodeのDev Containersが動作する環境またはローカルにGoとPostgreSQLを用意して、チェックアウト
+1. `go run main.go`
+1. お好みのAPIクライアントで`http://localhost:8080`配下のURLにアクセス
+    1. ルーティングについては、main.goおよび各種usecaseを確認
+
 ## 注意事項
 
 - コードジェネレーターを含んでいません
