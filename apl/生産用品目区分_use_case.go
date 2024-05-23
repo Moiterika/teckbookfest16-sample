@@ -35,6 +35,7 @@ func (mhs *myHttpServer) UseCase生産用品目区分(w http.ResponseWriter, r *
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
+			w.Header().Set("Content-Type", "application/json; charset=utf-8")
 			w.Write(jsonb)
 			return
 		}
@@ -56,6 +57,7 @@ func (mhs *myHttpServer) UseCase生産用品目区分(w http.ResponseWriter, r *
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.Write(jsonb)
 	} else if r.Method == http.MethodPatch {
 		trn, err := mhs.defaultDb.Begin()
