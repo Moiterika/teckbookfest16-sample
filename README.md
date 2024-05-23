@@ -14,12 +14,13 @@
 - main
 - develop（最新）
 - feature
+  - developから派生
   - 基本的にissueに紐づき管理
 
 ### 版管理
 
-書籍執筆時からバージョンが進んでいる可能性があります。  
-[リリース](https://github.com/Moiterika/teckbookfest16-sample/releases)または[タグ](https://github.com/Moiterika/teckbookfest16-sample/releases/tag)で管理しています。
+developブランチは書籍執筆時からバージョンが進んでいる可能性があります。  
+mainブランチに反映後、[リリース](https://github.com/Moiterika/teckbookfest16-sample/releases)または[タグ](https://github.com/Moiterika/teckbookfest16-sample/releases/tag)で管理します。
 
 ## 注意事項
 
