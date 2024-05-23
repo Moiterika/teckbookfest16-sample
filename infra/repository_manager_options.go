@@ -3,10 +3,11 @@ package infra
 import "techbookfest16-sample/infra/dao"
 
 type repManagerArgs struct {
-	wb品目  dao.Wb品目
-	wb仕入品 dao.Wb品目仕入品
-	wb製造品 dao.Wb品目製造品
-	wb受払  dao.Wb受払
+	wb品目   dao.Wb品目
+	wb仕入品  dao.Wb品目仕入品
+	wb製造品  dao.Wb品目製造品
+	wb受払   dao.Wb受払
+	wb受払仕入 dao.Wb受払仕入
 }
 
 type repManagerOption func(*repManagerArgs)
@@ -29,5 +30,10 @@ func Wb製造品(wb製造品 dao.Wb品目製造品) repManagerOption {
 func Wb受払(wb受払 dao.Wb受払) repManagerOption {
 	return func(args *repManagerArgs) {
 		args.wb受払 = wb受払
+	}
+}
+func Wb受払仕入(wb受払仕入 dao.Wb受払仕入) repManagerOption {
+	return func(args *repManagerArgs) {
+		args.wb受払仕入 = wb受払仕入
 	}
 }

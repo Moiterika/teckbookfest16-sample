@@ -24,7 +24,7 @@ func (r *qryTrn受払仕入) init() error {
 	rep単位 := r.rm.rep単位()
 
 	// TODO 計上年月で絞るなどしないと、全件取得はそのうち破綻する。
-	dao仕入 := r.rm.dm.NewDaoTrn受払仕入()
+	dao仕入 := r.rm.dm.NewDaoTrn受払仕入With(r.rm.repManagerArgs.wb受払仕入)
 	dt仕入, err := dao仕入.Dt()
 	if err != nil {
 		return xerrors.Errorf(" :%w", err)

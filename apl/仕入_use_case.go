@@ -23,6 +23,7 @@ func (mhs *myHttpServer) UseCase仕入(w http.ResponseWriter, r *http.Request) {
 		}
 		defer trn.Commit()
 
+		wb受払仕入 := dao.NewWb受払仕入()
 		wb受払 := dao.NewWb受払()
 		wb品目 := dao.NewWb品目()
 		// TODO wb仕入品を入れ子にできるかは後で確かめる
@@ -38,12 +39,14 @@ func (mhs *myHttpServer) UseCase仕入(w http.ResponseWriter, r *http.Request) {
 					return
 				}
 				// 検索条件にセット
+				wb受払仕入.Exists(dao.NewEb受払仕入join受払().And(dao.Tbl受払().Fld計上月(), dao.OpEqu, 計上年月))
 				wb受払.And(dao.Tbl受払().Fld計上月(), dao.OpEqu, 計上年月)
 				wb品目.Exists(dao.NewEb品目join受払().And(dao.Tbl受払().Fld計上月(), dao.OpEqu, 計上年月))
 			}
 			q := infra.NewQryTrn受払仕入(
 				infra.NewRepManagerWithTrn(
 					trn,
+					infra.Wb受払仕入(wb受払仕入),
 					infra.Wb受払(wb受払),
 					infra.Wb品目(wb品目),
 					infra.Wb製造品(dao.NewNothingWb品目製造品()),
